@@ -8,7 +8,7 @@ Pas de pick up sans delivery
 //A POSER
 faut-il tout recalculer apres chaque modifs ?
 Est-ce à l'appli d'envoyer les horaires au client ?
-La map est-elle chargée dès le lancement de l'appli ? 
+La map est-elle chargée dès le lancement de l'appli ? Non, il y a un boutton load, et une option "télécharger la map" dès le début 
 Peut on changer le fichier XML de pick and delivery ?
 
 
