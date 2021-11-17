@@ -13,7 +13,6 @@ import org.xml.sax.SAXException;
 public class XMLParser {
 	public static Document parse(File file) throws ParserConfigurationException, IOException, SAXException {
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	    factory.setValidating(true);
 	    factory.setIgnoringElementContentWhitespace(true);
 	    DocumentBuilder builder = factory.newDocumentBuilder();
 	    Document doc = builder.parse(file);
