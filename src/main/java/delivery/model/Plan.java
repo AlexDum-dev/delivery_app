@@ -50,7 +50,14 @@ public class Plan {
 		this.requests = new ArrayList<Request>();
 	}
 
-	
+	/**
+	 * Loads the list of all segments
+	 * 
+	 * @param xmlDocument xml document to load
+	 * @param intersections the map of loaded intersections
+	 * @return a list of segments
+	 * @throws IOException
+	 */
 	private List<Segment> loadSegments(Document xmlDocument, 
 			Map<String, Intersection> intersections) throws IOException {
 		List<Segment> segments = new ArrayList<Segment>();
@@ -83,7 +90,14 @@ public class Plan {
 		}
 		return segments;
 	}
-
+	
+	/**
+	 * Loads the map of all intersections
+	 * 
+	 * @param xmlDocument the document to load
+	 * @return the map of all intersections
+	 * @throws IOException
+	 */
 	private Map<String, Intersection> loadIntersections(Document xmlDocument) 
 			throws IOException {
 		Map<String, Intersection> intersections = 
