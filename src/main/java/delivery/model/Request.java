@@ -10,7 +10,7 @@ public class Request {
 	private CheckPoint delivery;
 	private CheckPoint pickup;
 	
-	public Request(CheckPoint delivery, CheckPoint pickup) {
+	public Request(CheckPoint pickup, CheckPoint delivery) {
 		this.delivery = delivery;
 		this.pickup = pickup;
 	}

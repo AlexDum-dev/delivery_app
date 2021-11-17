@@ -20,11 +20,13 @@ public class Plan {
 	private List<Segment> segments;
 	//Graph
 	private List<Request> requests;
+	private Depot depot;
 
 	public Plan() {
 		intersections = new HashMap<String, Intersection>();
 		segments = new ArrayList<Segment>();
 		requests = new ArrayList<Request>();
+		depot = null;
 	}
 	
 	public void clearPlan() {
@@ -35,6 +37,10 @@ public class Plan {
 	
 	public void clearRequests() {
 		requests.clear();
+	}
+	
+	public void addRequest(Request r) {
+		requests.add(r);
 	}
 
 	public void addIntersection(Intersection i) {
@@ -60,4 +66,13 @@ public class Plan {
 	public List<Request> getRequests() {
 		return requests;
 	}
+
+	public Depot getDepot() {
+		return depot;
+	}
+
+	public void setDepot(Depot depot) {
+		this.depot = depot;
+	}
+	
 }
