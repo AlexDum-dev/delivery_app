@@ -1,6 +1,6 @@
 package delivery.model;
 
-import java.util.Date;
+import java.time.LocalTime;
 
 /**
  * Represents a checkpoint in the request
@@ -11,7 +11,7 @@ import java.util.Date;
 public class CheckPoint {
 	private CheckPointType type; // type of checkpoint
 	private Intersection address;
-	private Date time;
+	private LocalTime time;
 	private int duration; // duration in seconds
 	
 	public CheckPoint(CheckPointType type, Intersection address, int duration) {
@@ -21,11 +21,11 @@ public class CheckPoint {
 		this.duration = duration;
 	}
 
-	public Date getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
 
-	public void setTime(Date time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
 	}
 
