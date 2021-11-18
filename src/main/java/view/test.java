@@ -35,6 +35,7 @@ public class test {
 	private JFrame frame;
 	private JTable table;
 	private Plan plan;
+	private MapView mapView = null;
 
 	/**
 	 * Launch the application.
@@ -73,6 +74,20 @@ public class test {
 		scrollPane.setBounds(526, 12, 328, 447);
 		frame.getContentPane().add(scrollPane);
 		
+		File file = new File("/home/alex/Projects/delivery_app/src/main/resources/smallMap.xml");
+		try {
+			XMLParser.loadPlan(file, plan);
+		} catch (NumberFormatException | ParserConfigurationException | IOException | SAXException
+				| XMLParserException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("TEEST");
+		mapView = new MapView(plan);
+		System.out.println("fdfffff");
+		mapView.setBounds(10, 72, 458, 382);
+		frame.getContentPane().add(mapView);
+		
 		JButton btnLoadMap = new JButton("Load Map");
 		btnLoadMap.setBounds(12, 12, 134, 27);
 		btnLoadMap.addActionListener(new ActionListener() {
@@ -81,13 +96,15 @@ public class test {
 				int response = fileChooser.showOpenDialog(null);
 				if(response == JFileChooser.APPROVE_OPTION) {
 					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+					/*
 					try {
-						XMLParser.loadPlan(file, plan);
+						
 					} catch (NumberFormatException | DateTimeParseException | ParserConfigurationException | IOException
 							| SAXException | XMLParserException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					*/
 					System.out.println(file);
 				}
 			}
@@ -144,17 +161,15 @@ public class test {
 		});
 		frame.getContentPane().add(btnComputeTour);
 		
-		Panel panel = new Panel();
-		panel.setBounds(10, 72, 458, 382);
-		frame.getContentPane().add(panel);
-		
-		
+
 		
 		//test Ajout de tableau :
 		/*JPanel TextGrid = new JPanel();
 		GridLayout gl = new GridLayout(25,40);
 		TextGrid.setLayout(gl);
 		*/
+		
+		
 		
 	}
 }

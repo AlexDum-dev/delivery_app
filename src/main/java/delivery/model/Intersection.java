@@ -1,5 +1,9 @@
 package delivery.model;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Represents an intersection of the XML File
  * 
@@ -28,4 +32,49 @@ public class Intersection {
 	public double getLongitude() {
 		return longitude;
 	}
+	
+	public static double getMaxLatitude(Map<String,Intersection> listInter) {
+		
+		double max = 0;
+		Set<String> setInterId = listInter.keySet();
+		for(String id : setInterId) {
+			if(listInter.get(id).latitude > max) max = listInter.get(id).latitude;
+		}
+		
+		return max;
+	}
+	
+	public static double getMaxLongitude(Map<String,Intersection> listInter) {
+		
+		double max = 0;
+		Set<String> setInterId = listInter.keySet();
+		for(String id : setInterId) {
+			if(listInter.get(id).longitude > max) max = listInter.get(id).longitude;
+		}
+		
+		return max;
+	}
+	
+	public static double getMinLongitude(Map<String,Intersection> listInter) {
+		
+		double min = Double.MAX_VALUE;
+		Set<String> setInterId = listInter.keySet();
+		for(String id : setInterId) {
+			if(listInter.get(id).longitude < min) min = listInter.get(id).longitude;
+		}
+		
+		return min;
+	}
+	
+	public static double getMinLatitude(Map<String,Intersection> listInter) {
+		
+		double min = Double.MAX_VALUE;
+		Set<String> setInterId = listInter.keySet();
+		for(String id : setInterId) {
+			if(listInter.get(id).latitude < min) min = listInter.get(id).latitude;
+		}
+		
+		return min;
+	}
+
 }
