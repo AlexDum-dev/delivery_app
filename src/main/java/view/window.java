@@ -1,21 +1,40 @@
 package view;
 
-import java.awt.event.ActionEvent;
+import java.awt.EventQueue;
+
+import javax.swing.*;
+
+import delivery.model.CheckPoint;
+import delivery.model.CheckPointType;
+import delivery.model.Intersection;
+import delivery.model.Plan;
+import delivery.model.Request;
+import delivery.model.XMLParser;
+import delivery.model.XMLParserException;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.time.format.DateTimeParseException;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.SwingUtilities;
+import java.awt.event.ActionEvent;
+import java.awt.Panel;
+import javax.swing.GroupLayout;
+import javax.swing.JTextField;
+
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import controller.Controller;
-import delivery.model.Plan;
 
 public class Window {
 
 	private JFrame frame;
-	private Plan plan;
 	private RequestView requestView;
 	private MapView mapView;
 
@@ -23,7 +42,6 @@ public class Window {
 	 * Create the application.
 	 */
 	public Window(Plan p, Controller c) {
-		plan = p;
 		initialize(p, c);
 	}
 
@@ -39,23 +57,20 @@ public class Window {
 		requestView.setBounds(526, 12, 328, 447);
 		frame.getContentPane().add(requestView);
 		
-		JButton btnLoadMap = new JButton("Load Map");
-		btnLoadMap.setBounds(12, 12, 134, 27);
-		btnLoadMap.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Click on Loading Map...");
-				c.loadMap(p);
-			}
-		});
 		mapView = new MapView(p);
 		mapView.setBounds(10, 72, 458, 382);
 		frame.getContentPane().add(mapView);
 		SwingUtilities.updateComponentTreeUI(frame);
 		
+		JButton btnLoadMap = new JButton("Load Map");
+		btnLoadMap.setBounds(12, 12, 134, 27);
+		btnLoadMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				c.loadMap(p);
+			}
+		});
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(btnLoadMap);
-
-		frame.getContentPane().add(requestView);
 		
 		JButton btnLoadRequest = new JButton("Load Request");
 		btnLoadRequest.setBounds(176, 12, 134, 27);
@@ -70,20 +85,10 @@ public class Window {
 		btnComputeTour.setBounds(334, 12, 134, 27);
 		btnComputeTour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				c.computeTour();
 			}
 		});
 		frame.getContentPane().add(btnComputeTour);
 		
-
-		
-		//test Ajout de tableau :
-		/*JPanel TextGrid = new JPanel();
-		GridLayout gl = new GridLayout(25,40);
-		TextGrid.setLayout(gl);
-		*/
-		
 		frame.setVisible(true);
-		
 	}
 }
