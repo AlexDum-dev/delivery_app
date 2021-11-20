@@ -82,7 +82,14 @@ public class XMLParserTest {
 	
 	@Test
 	public void loadRequestsTestOk() {
+		//Arrange
 		
+		
+		
+		
+		
+		//Act 
+		//Asset
 	}
 	
 	@Test
