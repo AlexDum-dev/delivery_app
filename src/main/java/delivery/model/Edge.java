@@ -7,7 +7,7 @@ public class Edge {
 	private Intersection destination;
 	private Intersection origin;
 	
-	public Edge(List<Segment> path, Intersection destination, Intersection origin) {
+	public Edge(List<Segment> path, Intersection origin, Intersection destination) {
 		super();
 		this.path = path;
 		this.destination = destination;
