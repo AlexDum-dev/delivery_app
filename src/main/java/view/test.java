@@ -35,7 +35,7 @@ public class test {
 	private JFrame frame;
 	private JTable table;
 	private Plan plan;
-	private MapView mapView = null;
+	private MapView mapView;
 
 	/**
 	 * Launch the application.
@@ -74,19 +74,19 @@ public class test {
 		scrollPane.setBounds(526, 12, 328, 447);
 		frame.getContentPane().add(scrollPane);
 		
-		File file = new File("/home/alex/Projects/delivery_app/src/main/resources/smallMap.xml");
+		File file = new File("C:\\Users\\PC Lenovo\\Desktop\\fichiersXML2020\\largeMap.xml");
 		try {
 			XMLParser.loadPlan(file, plan);
+			mapView = new MapView(plan);
+			System.out.println("fdfffff");
+			mapView.setBounds(10, 72, 458, 382);
+			frame.getContentPane().add(mapView);
 		} catch (NumberFormatException | ParserConfigurationException | IOException | SAXException
 				| XMLParserException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println("TEEST");
-		mapView = new MapView(plan);
-		System.out.println("fdfffff");
-		mapView.setBounds(10, 72, 458, 382);
-		frame.getContentPane().add(mapView);
+		
 		
 		JButton btnLoadMap = new JButton("Load Map");
 		btnLoadMap.setBounds(12, 12, 134, 27);
@@ -95,16 +95,16 @@ public class test {
 				JFileChooser fileChooser = new JFileChooser();
 				int response = fileChooser.showOpenDialog(null);
 				if(response == JFileChooser.APPROVE_OPTION) {
-					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-					/*
+					//File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+					
 					try {
-						
-					} catch (NumberFormatException | DateTimeParseException | ParserConfigurationException | IOException
-							| SAXException | XMLParserException e) {
+						System.out.println("TEEST");
+					
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					*/
+					
 					System.out.println(file);
 				}
 			}
