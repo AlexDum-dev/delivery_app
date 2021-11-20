@@ -1,6 +1,5 @@
 package delivery.model;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,6 +32,8 @@ public class Intersection {
 		return longitude;
 	}
 	
+	
+	//TODO: Move to Plan
 	public static double getMaxLatitude(Map<String,Intersection> listInter) {
 		
 		double max = 0;
