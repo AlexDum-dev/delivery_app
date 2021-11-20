@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -184,6 +188,9 @@ public class MapView extends JPanel{
         }
         */
         
+    	JFrame frame = new JFrame("Sample Graph");
+    	frame.setBounds(100, 100, 866, 562);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Get Points :
         File file = new File("C:\\\\Users\\\\PC Lenovo\\\\Desktop\\\\fichiersXML2020\\\\largeMap.xml");
         Plan plan = new Plan();
@@ -191,10 +198,32 @@ public class MapView extends JPanel{
 	    /* Main panel */
         MapView mainPanel = new MapView(plan);
         mainPanel.setPreferredSize(new Dimension(700, 600));
+        JButton btnLoadMap = new JButton("Load Map");
+		btnLoadMap.setBounds(12, 12, 134, 27);
+		btnLoadMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser();
+				int response = fileChooser.showOpenDialog(null);
+				if(response == JFileChooser.APPROVE_OPTION) {
+					//File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+					
+					try {
+						System.out.println("TEEST");
+					
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					System.out.println(file);
+				}
+			}
+		});
+		
        /* creating the frame */
-        JFrame frame = new JFrame("Sample Graph");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         frame.getContentPane().add(mainPanel);
+		frame.getContentPane().add(btnLoadMap);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
