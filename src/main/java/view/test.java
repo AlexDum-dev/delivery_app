@@ -4,9 +4,38 @@ import java.awt.EventQueue;
 
 import javax.swing.*;
 
+import delivery.model.CheckPoint;
+import delivery.model.CheckPointType;
+import delivery.model.Intersection;
+import delivery.model.Plan;
+import delivery.model.Request;
+import delivery.model.XMLParser;
+import delivery.model.XMLParserException;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.time.format.DateTimeParseException;
+import java.awt.event.ActionListener;
+
+import java.awt.event.ActionEvent;
+import java.awt.Panel;
+import javax.swing.GroupLayout;
+import javax.swing.JTextField;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 public class test {
 
 	private JFrame frame;
+	private JTable table;
+	private Plan plan;
+	private MapView mapView = null;
 
 	/**
 	 * Launch the application.
@@ -28,7 +57,9 @@ public class test {
 	 * Create the application.
 	 */
 	public test() {
+		plan = new Plan();
 		initialize();
+		
 	}
 
 	/**
@@ -36,8 +67,109 @@ public class test {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 866, 562);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(526, 12, 328, 447);
+		frame.getContentPane().add(scrollPane);
+		
+		File file = new File("/home/alex/Projects/delivery_app/src/main/resources/smallMap.xml");
+		try {
+			XMLParser.loadPlan(file, plan);
+		} catch (NumberFormatException | ParserConfigurationException | IOException | SAXException
+				| XMLParserException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("TEEST");
+		mapView = new MapView(plan);
+		System.out.println("fdfffff");
+		mapView.setBounds(10, 72, 458, 382);
+		frame.getContentPane().add(mapView);
+		
+		JButton btnLoadMap = new JButton("Load Map");
+		btnLoadMap.setBounds(12, 12, 134, 27);
+		btnLoadMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser();
+				int response = fileChooser.showOpenDialog(null);
+				if(response == JFileChooser.APPROVE_OPTION) {
+					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+					/*
+					try {
+						
+					} catch (NumberFormatException | DateTimeParseException | ParserConfigurationException | IOException
+							| SAXException | XMLParserException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					*/
+					System.out.println(file);
+				}
+			}
+		});
+		frame.getContentPane().setLayout(null);
+		frame.getContentPane().add(btnLoadMap);
+		
+		JButton btnLoadRequest = new JButton("Load Request");
+		btnLoadRequest.setBounds(176, 12, 134, 27);
+		btnLoadRequest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.showOpenDialog(null);
+				int response = fileChooser.showOpenDialog(null);
+				if(response == JFileChooser.APPROVE_OPTION) {
+					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+					try {
+						XMLParser.loadRequests(file, plan);
+						
+						frame.getContentPane().add(scrollPane);
+						
+						table = new JTable();
+						
+						table.setModel(new DefaultTableModel(
+								
+								RequestView.displayRequest(plan.getRequests()), 
+							new String[] {
+								"PickUp", "Delivery", "PTime", "DTime"
+							}
+						) {
+							Class[] columnTypes = new Class[] {
+								String.class, String.class, Long.class, Long.class
+							};
+							public Class getColumnClass(int columnIndex) {
+								return columnTypes[columnIndex];
+							}
+						});
+						scrollPane.setViewportView(table);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println(file);
+				}
+			}
+		});
+		frame.getContentPane().add(btnLoadRequest);
+		
+		JButton btnComputeTour = new JButton("Compute Tour");
+		btnComputeTour.setBounds(334, 12, 134, 27);
+		btnComputeTour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		frame.getContentPane().add(btnComputeTour);
+		
 
+		
+		//test Ajout de tableau :
+		/*JPanel TextGrid = new JPanel();
+		GridLayout gl = new GridLayout(25,40);
+		TextGrid.setLayout(gl);
+		*/
+		
+		
+		
+	}
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<map>
+<intersection id="54803905" latitude="45.76194" longitude="4.8739953"/>
+<intersection id="21992964" latitude="45.74778" longitude="4.8682485"/>
+<intersection id="208769133" latitude="45.759453" longitude="4.8698664"/>
+<segment destination="54803905" length="69.979805" name="Rue Danton" origin="21992964"/>
+<segment destination="21992964" length="69.979805" name="Rue Danton" origin="208769133"/>
+<segment destination="208769133" length="69.979805" name="Rue Danton" origin="54803905"/>
+</map>
