@@ -1,21 +1,30 @@
 package view;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.GroupLayout;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import delivery.model.Plan;
 import delivery.model.Request;
+import observer.Observable;
+import observer.Observer;
 
-import java.awt.*;
 
+public class RequestView extends JScrollPane implements Observer {
 
-public class RequestView {
+	private JTable table;
+    private Plan plan;
 	
+	public RequestView(Plan plan) {
+		super();
+		this.plan = plan;
+		plan.addObserver(this);
+		table = new JTable();
+		//table.setBounds(10, 72, 458, 382);
+	}
+
 	static Object[][] displayRequest(List<Request> requests) {
 		
 		Object[][] tabRequest = new Object[requests.size()][4];
@@ -42,5 +51,26 @@ public class RequestView {
 		}
 			
 		return tabRequest;
+	}
+
+	@Override
+	public void update(Observable observed, Object arg) {
+		// TODO Auto-generated method stub
+
+		table.setModel(new DefaultTableModel(
+				
+				RequestView.displayRequest(plan.getRequests()), 
+			new String[] {
+				"PickUp", "Delivery", "PTime", "DTime"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, Long.class, Long.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		this.setViewportView(table);
 	}
 }

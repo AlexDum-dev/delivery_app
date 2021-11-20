@@ -3,7 +3,6 @@ package view;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -33,9 +31,11 @@ import delivery.model.Plan;
 import delivery.model.Segment;
 import delivery.model.XMLParser;
 import delivery.model.XMLParserException;
+import observer.Observable;
+import observer.Observer;
  
 
-public class MapView extends JPanel{
+public class MapView extends JPanel implements Observer{
 
     
  
@@ -60,6 +60,7 @@ public class MapView extends JPanel{
 	 */
     public MapView(Plan plan) {
         this.plan = plan;
+        plan.addObserver(this);
         System.out.println("TEEST constructeur map");
         //this.xScale = ((double) getHeight() - 2 * padding - labelPadding) / (Intersection.getMaxLongitude(plan.getIntersections()) - Intersection.getMinLongitude(plan.getIntersections()));
         //this.yScale = ((double) getHeight() - 2 * padding - labelPadding) / (Intersection.getMaxLatitude(plan.getIntersections()) - Intersection.getMinLatitude(plan.getIntersections()));
@@ -264,6 +265,14 @@ public class MapView extends JPanel{
     	
     	return listLinePoint;
     }
+
+
+
+	@Override
+	public void update(Observable observed, Object arg) {
+		// TODO Auto-generated method stub
+		repaint();
+	}
 
     
     

@@ -53,6 +53,7 @@ public class XMLParser {
 		p.clearPlan();
 		loadIntersections(xmlDocument, p);
 		loadSegments(xmlDocument, p);
+		p.notifyObservers();
 	}
 
 	/**
@@ -141,6 +142,7 @@ public class XMLParser {
 		p.clearRequests();
 		loadDepot(xmlDocument, p);
 		loadCheckPoints(xmlDocument, p);
+		p.notifyObservers();
 	}
 
 	/**

@@ -1,7 +1,5 @@
 package view;
 
-import javax.swing.*;
-
 public class LineRequestView {
 	String pickupTextGrid;
 	String deliveryTextGrid;

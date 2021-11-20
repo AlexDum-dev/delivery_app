@@ -1,5 +1,7 @@
 package controller;
 
+import delivery.model.Plan;
+
 public class RequestsLoaded implements State {
 	private static RequestsLoaded instance = null;
 	
@@ -14,12 +16,12 @@ public class RequestsLoaded implements State {
 		return instance;
 	}
 
-	public void loadMap() {
-		//TODO: Load the map
+	public void loadMap(Controller c, Plan plan) {
+		CommonActions.loadMap(c, plan);
 	}
 	
-	public void loadRequest() {
-		//TODO: Load the requests
+	public void loadRequest(Controller c, Plan plan) {
+		CommonActions.loadRequest(c, plan);
 	}
 	
 	public void computeTour() {
