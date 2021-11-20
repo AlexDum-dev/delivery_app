@@ -20,52 +20,6 @@ public class Plan extends Observable {
 	private List<Request> requests;
 	private Depot depot;
 
-	
-	public Boolean equals(Plan p) {
-		
-		if (!p.getDepot().equals(this.getDepot())) {
-			return false;
-		}
-		
-		
-		for (String key : intersections.keySet()) {
-			if (!p.getIntersections().get(key).equals(this.getIntersections().get(key))) {
-				return false;
-			}	
-		}
-		if (this.segments.size()!=p.getSegments().size()) {
-			return false;
-		}
-		for (int i=0; i<segments.size(); i++) {
-			boolean found=false;
-			for (int j=0; j<segments.size(); j++) {
-				if (p.getSegments().get(i).equals(this.getSegments().get(j))) {
-					found=true;
-				}	
-			}
-			if (!found) {
-				return false;
-			}
-		}
-		
-		if (this.requests.size()!=p.getRequests().size()) {
-			return false;
-		}
-		for (int i=0; i<requests.size(); i++) {
-			boolean found=false;
-			for (int j=0; j<requests.size(); j++) {
-				if (p.getRequests().get(i).equals(this.getRequests().get(j))) {
-					found=true;
-				}	
-			}
-			if (!found) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
 	public Plan() {
 		intersections = new HashMap<String, Intersection>();
 		segments = new ArrayList<Segment>();
@@ -128,6 +82,50 @@ public class Plan extends Observable {
 
 	public void setDepot(Depot depot) {
 		this.depot = depot;
+	}
+	
+	public Boolean equals(Plan p) {
+		
+		if (!p.getDepot().equals(this.getDepot())) {
+			return false;
+		}		
+		
+		for (String key : intersections.keySet()) {
+			if (!p.getIntersections().get(key).equals(this.getIntersections().get(key))) {
+				return false;
+			}	
+		}
+		if (this.segments.size()!=p.getSegments().size()) {
+			return false;
+		}
+		for (int i=0; i<segments.size(); i++) {
+			boolean found=false;
+			for (int j=0; j<segments.size(); j++) {
+				if (p.getSegments().get(i).equals(this.getSegments().get(j))) {
+					found=true;
+				}	
+			}
+			if (!found) {
+				return false;
+			}
+		}
+		
+		if (this.requests.size()!=p.getRequests().size()) {
+			return false;
+		}
+		for (int i=0; i<requests.size(); i++) {
+			boolean found=false;
+			for (int j=0; j<requests.size(); j++) {
+				if (p.getRequests().get(i).equals(this.getRequests().get(j))) {
+					found=true;
+				}	
+			}
+			if (!found) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 }

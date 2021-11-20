@@ -47,6 +47,25 @@ public class Graph {
 		l.add(adjacent);
 	}
 	
-	
+	public boolean equals(Graph g) {
+		if (this.getAdjacencyList().size() != g.getAdjacencyList().size()) {
+			return false;
+		}
+		
+		for (String key : this.getAdjacencyList().keySet()) {
+			List<Edge> edges = g.getAdjacencyList().get(key);
+			if (edges == null || edges.size() != this.getAdjacencyList().get(key).size()) {
+				return false;
+			}
+			
+			for (int i = 0; i<edges.size(); i++) {
+				if (!edges.get(i).equals(this.getAdjacencyList().get(key).get(i))) {
+					return false;
+				}
+			}			
+		}
+				
+		return true;
+	}
 	
 }

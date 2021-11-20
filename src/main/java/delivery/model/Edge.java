@@ -44,7 +44,24 @@ public class Edge {
 		this.origin = origin;
 	}
 	
-	
-	
+	public boolean equals(Edge e) {
+		if (!this.getDestination().equals(e.getDestination())) {
+			return false;
+		}
+		if (!this.getOrigin().equals(e.getOrigin())) {
+			return false;
+		}
+		
+		if (!(this.getPath().size() == e.getPath().size())) {
+			return false;
+		}
+		for (int i = 0; i<this.getPath().size(); i++) {
+			if (!this.getPath().get(i).equals(e.getPath().get(i))) {
+				return false;
+			}
+		}		
+		
+		return true;
+	}	
 
 }

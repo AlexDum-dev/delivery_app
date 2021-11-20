@@ -43,7 +43,7 @@ public class XMLParserTest {
 		Plan p = new Plan();
 		//Act
 		
-		XMLParser.loadPlan(new File("src/test/resources/loadPlanGoodDataTest.xml"),p);
+		XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanGoodDataTest.xml"),p);
 		
 		
 		//Asset
@@ -84,7 +84,7 @@ public class XMLParserTest {
 	public void loadPlanTestIOExceptionOk() {
 		Plan p = new Plan();
 		assertThrows(IOException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/notAFile.xml"), p);
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/notAFile.xml"), p);
 		});
 	}
 	
@@ -92,10 +92,10 @@ public class XMLParserTest {
 	public void loadPlanTestXMLParserExceptionOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/loadPlanWrongIntersectionTest.xml"), p);
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanWrongIntersectionTest.xml"), p);
 		});
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/loadPlanWrongSegmentTest.xml"), p);
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanWrongSegmentTest.xml"), p);
 		});
 	}
 	
@@ -147,8 +147,8 @@ public class XMLParserTest {
 		
 		
 		//Act
-		XMLParser.loadPlan(new File("src/test/resources/loadRequestGoodDataPlanTest.xml"), p);
-		XMLParser.loadRequests(new File("src/test/resources/loadRequestGoodDataTest.xml"), p);
+		XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+		XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestGoodDataTest.xml"), p);
 		
 		
 		//Asset
@@ -165,19 +165,19 @@ public class XMLParserTest {
 	public void loadRequestsTestIOExceptionOk() {
 		Plan p = new Plan();
 		assertThrows(IOException.class, () -> {
-			XMLParser.loadRequests(new File("src/test/resources/notAFile.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/notAFile.xml"), p);
 		});
 	}
 	
 	@Test
 	public void loadRequestsTestXMLParserExceptionOk() throws NumberFormatException, ParserConfigurationException, IOException, SAXException, XMLParserException {
 		Plan p = new Plan();
-		XMLParser.loadPlan(new File("src/test/resources/loadRequestGoodDataPlanTest.xml"), p);
+		XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadRequests(new File("src/test/resources/loadRequestsWrongCheckpointTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsWrongCheckpointTest.xml"), p);
 		});
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadRequests(new File("src/test/resources/loadRequestsWrongDepotTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsWrongDepotTest.xml"), p);
 		});
 	}
 }
