@@ -41,4 +41,14 @@ public class CheckPoint {
 		return duration;
 	}
 	
+	public Boolean equals(CheckPoint c) {
+		if (c.getType().equals(this.getType()) 
+				&& c.getAddress().equals(this.getAddress()) 
+				&& ((c.getTime() == null && this.getTime() == null) || c.getTime().equals(this.getTime()))
+				&& c.getDuration() == this.getDuration()){
+			return true;
+		}
+		return false;
+	}
+	
 }

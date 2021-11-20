@@ -24,4 +24,11 @@ public class Depot {
 	public LocalTime getTime() {
 		return time;
 	}
+	
+	public Boolean equals(Depot d) {
+		if (d.getAddress().equals(this.getAddress()) && d.getTime().equals(this.getTime())){
+			return true;
+		}
+		return false;
+	}
 }

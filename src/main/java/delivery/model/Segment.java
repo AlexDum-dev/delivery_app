@@ -23,6 +23,8 @@ public class Segment {
 		this.length = length;
 		this.name = name;
 	}
+	
+	
 
 	public Intersection getOrigin() {
 		return origin;
@@ -39,6 +41,7 @@ public class Segment {
 	public String getName() {
 		return name;
 	}
+	
 	/* Return a list of double array which contains 4 elements : x1, y1 and x2, y2. x1,y1  and x2,y2 are points that are connected
 	 * @return : List<Double[]>
 	 */
@@ -61,4 +64,13 @@ public class Segment {
 		
 	}
 	
+	public Boolean equals(Segment s) {
+		if (s.getDestination().equals(this.getDestination())
+				&& s.getOrigin().equals(this.getOrigin())
+				&& s.getLength() == this.getLength()
+				&& s.getName().equals(this.getName())){
+			return true;
+		}
+		return false;
+	}
 }

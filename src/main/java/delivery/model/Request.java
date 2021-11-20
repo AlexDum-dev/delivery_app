@@ -23,5 +23,11 @@ public class Request {
 		return pickup;
 	}
 	
+	public Boolean equals(Request r) {
+		if (r.getDelivery().equals(this.getDelivery()) && r.getPickup().equals(this.getPickup())){
+			return true;
+		}
+		return false;
+	}	
 	
 }

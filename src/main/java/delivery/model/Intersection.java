@@ -32,7 +32,6 @@ public class Intersection {
 		return longitude;
 	}
 	
-	
 	//TODO: Move to Plan
 	public static double getMaxLatitude(Map<String,Intersection> listInter) {
 		
@@ -78,4 +77,12 @@ public class Intersection {
 		return min;
 	}
 
+	public Boolean equals(Intersection i) {
+		if (i.getId().equals(this.getId()) 
+				&& i.getLatitude() == this.getLatitude() 
+				&& i.getLongitude() == this.getLongitude()){
+			return true;
+		}
+		return false;
+	}
 }
