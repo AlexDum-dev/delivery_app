@@ -4,10 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,8 +15,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Utility class to parse XML plan files
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 17 Nov 2021
+ */
 public class XMLParser {
-	public static Document parse(File file) throws ParserConfigurationException, IOException, SAXException {
+	private XMLParser() {
+		
+	}
+	
+	private static Document parse(File file) throws ParserConfigurationException, IOException, SAXException {
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    factory.setIgnoringElementContentWhitespace(true);
 	    DocumentBuilder builder = factory.newDocumentBuilder();
