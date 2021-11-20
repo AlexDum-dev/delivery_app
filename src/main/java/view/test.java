@@ -35,7 +35,7 @@ public class test {
 	private JFrame frame;
 	private JTable table;
 	private Plan plan;
-	private MapView mapView = null;
+	private MapView mapView;
 
 	/**
 	 * Launch the application.
@@ -74,37 +74,44 @@ public class test {
 		scrollPane.setBounds(526, 12, 328, 447);
 		frame.getContentPane().add(scrollPane);
 		
-		File file = new File("/home/alex/Projects/delivery_app/src/main/resources/smallMap.xml");
+		/*File file = new File("C:\\Users\\PC Lenovo\\Desktop\\fichiersXML2020\\smallMap.xml");
 		try {
 			XMLParser.loadPlan(file, plan);
+			mapView = new MapView(plan);
+			System.out.println("fdfffff");
+			mapView.setBounds(10, 72, 458, 382);
+			frame.getContentPane().add(mapView);
 		} catch (NumberFormatException | ParserConfigurationException | IOException | SAXException
 				| XMLParserException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-		System.out.println("TEEST");
-		mapView = new MapView(plan);
-		System.out.println("fdfffff");
-		mapView.setBounds(10, 72, 458, 382);
-		frame.getContentPane().add(mapView);
+		}*/
 		
+		JFileChooser fileChooser = new JFileChooser();
 		JButton btnLoadMap = new JButton("Load Map");
 		btnLoadMap.setBounds(12, 12, 134, 27);
 		btnLoadMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser();
+				
 				int response = fileChooser.showOpenDialog(null);
 				if(response == JFileChooser.APPROVE_OPTION) {
 					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-					/*
+					System.out.println("file name : "+file.toString());
+					
 					try {
-						
-					} catch (NumberFormatException | DateTimeParseException | ParserConfigurationException | IOException
-							| SAXException | XMLParserException e) {
+						XMLParser.loadPlan(file, plan);
+						mapView = new MapView(plan);
+						System.out.println("fdfffff");
+						mapView.setBounds(10, 72, 458, 382);
+						frame.getContentPane().add(mapView);
+						SwingUtilities.updateComponentTreeUI(frame);
+						System.out.println("TEEST");
+					
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					*/
+					
 					System.out.println(file);
 				}
 			}
@@ -116,10 +123,8 @@ public class test {
 		btnLoadRequest.setBounds(176, 12, 134, 27);
 		btnLoadRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.showOpenDialog(null);
-				int response = fileChooser.showOpenDialog(null);
-				if(response == JFileChooser.APPROVE_OPTION) {
+				int response2 = fileChooser.showOpenDialog(null);
+				if(response2 == JFileChooser.APPROVE_OPTION) {
 					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
 					try {
 						XMLParser.loadRequests(file, plan);
@@ -127,7 +132,7 @@ public class test {
 						frame.getContentPane().add(scrollPane);
 						
 						table = new JTable();
-						
+						//table.setBounds(10, 72, 458, 382);
 						table.setModel(new DefaultTableModel(
 								
 								RequestView.displayRequest(plan.getRequests()), 
