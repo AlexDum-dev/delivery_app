@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.junit.runner.Request;
 import org.xml.sax.SAXException;
 
 import delivery.model.Intersection;
@@ -43,15 +44,16 @@ public class MapView extends JPanel{
     private int labelPadding = 0;
     /**change the line color to the best you want;*/
     private Color lineColor = new Color(0,0,0);
-    private Color pointColor = new Color(255,0,255 );
+    private Color pointColorPickUp = new Color(204,0 ,0 );
+    private Color pointColorDelivery= new Color(0,153 ,0 );
     private Color gridColor = new Color(200, 200, 200, 200);
     private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
-    private static int pointWidth = 2;
-    private int numberYDivisions = 6;
+    private static int pointWidth = 15;
+    private int numberYDivisions = 0;
     private Plan plan;
-    private int padding = 3;
-    //private double xScale;
-    //private double yScale;
+    private int padding = 0;
+     double xScale;
+     double yScale;
 
     	
 	/**
@@ -76,8 +78,8 @@ public class MapView extends JPanel{
         
         Map<String,Intersection> mapIntersection = plan.getIntersections();
         
-        double xScale = ((double) getWidth() - 2 * padding - labelPadding) / (Intersection.getMaxLatitude(plan.getIntersections()) - Intersection.getMinLatitude(plan.getIntersections()));
-        double yScale = ((double) getHeight() - 2 * padding - labelPadding) / (Intersection.getMaxLongitude(plan.getIntersections()) - Intersection.getMinLongitude(plan.getIntersections()));
+         xScale = ((double) getWidth() - 2 * padding - labelPadding) / (Plan.getMaxLatitude(plan.getIntersections()) - Plan.getMinLatitude(plan.getIntersections()));
+         yScale = ((double) getHeight() - 2 * padding - labelPadding) / (Plan.getMaxLongitude(plan.getIntersections()) - Plan.getMinLongitude(plan.getIntersections()));
         List<Point> graphPoints = new ArrayList<>();
         Set<String> setInterId = plan.getIntersections().keySet();
         for (String id : setInterId) {
@@ -86,7 +88,7 @@ public class MapView extends JPanel{
             //System.out.println("Create point  : x "+x1+" y "+y1);
         	//int x1 = (int) ((Intersection.getMaxLongitude(plan.getIntersections()) - mapIntersection.get(id).getLongitude()) * xScale + padding);
         	//int y1 = (int) ((Intersection.getMaxLatitude(plan.getIntersections()) - mapIntersection.get(id).getLatitude()) * yScale + padding);
-            graphPoints.add(new Point(x1, y1));
+            graphPoints.add(new Point(getWidth() - y1, getHeight() - x1));
         }
 
         g2.setColor(Color.WHITE);
@@ -144,15 +146,25 @@ public class MapView extends JPanel{
         
         Stroke oldStroke = g2.getStroke(); //keep in memory the stroke ("state") to draw points
         
-        g2.setColor(lineColor);
+        g2.setColor(pointColorPickUp);
         g2.setStroke(GRAPH_STROKE);
-        List<Double[]> listLineDouble = Segment.getAllLine(plan.getSegments());
+        List<Double[]> listLineDouble = Plan.getAllLine(plan.getSegments());
         List<Point[]> listLinePoint = weightAllPoint(listLineDouble, xScale, yScale); //
+        g2.drawLine(getWidth() - 5,getHeight() - 5,getWidth() -  5,getHeight() - 100);
+        g2.drawLine(getWidth() - 5,5,getWidth() -  5,100);
+        g2.setColor(lineColor);
         for(Point[] line : listLinePoint) {
         	//System.out.println("Create line : x1 "+(int) line[0].getX()+" y1 "+ (int) line[0].getY() + " x2 "+ (int) line[1].getX() + " y2 "+ line[1].getY());
-        	g2.drawLine((int) line[0].getX(), (int) line[0].getY(), (int) line[1].getX(),(int) line[1].getY());
+        	
+        	//g2.drawLine(((int) line[0].getX()),((int) line[0].getY()),((int) line[1].getX()),((int) line[1].getY()));
+        	//g2.drawLine(((int) line[0].getY()),((int) line[0].getX()),((int) line[1].getY()),((int) line[1].getX()));
+        	//g2.drawLine(getWidth() - ((int) line[0].getX()),getHeight() - ((int) line[0].getY()),getWidth() -  ((int) line[1].getX()),getHeight() - ((int) line[1].getY()));
+        	g2.drawLine(getWidth() - ((int) line[0].getY()),((int) line[0].getX()),getWidth() -  ((int) line[1].getY()),((int) line[1].getX()));
+        	
+        	
         	//System.out.println("X1 : "+line[0].getX()+" Y1 "+line[0].getY()+" X2 : "+line[1].getX()+" Y2 "+line[1].getY());
         }
+        g2.setStroke(oldStroke);
         /*
         for (int i = 0; i < graphPoints.size() - 1; i++) {
             int x1 = graphPoints.get(i).x;
@@ -163,7 +175,7 @@ public class MapView extends JPanel{
         }
         
         */
-        g2.setStroke(oldStroke);
+       /* g2.setStroke(oldStroke);
         g2.setColor(pointColor);
         for (int i = 0; i < graphPoints.size(); i++) {
             int x = graphPoints.get(i).x - pointWidth / 2;
@@ -171,7 +183,35 @@ public class MapView extends JPanel{
             int ovalW = pointWidth;
             int ovalH = pointWidth;
             g2.fillOval(x, y, ovalW, ovalH);
-        }
+        }*/
+        /*  Requests */
+        
+		List<delivery.model.Request> requests = plan.getRequests();
+		List<Point> graphPoints2 = new ArrayList<>();
+		for(int i = 0 ; i<requests.size();i++) {
+			 int x1 = weightLatitude(requests.get(i).getPickup().getAddress().getLatitude(), xScale); 
+	         int y1 = weightLongitude(requests.get(i).getPickup().getAddress().getLongitude(), yScale);
+	         
+	         int x2 = weightLatitude(requests.get(i).getDelivery().getAddress().getLatitude(), xScale); 
+	         int y2 = weightLongitude(requests.get(i).getDelivery().getAddress().getLongitude(), yScale);
+	         graphPoints2.add(new Point(getWidth() - y1, x1));
+	         graphPoints2.add(new Point(getWidth() - y2, x2));
+		}
+		 
+	        for (int i = 0; i < graphPoints2.size(); i++) {
+	        	if (i % 2 == 0) {
+	        		//pickup color
+	        		g2.setColor(pointColorPickUp);
+	        	}else {
+	        		g2.setColor(pointColorDelivery);
+	        	}
+	            int x = graphPoints2.get(i).x - pointWidth / 2;
+	            int y = graphPoints2.get(i).y - pointWidth / 2;
+	            int ovalW = pointWidth;
+	            int ovalH = pointWidth;
+	            g2.fillOval(x, y, ovalW, ovalH);
+	        }
+		
         
         
     }
@@ -188,43 +228,29 @@ public class MapView extends JPanel{
         }
         */
         
-    	JFrame frame = new JFrame("Sample Graph");
+    	JFrame frame = new JFrame("((int) line[0].getY()),((int) line[0].getX()),((int) line[1].getY()),((int) line[1].getX())");
     	frame.setBounds(100, 100, 866, 562);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Get Points :
         File file = new File("C:\\\\Users\\\\PC Lenovo\\\\Desktop\\\\fichiersXML2020\\\\largeMap.xml");
+        File fileR = new File("C:\\\\Users\\\\PC Lenovo\\\\Desktop\\\\fichiersXML2020\\\\requestsLarge7.xml");
         Plan plan = new Plan();
         XMLParser.loadPlan(file, plan);
+        XMLParser.loadRequests(fileR, plan);
 	    /* Main panel */
         MapView mainPanel = new MapView(plan);
-        mainPanel.setPreferredSize(new Dimension(700, 600));
-        JButton btnLoadMap = new JButton("Load Map");
-		btnLoadMap.setBounds(12, 12, 134, 27);
-		btnLoadMap.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser();
-				int response = fileChooser.showOpenDialog(null);
-				if(response == JFileChooser.APPROVE_OPTION) {
-					//File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-					
-					try {
-						System.out.println("TEEST");
-					
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					System.out.println(file);
-				}
-			}
-		});
+        mainPanel.setPreferredSize(new Dimension(1300, 1200));
+        frame.setBounds(100, 100, 1100, 780);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+        
 		
        /* creating the frame */
         
         frame.getContentPane().add(mainPanel);
-		frame.getContentPane().add(btnLoadMap);
-        frame.pack();
+        frame.setBounds(100, 100, 800, 800);
+      	frame.setResizable(false);
+      	frame.setLocationRelativeTo(null);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -243,12 +269,12 @@ public class MapView extends JPanel{
       });}
     
     public int weightLatitude(double coord, double yScale) {
-    	return (int) ((Intersection.getMaxLatitude(plan.getIntersections()) - coord) * yScale + padding);
+    	return (int) ((Plan.getMaxLatitude(plan.getIntersections()) - coord) * yScale + padding);
   
     }
     
     public int weightLongitude(double coord, double xScale) {
-    	return (int) ((Intersection.getMaxLongitude(plan.getIntersections()) - coord) * xScale + padding);
+    	return (int) ((Plan.getMaxLongitude(plan.getIntersections()) - coord) * xScale + padding);
     }
     
     public List<Point[]> weightAllPoint(List<Double[]> listLineDouble, double xScale, double yScale) {
@@ -264,6 +290,47 @@ public class MapView extends JPanel{
     	
     	return listLinePoint;
     }
+
+
+
+	public void loadRequests() {
+		// TODO Auto-generated method stub
+		Graphics g = this.getGraphics();
+		Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+        
+        
+        List<delivery.model.Request> requests = this.plan.getRequests();
+		List<Point> graphPoints2 = new ArrayList<>();
+		for(int i = 0 ; i<requests.size();i++) {
+			 int x1 = weightLatitude(requests.get(i).getPickup().getAddress().getLatitude(), xScale); 
+	         int y1 = weightLongitude(requests.get(i).getPickup().getAddress().getLongitude(), yScale);
+	         
+	         int x2 = weightLatitude(requests.get(i).getDelivery().getAddress().getLatitude(), xScale); 
+	         int y2 = weightLongitude(requests.get(i).getDelivery().getAddress().getLongitude(), yScale);
+	         graphPoints2.add(new Point(getWidth() - y1, x1));
+	         graphPoints2.add(new Point(getWidth() - y2, x2));
+		}
+		 
+	        for (int i = 0; i < graphPoints2.size(); i++) {
+	        	if (i % 2 == 0) {
+	        		//pickup color
+	        		g2.setColor(pointColorPickUp);
+	        	}else {
+	        		g2.setColor(pointColorDelivery);
+	        	}
+	            int x = graphPoints2.get(i).x - pointWidth / 2;
+	            int y = graphPoints2.get(i).y - pointWidth / 2;
+	            int ovalW = pointWidth;
+	            int ovalH = pointWidth;
+	            g2.fillOval(x, y, ovalW, ovalH);
+	        }
+	        
+	        this.revalidate();
+	        //this.repaint();
+		
+	}
 
     
     

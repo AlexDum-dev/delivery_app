@@ -1,7 +1,5 @@
 package view;
 
-import java.awt.EventQueue;
-
 import javax.swing.*;
 
 import delivery.model.CheckPoint;
@@ -19,7 +17,7 @@ import java.time.format.DateTimeParseException;
 import java.awt.event.ActionListener;
 
 import java.awt.event.ActionEvent;
-import java.awt.Panel;
+
 import javax.swing.GroupLayout;
 import javax.swing.JTextField;
 
@@ -66,12 +64,14 @@ public class test {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 866, 562);
+		frame = new JFrame("Sample Graph");
+		frame.setBounds(100, 100, 1100, 780);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(526, 12, 328, 447);
+		scrollPane.setBounds(746, 49, 300, 200);
 		frame.getContentPane().add(scrollPane);
 		
 		/*File file = new File("C:\\Users\\PC Lenovo\\Desktop\\fichiersXML2020\\smallMap.xml");
@@ -100,9 +100,12 @@ public class test {
 					
 					try {
 						XMLParser.loadPlan(file, plan);
+						
 						mapView = new MapView(plan);
+						//left ,up ,width, height
+						mapView.setBounds(20,45,690,690);
+						
 						System.out.println("fdfffff");
-						mapView.setBounds(10, 72, 458, 382);
 						frame.getContentPane().add(mapView);
 						SwingUtilities.updateComponentTreeUI(frame);
 						System.out.println("TEEST");
@@ -130,12 +133,17 @@ public class test {
 						XMLParser.loadRequests(file, plan);
 						
 						frame.getContentPane().add(scrollPane);
-						
+						List<Request> requests = plan.getRequests();
+						mapView.loadRequests();
+						//SwingUtilities.updateComponentTreeUI(frame);
+
+					        
+					        
 						table = new JTable();
-						//table.setBounds(10, 72, 458, 382);
+						//table.setBounds(0, 0, 458, 382);
 						table.setModel(new DefaultTableModel(
 								
-								RequestView.displayRequest(plan.getRequests()), 
+								Plan.displayRequest(requests), 
 							new String[] {
 								"PickUp", "Delivery", "PTime", "DTime"
 							}
