@@ -150,8 +150,8 @@ public class MapView extends JPanel{
         g2.setStroke(GRAPH_STROKE);
         List<Double[]> listLineDouble = Plan.getAllLine(plan.getSegments());
         List<Point[]> listLinePoint = weightAllPoint(listLineDouble, xScale, yScale); //
-        g2.drawLine(getWidth() - 5,getHeight() - 5,getWidth() -  5,getHeight() - 100);
-        g2.drawLine(getWidth() - 5,5,getWidth() -  5,100);
+        //g2.drawLine(getWidth() - 5,getHeight() - 5,getWidth() -  5,getHeight() - 100);
+        //g2.drawLine(getWidth() - 5,5,getWidth() -  5,100);
         g2.setColor(lineColor);
         for(Point[] line : listLinePoint) {
         	//System.out.println("Create line : x1 "+(int) line[0].getX()+" y1 "+ (int) line[0].getY() + " x2 "+ (int) line[1].getX() + " y2 "+ line[1].getY());
@@ -326,8 +326,45 @@ public class MapView extends JPanel{
 	            int ovalH = pointWidth;
 	            g2.fillOval(x, y, ovalW, ovalH);
 	        }
+	        g2.fillOval(770, 390, pointWidth, pointWidth);
 	        
 	        this.revalidate();
+	        //this.repaint();
+		
+	}
+	
+	public void colorBackground (Color color) {
+		Graphics g = this.getGraphics();
+		Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setColor(color);
+	    //fill the rect
+        g2.fillRect(padding + labelPadding, padding, getWidth() - (2* padding) - 
+        		labelPadding, getHeight() - 2 * padding - labelPadding);
+	}
+	public void printK() {
+		// TODO Auto-generated method stub
+		System.out.println("PrintK =========");
+		Graphics g = this.getGraphics();
+		Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+        
+	            int x = this.getWidth()/2 -125 - pointWidth / 2;
+	            int y = this.getHeight()/2 - 8 - pointWidth / 2;
+	            int ovalW = pointWidth*2;
+	            int ovalH = pointWidth*2;
+	            g2.setColor(pointColorPickUp);
+	            g2.fillOval(x,y, ovalW, ovalH);
+	            
+	            x = this.getWidth()/2  - pointWidth / 2;
+	            y = this.getHeight()/2 - 8 - pointWidth / 2;
+	            g2.setColor(pointColorDelivery);
+	            g2.fillOval(x,y, ovalW, ovalH);
+	        
+	        
+	        
+	        //this.revalidate();
 	        //this.repaint();
 		
 	}

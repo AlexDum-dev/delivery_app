@@ -28,6 +28,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import algorithm.Color;
+
 public class test {
 
 	private JFrame frame;
@@ -72,7 +74,16 @@ public class test {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(746, 49, 300, 200);
+		
+		
+        //panel.setBackground(new Color(255,255,204));  
+        //Graphics g = panel.getGraphics();
+        //Graphics2D g2 = (Graphics2D) g;
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //g2.fillOval(10, 10, 10, 10);
 		frame.getContentPane().add(scrollPane);
+		
+		//panel.printK();
 		
 		/*File file = new File("C:\\Users\\PC Lenovo\\Desktop\\fichiersXML2020\\smallMap.xml");
 		try {
@@ -100,13 +111,14 @@ public class test {
 					
 					try {
 						XMLParser.loadPlan(file, plan);
-						
 						mapView = new MapView(plan);
 						//left ,up ,width, height
 						mapView.setBounds(20,45,690,690);
 						
 						System.out.println("fdfffff");
+						
 						frame.getContentPane().add(mapView);
+						mapView.colorBackground(java.awt.Color.WHITE);
 						SwingUtilities.updateComponentTreeUI(frame);
 						System.out.println("TEEST");
 					
@@ -135,6 +147,13 @@ public class test {
 						frame.getContentPane().add(scrollPane);
 						List<Request> requests = plan.getRequests();
 						mapView.loadRequests();
+						MapView panel=new MapView(new Plan());  
+						panel.setBounds(746,259,300,65);  
+						frame.getContentPane().add(panel);
+						panel.colorBackground(new java.awt.Color(200, 200, 200, 200));
+						panel.printK();
+						
+						
 						//SwingUtilities.updateComponentTreeUI(frame);
 
 					        
