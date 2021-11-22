@@ -9,10 +9,12 @@ package delivery.model;
 public class Request {
 	private CheckPoint delivery;
 	private CheckPoint pickup;
+	private int index;
 	
 	public Request(CheckPoint pickup, CheckPoint delivery) {
 		this.delivery = delivery;
 		this.pickup = pickup;
+		this.index = -1;
 	}
 
 	public CheckPoint getDelivery() {
@@ -23,6 +25,18 @@ public class Request {
 		return pickup;
 	}
 	
+	
+	
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.pickup.setIndex(index);
+		this.delivery.setIndex(index);
+		this.index = index;
+	}
+
 	public Boolean equals(Request r) {
 		if (r.getDelivery().equals(this.getDelivery()) && r.getPickup().equals(this.getPickup())){
 			return true;

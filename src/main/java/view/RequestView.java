@@ -31,21 +31,12 @@ public class RequestView extends JScrollPane implements Observer {
 						
 		String deliveryTextGrid;
 		String pickupTextGrid;
-		String pickupTimeTextGrid;
-		String deliveryTimeTextGrid;
 	
 		for(int i = 0 ; i<requests.size();i++) {
-			pickupTimeTextGrid = "-";
-			deliveryTimeTextGrid = "-";
 			deliveryTextGrid = requests.get(i).getDelivery().getAddress().getId();
 			pickupTextGrid = requests.get(i).getPickup().getAddress().getId();
-			if(requests.get(i).getPickup().getTime() != null || requests.get(i).getDelivery().getTime() != null) {
-				pickupTimeTextGrid = requests.get(i).getPickup().getTime().toString();
-				deliveryTimeTextGrid = requests.get(i).getDelivery().getTime().toString();
-			}
 			
-			
-			String[] line = {deliveryTextGrid, pickupTextGrid, pickupTimeTextGrid, deliveryTimeTextGrid};
+			String[] line = {deliveryTextGrid, pickupTextGrid};
 			tabRequest[i] =  line; 
 			
 		}
@@ -61,11 +52,11 @@ public class RequestView extends JScrollPane implements Observer {
 				
 				displayRequest(), 
 			new String[] {
-				"PickUp", "Delivery", "PTime", "DTime"
+				"Pick Up", "Delivery"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, Long.class, Long.class
+				String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
