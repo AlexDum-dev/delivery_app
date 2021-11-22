@@ -226,6 +226,6 @@ public class XMLParser {
 		int m = Integer.parseInt(timestamp[1]);
 		int s = Integer.parseInt(timestamp[2]);
 		LocalTime time = LocalTime.of(h, m, s);
-		p.setDepot(new Depot(inter, time));
+		p.setDepot(new CheckPoint(CheckPointType.DEPOT, inter, time));
 	}
 }

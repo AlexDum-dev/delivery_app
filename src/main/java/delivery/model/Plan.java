@@ -2,8 +2,6 @@ package delivery.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import observer.Observable;
 
@@ -17,8 +15,8 @@ public class Plan extends Observable {
 	private List<Intersection> intersections;
 	//Graph
 	private List<Request> requests;
-	private Depot depot;
-
+	private CheckPoint depot;
+	
 	public Plan() {
 		intersections = new ArrayList<Intersection>();
 		requests = new ArrayList<Request>();
@@ -32,6 +30,7 @@ public class Plan extends Observable {
 	
 	public void clearRequests() {
 		requests.clear();
+		depot = null;
 	}
 	
 	public void addRequest(Request r) {
@@ -39,6 +38,7 @@ public class Plan extends Observable {
 	}
 
 	public void addIntersection(Intersection i) {
+		i.setIndex(intersections.size());
 		intersections.add(i);
 	}
 	
@@ -60,11 +60,11 @@ public class Plan extends Observable {
 		return requests;
 	}
 
-	public Depot getDepot() {
+	public CheckPoint getDepot() {
 		return depot;
 	}
 
-	public void setDepot(Depot depot) {
+	public void setDepot(CheckPoint depot) {
 		this.depot = depot;
 	}
 	

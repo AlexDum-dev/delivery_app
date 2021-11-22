@@ -1,5 +1,6 @@
 package algorithm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Set;
 
 import delivery.model.Edge;
 import delivery.model.Graph;
+import delivery.model.Intersection;
+import delivery.model.Segment;
 
 public class Djikstra {
 	
@@ -17,40 +20,50 @@ public class Djikstra {
 	 * @param idDeparture
 	 * @return
 	 */
-	public static Map<String,String> djikstra(Graph g, String idDeparture) {
-		Map<String,Double> distance = new HashMap<String,Double>();
-		Map<String,Color> nodeColor = new HashMap<String,Color>();
-		Map<String,String> nodePredecesor = new HashMap<String, String>();
+	public static List<Intersection> djikstra(List<Intersection> adjacensyList, Intersection departure) {
+		List<Double> distance = new ArrayList<Double>(); //distance between departure and actual node
+		/*
+		 * Color of the node :
+		 * White : has not been visited
+		 * Grey : Is being visited
+		 * Black : has been visited
+		 */
+		List<Color> nodeColor = new ArrayList<Color>();  //couleur 
+		
+		List<Intersection> nodePredecesor = new ArrayList<Intersection>(); //predecessor of actual intersection in djikstra
+		
 		//Initialize loop :
 		//Put 0 to distance to each node 
 		// Put the color white to each node because they haven't been visited yet
-		Set<String> allNodes = g.getAdjacencyList().keySet();
-		for(String node : allNodes) {
-			distance.put(node,  Double.MAX_VALUE);
-			nodeColor.put(node, Color.WHITE);
-			nodePredecesor.put(node,  null);
+		for(Intersection node : adjacensyList) {
+			distance.add(Double.MAX_VALUE);
+			nodeColor.add(Color.WHITE);
+			nodePredecesor.add(null);
+			
+			if(departure.equals(node)) { //Initialization of the departure
+				distance.add(0.0);
+				nodeColor.add(Color.GREY);
+			}
 		}
 		
-		//System.out.println("Coleur du 5 "+nodeColor.get("5")+ "and distance "+);
+		//System.out.println("Couleur du 5 "+nodeColor.get("5")+ "and distance "+);
 		
-		distance.put(idDeparture, 0.0);
-		nodeColor.put(idDeparture, Color.GREY);
 		while(existGreyNode(nodeColor)) {
-			String idActualNode = minimalDistanceGreyNode(distance, nodeColor);
-			System.out.println("Actual Node : "+idActualNode);
-			List<Edge> edgesConnectedtoActualNode = g.getAdjacencyList().get(idActualNode);
-			for(Edge e : edgesConnectedtoActualNode) {
+			int indexActualNode = minimalDistanceGreyNode(distance, nodeColor);
+			System.out.println("Actual Node : "+indexActualNode);
+			List<Segment> listSegmentFromActualNode = adjacensyList.get(indexActualNode).getListSegment();
+			for(Segment s : listSegmentFromActualNode) {
 				System.out.println("Voisin : "+e.getDestination().getId()+" et couleur : "+nodeColor.get(e.getDestination().getId()));
-				if(nodeColor.get(e.getDestination().getId()) == Color.GREY || nodeColor.get(e.getDestination().getId()) == Color.WHITE) {
-					relacher(e, nodeColor, distance, nodePredecesor);
-					if(nodeColor.get(e.getDestination().getId()) == Color.WHITE) {
-						nodeColor.put(e.getDestination().getId(), Color.GREY);
+				if(nodeColor.get(s.getDestination().getIndex()) == Color.GREY || nodeColor.get(s.getDestination().getIndex()) == Color.WHITE) {
+					relacher(s, nodeColor, distance, nodePredecesor);
+					if(nodeColor.get(s.getDestination().getIndex()) == Color.WHITE) {
+						nodeColor.set(s.getDestination().getIndex(), Color.GREY);
 					}
 					//System.out.println("id noeud actuel : "+e.getOrigin().getId()+ " noeud voisin : "+e.getDestination().getId());
 					//System.out.println("Couleur noeud actuelle : "+nodeColor.get(e.getOrigin().getId())+ " noeud voisin : "+nodeColor.get(e.getDestination().getId()));
 				}
 			}
-			nodeColor.put(idActualNode, Color.BLACK);
+			nodeColor.set(idActualNode, Color.BLACK);
 		}
 		
 		return nodePredecesor;
@@ -61,12 +74,12 @@ public class Djikstra {
 	 * @param precedor
 	 * @param distance
 	 */
-	public static void relacher(Edge e,  Map<String,Color> nodeColor, Map<String,Double> distance, Map<String,String> nodePredecesor) {
-		String actualNode =  e.getOrigin().getId();
-		String nextNode =  e.getDestination().getId();
-		if(distance.get(nextNode) > distance.get(actualNode) + e.getPath().get(0).getLength()) {
-			distance.put(nextNode, distance.get(actualNode) + e.getPath().get(0).getLength());
-			nodePredecesor.put(nextNode, actualNode);
+	public static void relacher(Segment s,  List<Color> nodeColor, List<Double> distance, List<int> nodePredecesor) {
+		int actualNode =  s.getOrigin().getIndex();
+		int nextNode =  s.getDestination().getIndex();
+		if(distance.get(nextNode) > distance.get(actualNode) + s.getLength()) {
+			distance.put(nextNode, distance.get(actualNode) + s.getLength());
+			nodePredecesor.set(nextNode, actualNode);
 		}
 	}
 	
@@ -76,33 +89,29 @@ public class Djikstra {
 	 * @return boolean
 	 */
 	
-	public static boolean existGreyNode(Map<String,Color> nodeColor) {
+	public static boolean existGreyNode(List<Color> nodeColor) {
 		
-		Iterator<Map.Entry<String, Color>> itr = nodeColor.entrySet().iterator();
-		
-		while(itr.hasNext()) {
-			Map.Entry<String, Color> entry = itr.next();
-			if(entry.getValue() == Color.GREY) return true;
-		}
+		for(int i = 0; i<nodeColor.size(); i++)
+			if(nodeColor.get(i) == Color.GREY) return true;
 		
 		return false;
 	}
+	
 	/**
-	 * Return the id of the node which has the minimal distance
+	 * Return the index of the node which has the minimal distance
 	 * @param distance
 	 * @return
 	 */
-	public static String minimalDistanceGreyNode(Map<String,Double> distance, Map<String,Color> nodeColor) {
+	public static int minimalDistanceGreyNode(List<Double> distance, List<Color> nodeColor) {
 		double min = Double.MAX_VALUE;
-		String nodeMin = "";
-		Iterator<Map.Entry<String, Double>> itr = distance.entrySet().iterator();
-		
-		while(itr.hasNext()) {
-			Map.Entry<String, Double> entry = itr.next();
-			if(min > entry.getValue() && nodeColor.get(entry.getKey()) == Color.GREY) nodeMin = entry.getKey();
+		int indexNodeMin = -1;
+				
+		for(int i = 0; i<distance.size(); i++) {
+			if(min > distance.get(i) && nodeColor.get(i) == Color.GREY) indexNodeMin = i;
 		}
 		
-		return nodeMin;
+		
+		return indexNodeMin;
 		
 	}
 
