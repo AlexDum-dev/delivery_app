@@ -1,7 +1,6 @@
 package delivery.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,22 +14,19 @@ import observer.Observable;
  * @version 1.0 20 Nov 2021
  */
 public class Plan extends Observable {
-	private Map<String, Intersection> intersections;
-	private List<Segment> segments;
+	private List<Intersection> intersections;
 	//Graph
 	private List<Request> requests;
 	private Depot depot;
 
 	public Plan() {
-		intersections = new HashMap<String, Intersection>();
-		segments = new ArrayList<Segment>();
+		intersections = new ArrayList<Intersection>();
 		requests = new ArrayList<Request>();
 		depot = null;
 	}
 	
 	public void clearPlan() {
 		intersections.clear();
-		segments.clear();
 		clearRequests();
 	}
 	
@@ -38,41 +34,28 @@ public class Plan extends Observable {
 		requests.clear();
 	}
 	
-	public Graph createGraph() {
-		Graph g = new Graph();
-		for (Segment s : segments) {
-			List<Segment> l = new ArrayList<Segment>();
-			l.add(s);
-			Edge e = new Edge(l, s.getOrigin(), s.getDestination());
-			g.addEdge(e);
-		}
-		return g;
-	}
-	
 	public void addRequest(Request r) {
 		requests.add(r);
 	}
 
 	public void addIntersection(Intersection i) {
-		intersections.put(i.getId(), i);
+		intersections.add(i);
 	}
 	
 	public Intersection getIntersection(String id) {
-		return intersections.get(id);
+		Intersection inter = null;
+		for (Intersection i : intersections) {
+			if (i.getId().equals(id)) {
+				inter = i;
+			}
+		}
+		return inter;
 	}
 	
-	public void addSegment(Segment s) {
-		segments.add(s);
-	}
-	
-	public Map<String, Intersection> getIntersections() {
+	public List<Intersection> getIntersections() {
 		return intersections;
 	}
-
-	public List<Segment> getSegments() {
-		return segments;
-	}
-
+	
 	public List<Request> getRequests() {
 		return requests;
 	}
@@ -85,7 +68,7 @@ public class Plan extends Observable {
 		this.depot = depot;
 	}
 	
-public static double getMaxLatitude(Map<String,Intersection> listInter) {
+	public static double getMaxLatitude(Map<String,Intersection> listInter) {
 		
 		double max = 0;
 		Set<String> setInterId = listInter.keySet();
