@@ -7,8 +7,6 @@ import java.util.Map;
 import algorithm.Color;
 import algorithm.Djikstra;
 import delivery.model.CheckPoint;
-import delivery.model.Edge;
-import delivery.model.Graph;
 import delivery.model.Intersection;
 import delivery.model.Segment;
 
@@ -16,33 +14,32 @@ public class testDjikstra {
 
 	public static void main(String[] args) {
 		Intersection i1 = new Intersection("1", 1.1, 1.2);
+		i1.setIndex(0);
 		Intersection i2 = new Intersection("2", 2.1, 2.2);
+		i2.setIndex(1);
 		Segment si12 = new Segment(i1, i2, 10.0, "first");
-		List<Segment> seg = new ArrayList<Segment>();
-		seg.add(si12);
+		i1.addSegment(si12);
 		
 		Intersection i3 = new Intersection("3", 2.1, 2.2);
+		i3.setIndex(2);
 		Segment si13 = new Segment(i1, i3, 2.0, "first");
-		List<Segment> seg2 = new ArrayList<Segment>();
-		seg2.add(si13);
+		i1.addSegment(si13);
 		
 		Intersection i4 = new Intersection("4", 2.1, 2.2);
+		i4.setIndex(3);
 		Segment si34 = new Segment(i3, i4, 2.0, "first");
-		List<Segment> seg3 = new ArrayList<Segment>();
-		seg3.add(si34);
+		i3.addSegment(si34);
 		
 		Segment si24 = new Segment(i2, i4, 3.0, "first");
-		List<Segment> seg4 = new ArrayList<Segment>();
-		seg4.add(si24);
+		i2.addSegment(si24);
 		
 		Intersection i5 = new Intersection("5", 2.1, 2.2);
+		i5.setIndex(4);
 		Segment si45 = new Segment(i4, i5, 3.0, "first");
-		List<Segment> seg5 = new ArrayList<Segment>();
-		seg5.add(si45);
+		i4.addSegment(si45);
 		
 		Segment si51 = new Segment(i5, i1, 5.0, "first");
-		List<Segment> seg51 = new ArrayList<Segment>();
-		seg51.add(si51);
+		i5.addSegment(si51);
 		
 		/*Edge e1 = new Edge(seg, i1, i2);
 		Edge e1_3 = new Edge(seg2, i1, i3);
@@ -67,32 +64,24 @@ public class testDjikstra {
 		connectedI4.add(e5);
 		*/
 		List<Intersection> adjacencyList = new ArrayList<Intersection>();
-		adjacencyList.put("1", connectedI1);
-		adjacencyList.put("2", connectedI2);
-		adjacencyList.put("3", connectedI3);
-		adjacencyList.put("4", connectedI4);
-		adjacencyList.put("5", connectedI5);
+		adjacencyList.add(i1);
+		adjacencyList.add(i2);
+		adjacencyList.add(i3);
+		adjacencyList.add(i4);
+		adjacencyList.add(i5);
 		
-		Iterator<Map.Entry<String, List<Edge>>> itr = adjacencyList.entrySet().iterator();
-		
-		while(itr.hasNext()) {
-			Map.Entry<String, List<Edge>> entry = itr.next();
-			System.out.print(entry.getKey()+" : ");
-			for(Edge e : entry.getValue()) {
-				System.out.print(" "+e.getDestination().getId()+" ");
-			}
-			System.out.println();
+				
+		List<Integer> predecesor = Djikstra.djikstra(adjacencyList, i1);
+		for(Integer i : predecesor) {
+			System.out.println(i+" ");
 		}
-		
-		Graph g = new Graph(adjacencyList);
-		
-		Map<String,String> predecesor = Djikstra.djikstra(g, "1");
-		System.out.println(predecesor.get("4"));
 
 	}
 	
+	/*
 	public static void runDjikstraAllRequest(List<CheckPoint> listCheckPoints, Graph g) {
 		//For all checkPoints -> launch djikstra
 	}
+	*/
 
 }
