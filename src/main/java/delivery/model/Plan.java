@@ -1,22 +1,20 @@
 package delivery.model;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
+import observer.Observable;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-public class Plan {
+/**
+ * Class that handles the entire map
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 20 Nov 2021
+ */
+public class Plan extends Observable {
 	private Map<String, Intersection> intersections;
 	private List<Segment> segments;
 	//Graph
@@ -38,6 +36,17 @@ public class Plan {
 	
 	public void clearRequests() {
 		requests.clear();
+	}
+	
+	public Graph createGraph() {
+		Graph g = new Graph();
+		for (Segment s : segments) {
+			List<Segment> l = new ArrayList<Segment>();
+			l.add(s);
+			Edge e = new Edge(l, s.getOrigin(), s.getDestination());
+			g.addEdge(e);
+		}
+		return g;
 	}
 	
 	public void addRequest(Request r) {
@@ -141,34 +150,6 @@ public static double getMaxLatitude(Map<String,Intersection> listInter) {
 		}
 		return listLine;
 		
-	}
-	
-	static public Object[][] displayRequest(List<Request> requests) {
-		
-		Object[][] tabRequest = new Object[requests.size()][4];
-						
-		String deliveryTextGrid;
-		String pickupTextGrid;
-		String pickupTimeTextGrid;
-		String deliveryTimeTextGrid;
-	
-		for(int i = 0 ; i<requests.size();i++) {
-			pickupTimeTextGrid = "-";
-			deliveryTimeTextGrid = "-";
-			deliveryTextGrid = requests.get(i).getDelivery().getAddress().getId();
-			pickupTextGrid = requests.get(i).getPickup().getAddress().getId();
-			if(requests.get(i).getPickup().getTime() != null || requests.get(i).getDelivery().getTime() != null) {
-				pickupTimeTextGrid = requests.get(i).getPickup().getTime().toString();
-				deliveryTimeTextGrid = requests.get(i).getDelivery().getTime().toString();
-			}
-			
-			
-			String[] line = {deliveryTextGrid, pickupTextGrid, pickupTimeTextGrid, deliveryTimeTextGrid};
-			tabRequest[i] =  line; 
-			
-		}
-			
-		return tabRequest;
 	}
 
 	
