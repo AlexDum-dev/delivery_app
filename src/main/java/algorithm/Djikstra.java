@@ -19,16 +19,48 @@ public class Djikstra {
 		List<Path> listPath = new ArrayList<Path>();
 		
 		for(Request req : listRequest) {
-			djikstra(adjacencyList, req.getPickup().getAddress());
+			List<Integer> nodePredecesor = djikstra(adjacencyList, req.getPickup().getAddress());
 			//construct path
+			for(Request req2 : listRequest) {
+				if(req != req2) {
+					Path path = createPath(nodePredecesor,req.getPickup().getAddress().getIndex(),req2.getPickup().getAddress().getIndex());
+					//how do we defferentiate btwn paths
+					listPath.add(path);
+					path = createPath(nodePredecesor,req.getPickup().getAddress().getIndex(),req2.getDelivery().getAddress().getIndex());
+					listPath.add(path);
+				}
+			}
 			djikstra(adjacencyList, req.getDelivery().getAddress());
 			//construct path
+			for(Request req2 : listRequest) {
+				if(req != req2) {
+					Path path = createPath(nodePredecesor,req.getDelivery().getAddress().getIndex(),req2.getPickup().getAddress().getIndex());
+					listPath.add(path);
+					path = createPath(nodePredecesor,req.getDelivery().getAddress().getIndex(),req2.getDelivery().getAddress().getIndex());
+					listPath.add(path);
+				}
+			}
 		}
 		
 		return null;
 		
 	}
 	
+	private static Path createPath(List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
+		// TODO Auto-generated method stub
+		List<Segment> segments = new ArrayList<Segment>();
+		int currentIndex = DestinationIndex;
+		int NextIndex = currentIndex;
+		while(currentIndex != OriginIndex) {
+			NextIndex = nodePredecesor.get(currentIndex);
+			Segment s = null;//we need to get the segment from the list of segments
+			segments.add(s);
+			currentIndex = NextIndex;
+		}
+		Path p = new Path(segments);
+		return null;
+	}
+
 	/**
 	 * Implement the djikstra algorithm
 	 * @param g
