@@ -17,9 +17,6 @@ public class MapInfoView extends JPanel implements Observer{
 	
 	private static final long serialVersionUID = 1L;
 	private int labelPadding = 0;
-	private Color pointColorPickUp = new Color(204,0 ,0 );
-	private Color pointColorDelivery= new Color(0,153 ,0 );
-	private static int pointWidth = 15;
 	private int padding = 0;
 	private Plan plan;
 
@@ -46,17 +43,19 @@ public class MapInfoView extends JPanel implements Observer{
 		g2.setColor(new java.awt.Color(200, 200, 200));
 		g2.fillRect(padding + labelPadding, padding, getWidth() - (2* padding) - 
 				labelPadding, getHeight() - 2 * padding - labelPadding);
+		int pointWidth = DrawAttributes.getPointWidth();
 		if (!plan.getRequests().isEmpty()) {
-			int x = this.getWidth()/2 -125 - pointWidth / 2;
+			
+			int x = this.getWidth()/2 - 125 - pointWidth / 2;
 			int y = this.getHeight()/2 - 8 - pointWidth / 2;
 			int ovalW = pointWidth*2;
 			int ovalH = pointWidth*2;
-			g2.setColor(pointColorPickUp);
+			g2.setColor(DrawAttributes.getColorPickUp());
 			g2.fillOval(x,y, ovalW, ovalH);
 	
 			x = this.getWidth()/2  - pointWidth / 2;
 			y = this.getHeight()/2 - 8 - pointWidth / 2;
-			g2.setColor(pointColorDelivery);
+			g2.setColor(DrawAttributes.getColorDelivery());
 			g2.fillOval(x,y, ovalW, ovalH);
 		}
 	}
