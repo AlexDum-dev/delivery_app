@@ -1,7 +1,7 @@
 package algorithm;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +37,8 @@ public class Djikstra {
 			listPath.add(listPathConnectedtoCheckpointNode);	
 		}
 		
+		
+		
 		return listPath;
 		
 	}
@@ -59,39 +61,49 @@ public class Djikstra {
 
 	private static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
 		// TODO Auto-generated method stub
-		System.out.println("OriginIndex = "+OriginIndex);
-		System.out.println("DestinationIndex = "+DestinationIndex);
+		//System.out.println("OriginIndex = "+OriginIndex);
+		//System.out.println("DestinationIndex = "+DestinationIndex);
+		System.out.println("==================================  createPath ===========================================");
+		System.out.println("=OriginIndex="+OriginIndex);
+		System.out.println("=DestinationIndex="+DestinationIndex);
 		List<Segment> segments = new ArrayList<Segment>();
 		int currentIndex = DestinationIndex;
 		int NextIndex = currentIndex;
 		while(currentIndex != OriginIndex) {
-			System.out.println("NextIndex : "+NextIndex);
-			System.out.println("currentIndex : "+currentIndex);
+			System.out.println("======== WHILE =========");
+			//System.out.println("NextIndex : "+NextIndex);
+			//System.out.println("currentIndex : "+currentIndex);
 			NextIndex = nodePredecesor.get(currentIndex);
-			System.out.println("2/NextIndex : "+NextIndex);
-			Segment s = getSegmentFromList(adjacencyList,OriginIndex,DestinationIndex);//we need to get the segment from the list of segments
-			System.out.println("===="+s.getOrigin().getIndex());
-			System.out.println("===="+s.getDestination().getIndex());
+			//System.out.println("2/NextIndex : "+NextIndex);
+			Segment s = getSegmentFromList(adjacencyList,NextIndex,currentIndex);//we need to get the segment from the list of segments
+			System.out.println("=currentIndex="+currentIndex);
+			System.out.println("=NextIndex="+NextIndex);
+			System.out.println("=getOrigin="+s.getOrigin().getIndex());
+			System.out.println("=getDestination="+s.getDestination().getIndex());
+			
 			segments.add(s);
 			currentIndex = NextIndex;
 		}
-		System.out.println("segments.size() = "+segments.size() );
+		//System.out.println("segments.size() = "+segments.size() );
 		for (Segment s : segments) {
 			System.out.println(s.getOrigin().getIndex());
 			System.out.println(s.getDestination().getIndex());
 		}
+		Collections.reverse(segments);
 		Path p = new Path(segments);
-		
+		System.out.println("==================================  FIN : createPath ===========================================");
 		return p;
 	}
 
 	private static Segment getSegmentFromList(List<Intersection> adjacencyList, int originIndex, int destinationIndex) {
 		// TODO Auto-generated method stub		
 		List<Segment> listSegmentToNode = adjacencyList.get(originIndex).getSegments();
-		System.out.println("[getSegmentFromList] size "+listSegmentToNode.size());
+		//System.out.println("[getSegmentFromList] size "+listSegmentToNode.size());
 		for(Segment s : listSegmentToNode) {
-			System.out.println("[getSegmentFromList] "+s.getDestination().getIndex());
-			if(s.getDestination().getIndex() == destinationIndex) return s;
+			//System.out.println("[getSegmentFromList] "+s.getDestination().getIndex());
+			if(s.getDestination().getIndex() == destinationIndex) {
+				return s;
+			}
 		}
 		
 		return null;

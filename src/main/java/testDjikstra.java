@@ -87,9 +87,11 @@ public class testDjikstra {
 		
 		for(int i = 0;i<listPath.size();i++) {
 			for(int j = 0;j<listPath.get(i).size();j++) {
-				System.out.print("Path("+listPath.get(i).size()+") de "+i+" vers "+j+" : ");
-				System.out.print(" Origin : "+listPath.get(i).get(j).getPath().get(0).getOrigin().getIndex());
-				System.out.print(" Destination : "+listPath.get(i).get(j).getDestination().getIndex());
+				System.out.print("Path() de "+i+" vers "+j+" : ");
+				if (listPath.get(i).get(j) != null) {
+					System.out.print(" Origin : "+listPath.get(i).get(j).getPath().get(0).getOrigin().getIndex());
+					System.out.print(" Destination : "+listPath.get(i).get(j).getDestination().getIndex());
+				}
 				System.out.println();
 				/*for(int k = 0;k<listPath.get(i).get(j).getPath().size();k++) {
 					

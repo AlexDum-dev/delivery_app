@@ -17,8 +17,8 @@ public class Path {
 		}
 		this.length = len;
 		int lastIndex = len-1;
-		System.out.println("lastIndex = "+lastIndex);
-		System.out.println("path.get(lastIndex) = "+path.get(0));
+		//System.out.println("lastIndex = "+lastIndex);
+		//System.out.println("path.get(lastIndex) = "+path.get(0));
 		this.destination = path.get(lastIndex).getDestination();
 		
 	}
