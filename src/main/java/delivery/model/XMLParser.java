@@ -91,7 +91,7 @@ public class XMLParser {
 						"Intersection not found.");
 			}
 			
-			p.addSegment(new Segment(interOrigin, interDest, len, name));
+			interOrigin.addSegment(new Segment(interOrigin, interDest, len, name));
 		}
 	}
 

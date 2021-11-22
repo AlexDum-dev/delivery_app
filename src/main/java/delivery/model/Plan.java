@@ -68,45 +68,41 @@ public class Plan extends Observable {
 		this.depot = depot;
 	}
 	
-	public static double getMaxLatitude(Map<String,Intersection> listInter) {
+	public double getMaxLatitude() {
 		
 		double max = 0;
-		Set<String> setInterId = listInter.keySet();
-		for(String id : setInterId) {
-			if(listInter.get(id).getLatitude() > max) max = listInter.get(id).getLatitude();
+		for(Intersection i : intersections) {
+			if(i.getLatitude() > max) max = i.getLatitude();
 		}
 		
 		return max;
 	}
 	
-	public static double getMaxLongitude(Map<String,Intersection> listInter) {
+	public double getMaxLongitude() {
 		
 		double max = 0;
-		Set<String> setInterId = listInter.keySet();
-		for(String id : setInterId) {
-			if(listInter.get(id).getLongitude() > max) max = listInter.get(id).getLongitude();
+		for(Intersection i : intersections) {
+			if(i.getLongitude() > max) max = i.getLongitude();
 		}
 		
 		return max;
 	}
 	
-	public static double getMinLongitude(Map<String,Intersection> listInter) {
+	public double getMinLongitude() {
 		
 		double min = Double.MAX_VALUE;
-		Set<String> setInterId = listInter.keySet();
-		for(String id : setInterId) {
-			if(listInter.get(id).getLongitude() < min) min = listInter.get(id).getLongitude();
+		for(Intersection i : intersections) {
+			if(i.getLongitude() < min) min = i.getLongitude();
 		}
 		
 		return min;
 	}
 	
-	public static double getMinLatitude(Map<String,Intersection> listInter) {
+	public double getMinLatitude() {
 		
 		double min = Double.MAX_VALUE;
-		Set<String> setInterId = listInter.keySet();
-		for(String id : setInterId) {
-			if(listInter.get(id).getLatitude() < min) min = listInter.get(id).getLatitude();
+		for(Intersection i : intersections) {
+			if(i.getLatitude() < min) min = i.getLatitude();
 		}
 		
 		return min;

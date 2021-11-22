@@ -34,6 +34,10 @@ public class Intersection {
 		return longitude;
 	}
 
+	public List<Segment> getSegments() {
+		return segments;
+	}
+
 	public void addSegment(Segment segment) {
 		this.segments.add(segment);
 	}
