@@ -1,3 +1,4 @@
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,7 +8,10 @@ import java.util.Map;
 import algorithm.Color;
 import algorithm.Djikstra;
 import delivery.model.CheckPoint;
+import delivery.model.CheckPointType;
 import delivery.model.Intersection;
+import delivery.model.Path;
+import delivery.model.Request;
 import delivery.model.Segment;
 
 public class testDjikstra {
@@ -41,6 +45,14 @@ public class testDjikstra {
 		Segment si51 = new Segment(i5, i1, 5.0, "first");
 		i5.addSegment(si51);
 		
+		CheckPoint p1 = new CheckPoint(CheckPointType.DEPOT, i1, LocalTime.now());
+		CheckPoint pickup = new CheckPoint(CheckPointType.PICKUP, i3,10);
+		CheckPoint delivery = new CheckPoint(CheckPointType.DELIVERY, i5,20);
+		Request r1 = new Request(pickup, delivery);
+		
+		List<Request> listRequest = new ArrayList<Request>();
+		listRequest.add(r1);
+		
 		/*Edge e1 = new Edge(seg, i1, i2);
 		Edge e1_3 = new Edge(seg2, i1, i3);
 		Edge e2 = new Edge(seg4, i2, i4);
@@ -70,11 +82,21 @@ public class testDjikstra {
 		adjacencyList.add(i4);
 		adjacencyList.add(i5);
 		
-				
-		List<Integer> predecesor = Djikstra.djikstra(adjacencyList, i1);
-		for(Integer i : predecesor) {
-			System.out.println(i+" ");
+		List<ArrayList<Path>> listPath = new ArrayList<ArrayList<Path>>();
+		listPath = Djikstra.computePaths(adjacencyList, listRequest, p1);
+		
+		for(int i = 0;i<listPath.size();i++) {
+			for(int j = 0;j<listPath.get(i).size();j++) {
+				System.out.print("Path("+listPath.get(i).size()+") de "+i+" vers "+j+" : ");
+				System.out.print(" Origin : "+listPath.get(i).get(j).getPath().get(0).getOrigin().getIndex());
+				System.out.print(" Destination : "+listPath.get(i).get(j).getDestination().getIndex());
+				System.out.println();
+				/*for(int k = 0;k<listPath.get(i).get(j).getPath().size();k++) {
+					
+				}*/
+			}
 		}
+		
 
 	}
 	

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import delivery.model.CheckPoint;
 import delivery.model.Intersection;
 import delivery.model.Path;
 import delivery.model.Request;
@@ -15,49 +16,84 @@ import delivery.model.Segment;
 
 public class Djikstra {
 	
-	public static List<Path>computePaths(List<Intersection> adjacencyList, List<Request> listRequest){
-		List<Path> listPath = new ArrayList<Path>();
+	public static List<ArrayList<Path>> computePaths(List<Intersection> adjacencyList, List<Request> listRequest,CheckPoint depot){
 		
-		for(Request req : listRequest) {
-			List<Integer> nodePredecesor = djikstra(adjacencyList, req.getPickup().getAddress());
+		List<CheckPoint> listCheckPoint = RequestToCheckPoint(listRequest,depot);
+		List<ArrayList<Path>> listPath = new ArrayList<ArrayList<Path>>();
+		
+		for(CheckPoint checkpoint : listCheckPoint) {
+			List<Integer> nodePredecesor = djikstra(adjacencyList, checkpoint.getAddress());
 			//construct path
-			for(Request req2 : listRequest) {
-				if(req != req2) {
-					Path path = createPath(nodePredecesor,req.getPickup().getAddress().getIndex(),req2.getPickup().getAddress().getIndex());
-					//how do we defferentiate btwn paths
-					listPath.add(path);
-					path = createPath(nodePredecesor,req.getPickup().getAddress().getIndex(),req2.getDelivery().getAddress().getIndex());
-					listPath.add(path);
+			ArrayList<Path> listPathConnectedtoCheckpointNode = new ArrayList<Path>();
+			for(CheckPoint checkpoint2 : listCheckPoint) {
+				if(checkpoint != checkpoint2) {
+					Path path = createPath(adjacencyList,nodePredecesor,checkpoint.getAddress().getIndex(),checkpoint2.getAddress().getIndex());
+					listPathConnectedtoCheckpointNode.add(path);
+				} else {
+					//null dans la diag
+					listPathConnectedtoCheckpointNode.add(null);
 				}
 			}
-			djikstra(adjacencyList, req.getDelivery().getAddress());
-			//construct path
-			for(Request req2 : listRequest) {
-				if(req != req2) {
-					Path path = createPath(nodePredecesor,req.getDelivery().getAddress().getIndex(),req2.getPickup().getAddress().getIndex());
-					listPath.add(path);
-					path = createPath(nodePredecesor,req.getDelivery().getAddress().getIndex(),req2.getDelivery().getAddress().getIndex());
-					listPath.add(path);
-				}
-			}
+			listPath.add(listPathConnectedtoCheckpointNode);	
 		}
 		
-		return null;
+		return listPath;
 		
 	}
 	
-	private static Path createPath(List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
+	private static List<CheckPoint> RequestToCheckPoint(List<Request> listRequest,CheckPoint depot) {
 		// TODO Auto-generated method stub
+		List<CheckPoint> checkpoints = new ArrayList<CheckPoint>();
+		checkpoints.add(depot);
+		
+		//Add all the pickup : 
+		for(Request req : listRequest)
+			checkpoints.add(req.getPickup());
+		
+		//Add all the delivery : 
+		for(Request req : listRequest)
+			checkpoints.add(req.getDelivery());
+		
+		return checkpoints;
+	}
+
+	private static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
+		// TODO Auto-generated method stub
+		System.out.println("OriginIndex = "+OriginIndex);
+		System.out.println("DestinationIndex = "+DestinationIndex);
 		List<Segment> segments = new ArrayList<Segment>();
 		int currentIndex = DestinationIndex;
 		int NextIndex = currentIndex;
 		while(currentIndex != OriginIndex) {
+			System.out.println("NextIndex : "+NextIndex);
+			System.out.println("currentIndex : "+currentIndex);
 			NextIndex = nodePredecesor.get(currentIndex);
-			Segment s = null;//we need to get the segment from the list of segments
+			System.out.println("2/NextIndex : "+NextIndex);
+			Segment s = getSegmentFromList(adjacencyList,OriginIndex,DestinationIndex);//we need to get the segment from the list of segments
+			System.out.println("===="+s.getOrigin().getIndex());
+			System.out.println("===="+s.getDestination().getIndex());
 			segments.add(s);
 			currentIndex = NextIndex;
 		}
+		System.out.println("segments.size() = "+segments.size() );
+		for (Segment s : segments) {
+			System.out.println(s.getOrigin().getIndex());
+			System.out.println(s.getDestination().getIndex());
+		}
 		Path p = new Path(segments);
+		
+		return p;
+	}
+
+	private static Segment getSegmentFromList(List<Intersection> adjacencyList, int originIndex, int destinationIndex) {
+		// TODO Auto-generated method stub		
+		List<Segment> listSegmentToNode = adjacencyList.get(originIndex).getSegments();
+		System.out.println("[getSegmentFromList] size "+listSegmentToNode.size());
+		for(Segment s : listSegmentToNode) {
+			System.out.println("[getSegmentFromList] "+s.getDestination().getIndex());
+			if(s.getDestination().getIndex() == destinationIndex) return s;
+		}
+		
 		return null;
 	}
 

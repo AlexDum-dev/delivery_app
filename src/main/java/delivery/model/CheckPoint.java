@@ -13,14 +13,27 @@ public class CheckPoint {
 	private Intersection address;
 	private LocalTime time;
 	private int duration; // duration in seconds
-
+	
+	/**
+	 * Constructor for the depot
+	 * @param type
+	 * @param address
+	 * @param time
+	 */
 	public CheckPoint(CheckPointType type, Intersection address, LocalTime time) {
+		
 		this.type = type;
 		this.address = address;
 		this.time = time;
 		this.duration = 0;
 	}
 	
+	/**
+	 * Constructor for ther pickup and the delivery
+	 * @param type
+	 * @param address
+	 * @param duration
+	 */
 	public CheckPoint(CheckPointType type, Intersection address, int duration) {
 		this.type = type;
 		this.address = address;
