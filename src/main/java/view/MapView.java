@@ -2,36 +2,19 @@ package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.junit.runner.Request;
-import org.xml.sax.SAXException;
 
 import delivery.model.Intersection;
 import delivery.model.Plan;
 import delivery.model.Segment;
-import delivery.model.XMLParser;
-import delivery.model.XMLParserException;
 import observer.Observable;
 import observer.Observer;
 
@@ -63,7 +46,7 @@ public class MapView extends JPanel implements Observer{
 	public MapView(Plan plan) {
 		this.plan = plan;
 		plan.addObserver(this);
-		System.out.println("TEEST constructeur map");
+		System.out.println("TEST constructeur map");
 		//this.xScale = ((double) getHeight() - 2 * padding - labelPadding) / (Intersection.getMaxLongitude(plan.getIntersections()) - Intersection.getMinLongitude(plan.getIntersections()));
 		//this.yScale = ((double) getHeight() - 2 * padding - labelPadding) / (Intersection.getMaxLatitude(plan.getIntersections()) - Intersection.getMinLatitude(plan.getIntersections()));
 	}
@@ -77,8 +60,12 @@ public class MapView extends JPanel implements Observer{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		xScale = ((double) getWidth() - 2 * padding - labelPadding) / (plan.getMaxLatitude() - plan.getMinLatitude());
-		yScale = ((double) getHeight() - 2 * padding - labelPadding) / (plan.getMaxLongitude() - plan.getMinLongitude());
+		double maxLat = plan.getMaxLatitude();
+		double minLat = plan.getMinLatitude();
+		double maxLon = plan.getMaxLongitude();
+		double minLon = plan.getMinLongitude();
+		xScale = ((double) getWidth() - 2 * padding - labelPadding) / (maxLat - minLat);
+		yScale = ((double) getHeight() - 2 * padding - labelPadding) / (maxLon - minLon);
 
 		g2.setColor(Color.WHITE);
 		//fill the rect
@@ -92,26 +79,20 @@ public class MapView extends JPanel implements Observer{
 		g2.setStroke(GRAPH_STROKE);
 		g2.setColor(lineColor);
 		for (Intersection i : plan.getIntersections()) {
-			int x1 = weightLatitude(i.getLatitude(), xScale); 
-			int y1 = weightLongitude(i.getLongitude(), yScale);
+			int x1 = weightLatitude(i.getLatitude(), maxLat, xScale); 
+			int y1 = weightLongitude(i.getLongitude(), maxLon, yScale);
 			for (Segment s : i.getSegments()) {
-				int x2 = weightLatitude(s.getDestination().getLatitude(), xScale); 
-				int y2 = weightLongitude(s.getDestination().getLongitude(), yScale);
+				int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
+				int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
 				g2.drawLine(getWidth() - y1,x1,getWidth() -  y2,x2);
 			}
 		}
 		g2.setStroke(oldStroke);
-
-		for (Intersection i : plan.getIntersections()) {
-			int x1 = weightLatitude(i.getLatitude(), xScale); 
-			int y1 = weightLongitude(i.getLongitude(), yScale);
-		}
+		
+		loadRequests(g2, maxLat, maxLon);
 	}
 
-	public void loadRequests() {
-		// TODO Auto-generated method stub
-		Graphics g = this.getGraphics();
-		Graphics2D g2 = (Graphics2D) g;
+	public void loadRequests(Graphics2D g2, double maxLat, double maxLon) {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 
@@ -119,11 +100,11 @@ public class MapView extends JPanel implements Observer{
 		List<delivery.model.Request> requests = this.plan.getRequests();
 		List<Point> graphPoints2 = new ArrayList<>();
 		for(int i = 0 ; i<requests.size();i++) {
-			int x1 = weightLatitude(requests.get(i).getPickup().getAddress().getLatitude(), xScale); 
-			int y1 = weightLongitude(requests.get(i).getPickup().getAddress().getLongitude(), yScale);
+			int x1 = weightLatitude(requests.get(i).getPickup().getAddress().getLatitude(), maxLat, xScale); 
+			int y1 = weightLongitude(requests.get(i).getPickup().getAddress().getLongitude(), maxLon, yScale);
 
-			int x2 = weightLatitude(requests.get(i).getDelivery().getAddress().getLatitude(), xScale); 
-			int y2 = weightLongitude(requests.get(i).getDelivery().getAddress().getLongitude(), yScale);
+			int x2 = weightLatitude(requests.get(i).getDelivery().getAddress().getLatitude(), maxLat, xScale); 
+			int y2 = weightLongitude(requests.get(i).getDelivery().getAddress().getLongitude(), maxLon, yScale);
 			graphPoints2.add(new Point(getWidth() - y1, x1));
 			graphPoints2.add(new Point(getWidth() - y2, x2));
 		}
@@ -142,10 +123,17 @@ public class MapView extends JPanel implements Observer{
 			g2.fillOval(x, y, ovalW, ovalH);
 		}
 		g2.fillOval(770, 390, pointWidth, pointWidth);
+		
 
-		this.revalidate();
-		//this.repaint();
+	}
+	
+	public int weightLatitude(double coord, double max, double yScale) {
+		return (int) ((max - coord) * yScale + padding);
 
+	}
+
+	public int weightLongitude(double coord, double max, double xScale) {
+		return (int) ((max - coord) * xScale + padding);
 	}
 
 	public void colorBackground (Color color) {
@@ -187,7 +175,6 @@ public class MapView extends JPanel implements Observer{
 	public void update(Observable observed, Object arg) {
 		// TODO Auto-generated method stub
 		repaint();
-		loadRequests();
 	}
 
 
