@@ -6,11 +6,23 @@ import delivery.model.Plan;
 import delivery.model.XMLParser;
 import xml.XMLfileOpener;
 
+/**
+ * Utility class for common actions
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 22 Nov 2021
+ */
 public class CommonActions {
 	private CommonActions() {
 		
 	}
 	
+	/**
+	 * Loads the map into a plan
+	 * 
+	 * @param c the controller
+	 * @param plan the plan in which to load the map
+	 */
 	public static void loadMap(Controller c, Plan plan) {
 		System.out.println("Loading Map...");
 		try {
@@ -25,7 +37,13 @@ public class CommonActions {
 			c.setCurrentState(InitialState.getInstance());
 		}
 	}
-	
+
+	/**
+	 * Loads the requests into a plan
+	 * 
+	 * @param c the controller
+	 * @param plan the plan in which to load the requests
+	 */
 	public static void loadRequest(Controller c, Plan plan) {
 		System.out.println("Loading Requests...");
 		try {

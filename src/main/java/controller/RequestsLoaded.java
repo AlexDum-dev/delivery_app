@@ -2,6 +2,12 @@ package controller;
 
 import delivery.model.Plan;
 
+/**
+ * RequestsLoaded State
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 22 Nov 2021
+ */
 public class RequestsLoaded implements State {
 	private static RequestsLoaded instance = null;
 	

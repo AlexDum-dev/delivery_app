@@ -20,9 +20,6 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.Panel;
-import javax.swing.GroupLayout;
-import javax.swing.JTextField;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -37,6 +34,7 @@ public class Window {
 	private JFrame frame;
 	private RequestView requestView;
 	private MapView mapView;
+	private MapInfoView panel;
 
 	/**
 	 * Create the application.
@@ -50,17 +48,25 @@ public class Window {
 	 */
 	private void initialize(Plan p, Controller c) {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 866, 562);
+		frame.setBounds(100, 100, 1100, 780);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		requestView = new RequestView(p);
-		requestView.setBounds(526, 12, 328, 447);
+		requestView.setBounds(746, 49, 300, 200);
 		frame.getContentPane().add(requestView);
 		
 		mapView = new MapView(p);
-		mapView.setBounds(10, 72, 458, 382);
+		mapView.setBounds(20,45,690,690);
 		frame.getContentPane().add(mapView);
+		//mapView.colorBackground(java.awt.Color.WHITE);
 		SwingUtilities.updateComponentTreeUI(frame);
+		
+
+		panel = new MapInfoView(p);  
+		panel.setBounds(746,259,300,65);
+		frame.getContentPane().add(panel);
 		
 		JButton btnLoadMap = new JButton("Load Map");
 		btnLoadMap.setBounds(12, 12, 134, 27);

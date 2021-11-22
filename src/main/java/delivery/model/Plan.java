@@ -1,9 +1,7 @@
 package delivery.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import observer.Observable;
 
@@ -14,38 +12,25 @@ import observer.Observable;
  * @version 1.0 20 Nov 2021
  */
 public class Plan extends Observable {
-	private Map<String, Intersection> intersections;
-	private List<Segment> segments;
+	private List<Intersection> intersections;
 	//Graph
 	private List<Request> requests;
-	private Depot depot;
-
+	private CheckPoint depot;
+	
 	public Plan() {
-		intersections = new HashMap<String, Intersection>();
-		segments = new ArrayList<Segment>();
+		intersections = new ArrayList<Intersection>();
 		requests = new ArrayList<Request>();
 		depot = null;
 	}
 	
 	public void clearPlan() {
 		intersections.clear();
-		segments.clear();
 		clearRequests();
 	}
 	
 	public void clearRequests() {
 		requests.clear();
-	}
-	
-	public Graph createGraph() {
-		Graph g = new Graph();
-		for (Segment s : segments) {
-			List<Segment> l = new ArrayList<Segment>();
-			l.add(s);
-			Edge e = new Edge(l, s.getOrigin(), s.getDestination());
-			g.addEdge(e);
-		}
-		return g;
+		depot = null;
 	}
 	
 	public void addRequest(Request r) {
@@ -53,61 +38,86 @@ public class Plan extends Observable {
 	}
 
 	public void addIntersection(Intersection i) {
-		intersections.put(i.getId(), i);
+		i.setIndex(intersections.size());
+		intersections.add(i);
 	}
 	
 	public Intersection getIntersection(String id) {
-		return intersections.get(id);
+		Intersection inter = null;
+		for (Intersection i : intersections) {
+			if (i.getId().equals(id)) {
+				inter = i;
+			}
+		}
+		return inter;
 	}
 	
-	public void addSegment(Segment s) {
-		segments.add(s);
-	}
-	
-	public Map<String, Intersection> getIntersections() {
+	public List<Intersection> getIntersections() {
 		return intersections;
 	}
-
-	public List<Segment> getSegments() {
-		return segments;
-	}
-
+	
 	public List<Request> getRequests() {
 		return requests;
 	}
 
-	public Depot getDepot() {
+	public CheckPoint getDepot() {
 		return depot;
 	}
 
-	public void setDepot(Depot depot) {
+	public void setDepot(CheckPoint depot) {
 		this.depot = depot;
 	}
 	
+	public double getMaxLatitude() {
+		double max = 0;
+		for(Intersection i : intersections) {
+			if(i.getLatitude() > max) max = i.getLatitude();
+		}
+		
+		return max;
+	}
+	
+	public double getMaxLongitude() {
+		double max = 0;
+		for(Intersection i : intersections) {
+			if(i.getLongitude() > max) max = i.getLongitude();
+		}
+		
+		return max;
+	}
+	
+	public double getMinLongitude() {
+		double min = Double.MAX_VALUE;
+		for(Intersection i : intersections) {
+			if(i.getLongitude() < min) min = i.getLongitude();
+		}
+		
+		return min;
+	}
+	
+	public double getMinLatitude() {
+		double min = Double.MAX_VALUE;
+		for(Intersection i : intersections) {
+			if(i.getLatitude() < min) min = i.getLatitude();
+		}
+		
+		return min;
+	}
+	
+
 	public Boolean equals(Plan p) {
 		
 		if (!p.getDepot().equals(this.getDepot())) {
 			return false;
 		}		
 		
-		for (String key : intersections.keySet()) {
-			if (!p.getIntersections().get(key).equals(this.getIntersections().get(key))) {
-				return false;
-			}	
-		}
-		if (this.segments.size()!=p.getSegments().size()) {
+		if (intersections.size()!=p.intersections.size()) {
 			return false;
 		}
-		for (int i=0; i<segments.size(); i++) {
-			boolean found=false;
-			for (int j=0; j<segments.size(); j++) {
-				if (p.getSegments().get(i).equals(this.getSegments().get(j))) {
-					found=true;
-				}	
-			}
-			if (!found) {
+		for (int i=0; i<intersections.size(); ++i) {
+			if (!p.intersections.get(i).equals(this.intersections.get(i))) {
 				return false;
-			}
+			}	
 		}
 		
 		if (this.requests.size()!=p.getRequests().size()) {
@@ -127,5 +137,4 @@ public class Plan extends Observable {
 		
 		return true;
 	}
-	
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import algorithm.Color;
 import algorithm.Djikstra;
+import delivery.model.CheckPoint;
 import delivery.model.Edge;
 import delivery.model.Graph;
 import delivery.model.Intersection;
@@ -43,7 +44,7 @@ public class testDjikstra {
 		List<Segment> seg51 = new ArrayList<Segment>();
 		seg51.add(si51);
 		
-		Edge e1 = new Edge(seg, i1, i2);
+		/*Edge e1 = new Edge(seg, i1, i2);
 		Edge e1_3 = new Edge(seg2, i1, i3);
 		Edge e2 = new Edge(seg4, i2, i4);
 		Edge e3 = new Edge(seg3, i3, i4);
@@ -64,8 +65,8 @@ public class testDjikstra {
 		
 		List<Edge> connectedI5 = new ArrayList<Edge>();
 		connectedI4.add(e5);
-		
-		Map<String, List<Edge>> adjacencyList = new HashMap<String, List<Edge>>();
+		*/
+		List<Intersection> adjacencyList = new ArrayList<Intersection>();
 		adjacencyList.put("1", connectedI1);
 		adjacencyList.put("2", connectedI2);
 		adjacencyList.put("3", connectedI3);
@@ -88,6 +89,10 @@ public class testDjikstra {
 		Map<String,String> predecesor = Djikstra.djikstra(g, "1");
 		System.out.println(predecesor.get("4"));
 
+	}
+	
+	public static void runDjikstraAllRequest(List<CheckPoint> listCheckPoints, Graph g) {
+		//For all checkPoints -> launch djikstra
 	}
 
 }
