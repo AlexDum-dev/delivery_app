@@ -2,49 +2,39 @@ package delivery.model;
 
 import java.util.List;
 
-/**
- * Represents an edge of a graph
- * 
- * @author 4IF Group H4144
- * @version 1.0 20 Nov 2021
- */
-public class Edge {
+public class Path {
 	private List<Segment> path;
+	private double length;
 	private Intersection destination;
-	private Intersection origin;
 	
-	public Edge(List<Segment> path, Intersection origin, Intersection destination) {
+	
+	public Path(List<Segment> path) {
 		super();
 		this.path = path;
-		this.destination = destination;
-		this.origin = origin;
+		int len = 0;
+		for (Segment s : path) {
+			len++;
+		}
+		this.length = len;
+		this.destination = path.get(len-1).getDestination();
 	}
-
 	public List<Segment> getPath() {
 		return path;
 	}
-
 	public void setPath(List<Segment> path) {
 		this.path = path;
 	}
-
+	public double getLength() {
+		return length;
+	}
+	public void setLength(double length) {
+		this.length = length;
+	}
 	public Intersection getDestination() {
 		return destination;
 	}
-
 	public void setDestination(Intersection destination) {
 		this.destination = destination;
 	}
-
-	public Intersection getOrigin() {
-		return origin;
-	}
-
-	public void setOrigin(Intersection origin) {
-		this.origin = origin;
-	}
 	
-	
-	
-
 }

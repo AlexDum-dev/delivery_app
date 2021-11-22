@@ -13,6 +13,13 @@ public class CheckPoint {
 	private Intersection address;
 	private LocalTime time;
 	private int duration; // duration in seconds
+
+	public CheckPoint(CheckPointType type, Intersection address, LocalTime time) {
+		this.type = type;
+		this.address = address;
+		this.time = time;
+		this.duration = 0;
+	}
 	
 	public CheckPoint(CheckPointType type, Intersection address, int duration) {
 		this.type = type;

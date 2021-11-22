@@ -8,6 +8,6 @@ package delivery.model;
  */
 public enum CheckPointType {
 	PICKUP,
-	DELIVERY, 
+	DELIVERY,
 	DEPOT
 }

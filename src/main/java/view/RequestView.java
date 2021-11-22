@@ -25,8 +25,8 @@ public class RequestView extends JScrollPane implements Observer {
 		//table.setBounds(10, 72, 458, 382);
 	}
 
-	static Object[][] displayRequest(List<Request> requests) {
-		
+	private Object[][] displayRequest() {
+		List<Request> requests = plan.getRequests();
 		Object[][] tabRequest = new Object[requests.size()][4];
 						
 		String deliveryTextGrid;
@@ -59,7 +59,7 @@ public class RequestView extends JScrollPane implements Observer {
 
 		table.setModel(new DefaultTableModel(
 				
-				RequestView.displayRequest(plan.getRequests()), 
+				displayRequest(), 
 			new String[] {
 				"PickUp", "Delivery", "PTime", "DTime"
 			}
