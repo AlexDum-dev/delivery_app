@@ -1,7 +1,7 @@
 package delivery.model;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents an intersection of the XML File
@@ -13,11 +13,13 @@ public class Intersection {
 	private String id;
 	private double latitude;
 	private double longitude;
+	private List<Segment> segments;
 	
 	public Intersection(String id, double latitude, double longitude) {
 		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.segments = new ArrayList<Segment>();
 	}
 
 	public String getId() {
@@ -30,6 +32,10 @@ public class Intersection {
 
 	public double getLongitude() {
 		return longitude;
+	}
+
+	public void addSegment(Segment segment) {
+		this.segments.add(segment);
 	}
 	
 }
