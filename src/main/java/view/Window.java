@@ -34,7 +34,7 @@ public class Window {
 	private JFrame frame;
 	private RequestView requestView;
 	private MapView mapView;
-	private MapView panel;
+	private MapInfoView panel;
 
 	/**
 	 * Create the application.
@@ -64,11 +64,9 @@ public class Window {
 		SwingUtilities.updateComponentTreeUI(frame);
 		
 
-		panel = new MapView(new Plan());  
+		panel = new MapInfoView(p);  
 		panel.setBounds(746,259,300,65);
 		frame.getContentPane().add(panel);
-		//panel.colorBackground(new java.awt.Color(200, 200, 200, 200));
-		//panel.printK();
 		
 		JButton btnLoadMap = new JButton("Load Map");
 		btnLoadMap.setBounds(12, 12, 134, 27);
