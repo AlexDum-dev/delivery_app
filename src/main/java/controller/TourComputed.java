@@ -1,5 +1,11 @@
 package controller;
 
+/**
+ * TourComputed State
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 22 Nov 2021
+ */
 public class TourComputed implements State {
 	private static TourComputed instance = null;
 	

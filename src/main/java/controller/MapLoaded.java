@@ -1,15 +1,13 @@
 package controller;
 
-import java.io.File;
-
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import delivery.model.Plan;
-import delivery.model.XMLParser;
-import view.RequestView;
-import xml.XMLfileOpener;
 
+/**
+ * MapLoaded State
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 22 Nov 2021
+ */
 public class MapLoaded implements State {
 	private static MapLoaded instance = null;
 	
