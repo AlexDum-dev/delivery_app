@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import delivery.model.Intersection;
+import delivery.model.Path;
 import delivery.model.Plan;
 import delivery.model.Segment;
 import observer.Observable;
@@ -89,7 +90,14 @@ public class MapView extends JPanel implements Observer{
 		}
 		g2.setStroke(oldStroke);
 		
+		if (!plan.getIntersections().isEmpty()) {
+			List <Segment> listSeg = plan.getIntersections().get(0).getSegments();
+			Path path = new Path(listSeg);
+			drawRoute ( g2,  maxLat,  maxLon, path);
+		}
 		loadRequests(g2, maxLat, maxLon);
+		
+		
 	}
 
 	public void loadRequests(Graphics2D g2, double maxLat, double maxLon) {
@@ -124,7 +132,7 @@ public class MapView extends JPanel implements Observer{
 		}
 		g2.fillOval(770, 390, pointWidth, pointWidth);
 		
-
+		
 	}
 	
 	public int weightLatitude(double coord, double max, double yScale) {
@@ -136,41 +144,21 @@ public class MapView extends JPanel implements Observer{
 		return (int) ((max - coord) * xScale + padding);
 	}
 
-	public void colorBackground (Color color) {
-		Graphics g = this.getGraphics();
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(color);
-		//fill the rect
-		g2.fillRect(padding + labelPadding, padding, getWidth() - (2* padding) - 
-				labelPadding, getHeight() - 2 * padding - labelPadding);
+	
+	public void drawRoute(Graphics2D g2, double maxLat, double maxLon,Path path) {
+			g2.setColor(pointColorPickUp);
+			g2.setStroke(GRAPH_STROKE);
+			g2.setColor(new java.awt.Color(51, 153, 255));
+			for (Segment s : path.getPath()) {
+				int x1 = weightLatitude(s.getOrigin().getLatitude(), maxLat, xScale); 
+				int y1 = weightLongitude(s.getOrigin().getLongitude(), maxLon, yScale);
+				int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
+				int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
+				g2.drawLine(getWidth() - y1,x1,getWidth() -  y2,x2);
+			}
 	}
-	public void printK() {
-		// TODO Auto-generated method stub
-		System.out.println("PrintK =========");
-		Graphics g = this.getGraphics();
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-
-		int x = this.getWidth()/2 -125 - pointWidth / 2;
-		int y = this.getHeight()/2 - 8 - pointWidth / 2;
-		int ovalW = pointWidth*2;
-		int ovalH = pointWidth*2;
-		g2.setColor(pointColorPickUp);
-		g2.fillOval(x,y, ovalW, ovalH);
-
-		x = this.getWidth()/2  - pointWidth / 2;
-		y = this.getHeight()/2 - 8 - pointWidth / 2;
-		g2.setColor(pointColorDelivery);
-		g2.fillOval(x,y, ovalW, ovalH);
-
-
-
-		//this.revalidate();
-		//this.repaint();
-	}
-
+	
+	
 	@Override
 	public void update(Observable observed, Object arg) {
 		// TODO Auto-generated method stub

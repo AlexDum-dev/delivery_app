@@ -22,13 +22,14 @@ public class Path {
 		return path;
 	}
 	public void setPath(List<Segment> path) {
+		int len = 0;
+		for (Segment s : path) {
+			len++;
+		}
 		this.path = path;
 	}
 	public double getLength() {
 		return length;
-	}
-	public void setLength(double length) {
-		this.length = length;
 	}
 	public Intersection getDestination() {
 		return destination;

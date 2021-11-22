@@ -43,7 +43,7 @@ public class MapInfoView extends JPanel implements Observer{
 		System.out.println("PrintK =========");
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(new java.awt.Color(200, 200, 200, 200));
+		g2.setColor(new java.awt.Color(200, 200, 200));
 		g2.fillRect(padding + labelPadding, padding, getWidth() - (2* padding) - 
 				labelPadding, getHeight() - 2 * padding - labelPadding);
 		if (!plan.getRequests().isEmpty()) {
