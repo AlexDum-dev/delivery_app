@@ -8,15 +8,19 @@ public class Path {
 	private Intersection destination;
 	
 	
-	public Path(List<Segment> path) {
+	public Path(List<Segment> path1) {
 		super();
-		this.path = path;
+		this.path = path1;
 		int len = 0;
-		for (Segment s : path) {
+		for (Segment s : this.path) {
 			len++;
 		}
 		this.length = len;
-		this.destination = path.get(len-1).getDestination();
+		int lastIndex = len-1;
+		//System.out.println("lastIndex = "+lastIndex);
+		//System.out.println("path.get(lastIndex) = "+path.get(0));
+		this.destination = path.get(lastIndex).getDestination();
+		
 	}
 	public List<Segment> getPath() {
 		return path;
