@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import delivery.model.CheckPointType;
 import delivery.model.Intersection;
 import delivery.model.Path;
 import delivery.model.Plan;
@@ -33,7 +34,7 @@ public class MapView extends JPanel implements Observer{
 	public MapView(Plan plan, Tour tour) {
 		this.plan = plan;
 		this.tour = tour;
-		plan.addObserver(this);
+		// plan.addObserver(this);
 		tour.addObserver(this);
 		System.out.println("TEST constructeur map");
 	}
@@ -80,29 +81,49 @@ public class MapView extends JPanel implements Observer{
 	}
 
 	public void loadRequests(Graphics2D g, double maxLat, double maxLon) {
+		int i = 0;
 		for(Request r : plan.getRequests()) {
 			Intersection p = r.getPickup().getAddress();
 			Intersection d = r.getDelivery().getAddress();
-			drawPoint(g, maxLat, maxLon, p, DrawAttributes.getColorPickUp());
-			drawPoint(g, maxLat, maxLon, d, DrawAttributes.getColorDelivery());
+			g.setColor(DrawAttributes.getColorRequest(i));
+			drawPoint(g, maxLat, maxLon, p, r.getPickup().getType());
+			g.setColor(DrawAttributes.getColorRequest(i));
+			drawPoint(g, maxLat, maxLon, d, r.getDelivery().getType());
+			++i;
 		}
 		
 		if (plan.getDepot()!=null) {
 			Intersection depot = plan.getDepot().getAddress();
-			drawPoint(g , maxLat, maxLon, depot, DrawAttributes.getColorDepot());
+			g.setColor(Color.BLACK);
+			drawPoint(g , maxLat, maxLon, depot, plan.getDepot().getType());
 		}
 	}
 	
 	public void drawPoint(Graphics2D g, double maxLat, double maxLon, 
-			Intersection point, Color c) {
+			Intersection point, CheckPointType checkPointType) {
 		int pointWidth = DrawAttributes.getPointWidth();
 		int x = weightLatitude(point.getLatitude(), maxLat, xScale); 
 		int y = weightLongitude(point.getLongitude(), maxLon, yScale);
-
-		g.setColor(c);
 		int x1 = getWidth() - y - pointWidth / 2;
 		int y1 = x - pointWidth / 2;
-		g.fillOval(x1, y1, pointWidth, pointWidth);
+		g.setStroke(DrawAttributes.getStrokePoint());
+		switch (checkPointType) {
+		case DEPOT:
+			g.fillRoundRect(x1, y1, pointWidth, pointWidth, 5, 5);
+			g.setColor(Color.BLACK);
+			g.drawRoundRect(x1, y1, pointWidth, pointWidth, 5, 5);
+			break;
+		case PICKUP:
+			g.fillRect(x1, y1, pointWidth, pointWidth);
+			g.setColor(Color.BLACK);
+			g.drawRect(x1, y1, pointWidth, pointWidth);
+			break;
+		case DELIVERY:
+			g.fillOval(x1, y1, pointWidth, pointWidth);
+			g.setColor(Color.BLACK);
+			g.drawOval(x1, y1, pointWidth, pointWidth);
+			break;
+		}
 	}
 	
 	public int weightLatitude(double coord, double max, double yScale) {

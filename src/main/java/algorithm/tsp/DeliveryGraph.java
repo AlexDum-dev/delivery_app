@@ -37,7 +37,6 @@ public class DeliveryGraph implements Graph {
 		} else {
 			cost = p.getLength();
 		}
-		System.out.println(cost);
 		return cost;
 	}
 

@@ -34,7 +34,7 @@ public class Plan extends Observable {
 	}
 	
 	public void addRequest(Request r) {
-		r.setIndex(intersections.size());
+		r.setIndex(requests.size());
 		requests.add(r);
 	}
 

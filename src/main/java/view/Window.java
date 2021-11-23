@@ -15,8 +15,9 @@ public class Window {
 
 	private JFrame frame;
 	private RequestView requestView;
+	private CheckPointView checkPointView;
 	private MapView mapView;
-	private MapInfoView panel;
+	private MapInfoView mapInfoView;
 
 	/**
 	 * Create the application.
@@ -36,20 +37,23 @@ public class Window {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		requestView = new RequestView(p);
-		requestView.setBounds(746, 49, 300, 200);
-		frame.getContentPane().add(requestView);
-		
 		mapView = new MapView(p, t);
 		mapView.setBounds(20,45,690,690);
 		frame.getContentPane().add(mapView);
 		//mapView.colorBackground(java.awt.Color.WHITE);
 		SwingUtilities.updateComponentTreeUI(frame);
 		
+		requestView = new RequestView(p);
+		requestView.setBounds(746, 49, 300, 200);
+		frame.getContentPane().add(requestView);
 
-		panel = new MapInfoView(p);  
-		panel.setBounds(746,259,300,65);
-		frame.getContentPane().add(panel);
+		mapInfoView = new MapInfoView(p);  
+		mapInfoView.setBounds(746,259,300,120);
+		frame.getContentPane().add(mapInfoView);
+		
+		checkPointView = new CheckPointView(t);
+		checkPointView.setBounds(746, 389, 300, 300);
+		frame.getContentPane().add(checkPointView);
 		
 		JButton btnLoadMap = new JButton("Load Map");
 		btnLoadMap.setBounds(12, 12, 134, 27);

@@ -27,7 +27,7 @@ public class RequestView extends JScrollPane implements Observer {
 
 	private Object[][] displayRequest() {
 		List<Request> requests = plan.getRequests();
-		Object[][] tabRequest = new Object[requests.size()][4];
+		Object[][] tabRequest = new Object[requests.size()][2];
 						
 		String deliveryTextGrid;
 		String pickupTextGrid;
@@ -36,7 +36,7 @@ public class RequestView extends JScrollPane implements Observer {
 			deliveryTextGrid = requests.get(i).getDelivery().getAddress().getId();
 			pickupTextGrid = requests.get(i).getPickup().getAddress().getId();
 			
-			String[] line = {deliveryTextGrid, pickupTextGrid};
+			String[] line = {pickupTextGrid, deliveryTextGrid};
 			tabRequest[i] =  line; 
 			
 		}
@@ -46,8 +46,6 @@ public class RequestView extends JScrollPane implements Observer {
 
 	@Override
 	public void update(Observable observed, Object arg) {
-		// TODO Auto-generated method stub
-
 		table.setModel(new DefaultTableModel(
 				
 				displayRequest(), 

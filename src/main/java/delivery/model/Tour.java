@@ -7,23 +7,33 @@ import java.util.List;
 import observer.Observable;
 
 public class Tour extends Observable {
+	List<CheckPoint> checkPoint;
 	List<Path> path;
 	LocalTime time;
 
 	public Tour() {
 		path = new ArrayList<Path>();
-	}
-
-	public List<Path> getPath() {
-		return path;
+		checkPoint = new ArrayList<CheckPoint>();
+		time = null;
 	}
 
 	public void clearPath() {
 		this.path = new ArrayList<Path>();
+		checkPoint = new ArrayList<CheckPoint>();
+		time = null;
 	}
 	
-	public void addPath(Path p) {
+	public List<Path> getPath() {
+		return path;
+	}
+	
+	public void addPath(Path p, CheckPoint c) {
 		this.path.add(p);
+		this.checkPoint.add(c);
+	}
+
+	public List<CheckPoint> getCheckPoint() {
+		return checkPoint;
 	}
 
 	public LocalTime getTime() {

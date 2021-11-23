@@ -30,13 +30,15 @@ public class CommonActions {
 		try {
 			File file = XMLfileOpener.getInstance().open();
 			XMLParser.loadPlan(file, plan);
-			c.setCurrentState(MapLoaded.getInstance());
 			tour.clearPath();
+			tour.notifyObservers();
+			c.setCurrentState(MapLoaded.getInstance());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			plan.clearPlan();
 			tour.clearPath();
+			tour.notifyObservers();
 			plan.notifyObservers();
 			c.setCurrentState(InitialState.getInstance());
 		}
@@ -56,12 +58,14 @@ public class CommonActions {
 			XMLParser.loadRequests(file, plan);
 			plan.notifyObservers();
 			tour.clearPath();
+			tour.notifyObservers();
 			c.setCurrentState(RequestsLoaded.getInstance());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			plan.clearRequests();
 			tour.clearPath();
+			tour.notifyObservers();
 			plan.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
 		}

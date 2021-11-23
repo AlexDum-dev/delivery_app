@@ -36,34 +36,48 @@ public class MapInfoView extends JPanel implements Observer{
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
-		System.out.println("PrintK =========");
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(new java.awt.Color(200, 200, 200));
 		g2.fillRect(padding + labelPadding, padding, getWidth() - (2* padding) - 
 				labelPadding, getHeight() - 2 * padding - labelPadding);
 		int pointWidth = DrawAttributes.getPointWidth();
+		g2.setColor(Color.BLACK);
 		if (!plan.getRequests().isEmpty()) {
-			
-			int x = this.getWidth()/2 - 125 - pointWidth / 2;
-			int y = this.getHeight()/2 - 8 - pointWidth / 2;
+
 			int ovalW = pointWidth*2;
 			int ovalH = pointWidth*2;
-			g2.setColor(DrawAttributes.getColorPickUp());
+			
+			int x = this.getWidth()/6 - ovalW / 2;
+			int y = this.getHeight()/4 - 4 - ovalH / 2;
+			g2.fillRoundRect(x,y, ovalW, ovalH, 15, 15);
+			
+			x = this.getWidth()/4;
+			y = this.getHeight()/4 - 4;
+			g2.drawString("Depot", x, y);
+
+			x = this.getWidth()/6 - ovalW / 2;
+			y = this.getHeight()*2/4 - ovalH / 2;
+			g2.fillRect(x,y, ovalW, ovalH);
+			
+			x = this.getWidth()/4;
+			y = this.getHeight()*2/4;
+			g2.setColor(Color.BLACK);
+			g2.drawString("Pick Up", x, y);
+
+			x = this.getWidth()/6 - ovalW / 2;
+			y = this.getHeight()*3/4 + 4 - ovalH / 2;
 			g2.fillOval(x,y, ovalW, ovalH);
-	
-			x = this.getWidth()/2  - pointWidth / 2;
-			y = this.getHeight()/2 - 8 - pointWidth / 2;
-			g2.setColor(DrawAttributes.getColorDelivery());
-			g2.fillOval(x,y, ovalW, ovalH);
+			
+			x = this.getWidth()/4;
+			y = this.getHeight()*3/4 + 4;
+			g2.setColor(Color.BLACK);
+			g2.drawString("Delivery", x, y);
 		}
 	}
 	
 	@Override
 	public void update(Observable observed, Object arg) {
-		// TODO Auto-generated method stub
-		
 		repaint();
 	}
 

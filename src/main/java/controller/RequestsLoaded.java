@@ -59,6 +59,8 @@ public class RequestsLoaded implements State {
 		
 		tour.clearPath();
 		
+		double mPerSec = 15000.0/3600.0;
+		
 		int previous = tsp.getSolution(0);
 		int current;
 		Path p;
@@ -66,23 +68,23 @@ public class RequestsLoaded implements State {
 		for (int i=1;i<g.getNbVertices();++i) {
 			System.out.println(previous);
 			current = tsp.getSolution(i);
+			// TODO: Method
 			p = listPath.get(previous).get(current);
-			tour.addPath(p);
+			tour.addPath(p, check.get(previous));
 			LocalTime t = check.get(previous).getTime();
 			t = t.plusSeconds(check.get(previous).getDuration());
-			// TODO: Compute length from time
-			t = t.plusSeconds((int) p.getLength());
+			t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
 			check.get(current).setTime(t);
 			previous = current;
 		}
 		System.out.println(previous);
 		current = tsp.getSolution(0);
+		// TODO: Method
 		p = listPath.get(previous).get(current);
-		tour.addPath(p);
+		tour.addPath(p, check.get(previous));
 		LocalTime t = check.get(previous).getTime();
 		t = t.plusSeconds(check.get(previous).getDuration());
-		// TODO: Compute length from time
-		t = t.plusSeconds((int) p.getLength());
+		t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
 		tour.setTime(t);
 		tour.notifyObservers();
 		c.setCurrentState(TourComputed.getInstance());
