@@ -1,33 +1,15 @@
 package view;
 
-import java.awt.EventQueue;
-
-import javax.swing.*;
-
-import delivery.model.CheckPoint;
-import delivery.model.CheckPointType;
-import delivery.model.Intersection;
-import delivery.model.Plan;
-import delivery.model.Request;
-import delivery.model.XMLParser;
-import delivery.model.XMLParserException;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.time.format.DateTimeParseException;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.awt.event.ActionEvent;
-import java.awt.Panel;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import controller.Controller;
+import delivery.model.Plan;
+import delivery.model.Tour;
 
 public class Window {
 
@@ -38,15 +20,16 @@ public class Window {
 
 	/**
 	 * Create the application.
+	 * @param tour 
 	 */
-	public Window(Plan p, Controller c) {
-		initialize(p, c);
+	public Window(Plan p, Tour t, Controller c) {
+		initialize(p, t, c);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Plan p, Controller c) {
+	private void initialize(Plan p, Tour t, Controller c) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1100, 780);
 		frame.setResizable(false);
@@ -57,7 +40,7 @@ public class Window {
 		requestView.setBounds(746, 49, 300, 200);
 		frame.getContentPane().add(requestView);
 		
-		mapView = new MapView(p);
+		mapView = new MapView(p, t);
 		mapView.setBounds(20,45,690,690);
 		frame.getContentPane().add(mapView);
 		//mapView.colorBackground(java.awt.Color.WHITE);
@@ -72,7 +55,7 @@ public class Window {
 		btnLoadMap.setBounds(12, 12, 134, 27);
 		btnLoadMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				c.loadMap(p);
+				c.loadMap();
 			}
 		});
 		frame.getContentPane().setLayout(null);
@@ -82,7 +65,7 @@ public class Window {
 		btnLoadRequest.setBounds(176, 12, 134, 27);
 		btnLoadRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				c.loadRequest(p);
+				c.loadRequest();
 			}
 		});
 		frame.getContentPane().add(btnLoadRequest);
@@ -91,6 +74,7 @@ public class Window {
 		btnComputeTour.setBounds(334, 12, 134, 27);
 		btnComputeTour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				c.computeTour();
 			}
 		});
 		frame.getContentPane().add(btnComputeTour);

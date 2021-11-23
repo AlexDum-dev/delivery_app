@@ -6,7 +6,7 @@ import delivery.model.*;
 
 public class DeliveryGraph implements Graph {
 	int nbVertices;
-	List<List<Path>> paths;
+	List<? extends List<Path>> paths;
 	List<CheckPoint> checkPoints;
 	
 	/**
@@ -14,7 +14,7 @@ public class DeliveryGraph implements Graph {
 	 * 
 	 * @param paths
 	 */
-	public DeliveryGraph(List<List<Path>> paths, List<CheckPoint> checkPoints){
+	public DeliveryGraph(List<? extends List<Path>> paths, List<CheckPoint> checkPoints){
 		this.nbVertices = paths.get(0).size();
 		this.paths = paths;
 		this.checkPoints = checkPoints;
@@ -37,6 +37,7 @@ public class DeliveryGraph implements Graph {
 		} else {
 			cost = p.getLength();
 		}
+		System.out.println(cost);
 		return cost;
 	}
 

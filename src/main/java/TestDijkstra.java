@@ -1,12 +1,12 @@
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import algorithm.Color;
-import algorithm.Djikstra;
+import algorithm.Dijkstra;
+import algorithm.DijkstraResult;
+import algorithm.tsp.DeliveryGraph;
+import algorithm.tsp.TSP;
+import algorithm.tsp.TSP1;
 import delivery.model.CheckPoint;
 import delivery.model.CheckPointType;
 import delivery.model.Intersection;
@@ -14,7 +14,7 @@ import delivery.model.Path;
 import delivery.model.Request;
 import delivery.model.Segment;
 
-public class testDjikstra {
+public class TestDijkstra {
 
 	public static void main(String[] args) {
 		Intersection i1 = new Intersection("1", 1.1, 1.2);
@@ -45,7 +45,7 @@ public class testDjikstra {
 		Segment si51 = new Segment(i5, i1, 5.0, "first");
 		i5.addSegment(si51);
 		
-		CheckPoint p1 = new CheckPoint(CheckPointType.DEPOT, i1, LocalTime.now());
+		CheckPoint depot = new CheckPoint(CheckPointType.DEPOT, i1, LocalTime.now());
 		CheckPoint pickup = new CheckPoint(CheckPointType.PICKUP, i3,10);
 		CheckPoint delivery = new CheckPoint(CheckPointType.DELIVERY, i5,20);
 		Request r1 = new Request(pickup, delivery);
@@ -82,8 +82,10 @@ public class testDjikstra {
 		adjacencyList.add(i4);
 		adjacencyList.add(i5);
 		
-		List<ArrayList<Path>> listPath = new ArrayList<ArrayList<Path>>();
-		listPath = Djikstra.computePaths(adjacencyList, listRequest, p1);
+		DijkstraResult result = Dijkstra.computePaths(adjacencyList, listRequest, depot);
+		
+		List<? extends List<Path>> listPath = result.getPaths();
+		List<CheckPoint> check = result.getCheckpoints();
 		
 		for(int i = 0;i<listPath.size();i++) {
 			for(int j = 0;j<listPath.get(i).size();j++) {
@@ -98,8 +100,12 @@ public class testDjikstra {
 				}*/
 			}
 		}
-		
-
+		DeliveryGraph g = new DeliveryGraph(listPath, check);
+		TSP tsp = new TSP1();
+		tsp.searchSolution(20000, g);
+		System.out.println("TEST TSP");
+		for (int i=0; i<g.getNbVertices(); i++)
+			System.out.print(tsp.getSolution(i)+" ");
 	}
 	
 	/*

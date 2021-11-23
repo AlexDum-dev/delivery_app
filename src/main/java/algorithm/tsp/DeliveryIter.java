@@ -20,15 +20,15 @@ public class DeliveryIter implements Iterator<Integer> {
 	 * @param g
 	 */
 	public DeliveryIter(Collection<Integer> unvisited, Collection<Integer> unavailable, int currentVertex, Graph g){
-		this.candidates = new Integer[unvisited.size()-unavailable.size()];
+		/*this.candidates = new Integer[unvisited.size()-unavailable.size()];
 		this.unavailable = new Integer[unavailable.size()];
 		for (Integer i : unavailable) {
-			this.unavailable[this.nbUnavailable++] = i;
+			this.unavailable[this.candidates++] = i;
 		}
 		for (Integer s : unvisited){
 			if (g.isArc(currentVertex, s) && !unavailable.contains(s))
 				candidates[nbCandidates++] = s;
-		}
+		}*/
 	}
 	
 	@Override

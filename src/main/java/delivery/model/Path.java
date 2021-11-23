@@ -8,29 +8,21 @@ public class Path {
 	private Intersection destination;
 	
 	
-	public Path(List<Segment> path1) {
+	public Path(List<Segment> path) {
 		super();
-		this.path = path1;
+		this.path = path;
 		int len = 0;
 		for (Segment s : this.path) {
-			len++;
+			len += s.getLength();
 		}
 		this.length = len;
-		int lastIndex = len-1;
 		//System.out.println("lastIndex = "+lastIndex);
 		//System.out.println("path.get(lastIndex) = "+path.get(0));
-		this.destination = path.get(lastIndex).getDestination();
+		this.destination = path.get(path.size()-1).getDestination();
 		
 	}
 	public List<Segment> getPath() {
 		return path;
-	}
-	public void setPath(List<Segment> path) {
-		int len = 0;
-		for (Segment s : path) {
-			len++;
-		}
-		this.path = path;
 	}
 	public double getLength() {
 		return length;

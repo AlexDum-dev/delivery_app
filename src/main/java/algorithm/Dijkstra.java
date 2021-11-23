@@ -1,12 +1,9 @@
 package algorithm;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import delivery.model.CheckPoint;
 import delivery.model.Intersection;
@@ -14,37 +11,39 @@ import delivery.model.Path;
 import delivery.model.Request;
 import delivery.model.Segment;
 
-public class Djikstra {
+public class Dijkstra {
 	
-	public static List<ArrayList<Path>> computePaths(List<Intersection> adjacencyList, List<Request> listRequest,CheckPoint depot){
+	public static DijkstraResult computePaths(List<Intersection> adjacencyList, List<Request> listRequest,CheckPoint depot){
 		
 		List<CheckPoint> listCheckPoint = RequestToCheckPoint(listRequest,depot);
 		List<ArrayList<Path>> listPath = new ArrayList<ArrayList<Path>>();
 		
 		for(CheckPoint checkpoint : listCheckPoint) {
-			List<Integer> nodePredecesor = djikstra(adjacencyList, checkpoint.getAddress());
+			List<Integer> nodePredecesor = dijkstra(adjacencyList, 
+					checkpoint.getAddress());
 			//construct path
-			ArrayList<Path> listPathConnectedtoCheckpointNode = new ArrayList<Path>();
+			ArrayList<Path> pathsFromCheckPoint = new ArrayList<Path>();
 			for(CheckPoint checkpoint2 : listCheckPoint) {
 				if(checkpoint != checkpoint2) {
-					Path path = createPath(adjacencyList,nodePredecesor,checkpoint.getAddress().getIndex(),checkpoint2.getAddress().getIndex());
-					listPathConnectedtoCheckpointNode.add(path);
+					Path path = createPath(adjacencyList,nodePredecesor,
+							checkpoint.getAddress().getIndex(),
+							checkpoint2.getAddress().getIndex());
+					pathsFromCheckPoint.add(path);
 				} else {
 					//null dans la diag
-					listPathConnectedtoCheckpointNode.add(null);
+					pathsFromCheckPoint.add(null);
 				}
 			}
-			listPath.add(listPathConnectedtoCheckpointNode);	
+			listPath.add(pathsFromCheckPoint);	
 		}
 		
 		
 		
-		return listPath;
+		return new DijkstraResult(listPath, listCheckPoint);
 		
 	}
 	
 	private static List<CheckPoint> RequestToCheckPoint(List<Request> listRequest,CheckPoint depot) {
-		// TODO Auto-generated method stub
 		List<CheckPoint> checkpoints = new ArrayList<CheckPoint>();
 		checkpoints.add(depot);
 		
@@ -60,7 +59,6 @@ public class Djikstra {
 	}
 
 	private static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
-		// TODO Auto-generated method stub
 		//System.out.println("OriginIndex = "+OriginIndex);
 		//System.out.println("DestinationIndex = "+DestinationIndex);
 		System.out.println("==================================  createPath ===========================================");
@@ -96,7 +94,6 @@ public class Djikstra {
 	}
 
 	private static Segment getSegmentFromList(List<Intersection> adjacencyList, int originIndex, int destinationIndex) {
-		// TODO Auto-generated method stub		
 		List<Segment> listSegmentToNode = adjacencyList.get(originIndex).getSegments();
 		//System.out.println("[getSegmentFromList] size "+listSegmentToNode.size());
 		for(Segment s : listSegmentToNode) {
@@ -115,7 +112,7 @@ public class Djikstra {
 	 * @param idDeparture
 	 * @return
 	 */
-	public static List<Integer> djikstra(List<Intersection> adjacensyList, Intersection departure) {
+	public static List<Integer> dijkstra(List<Intersection> adjacencyList, Intersection departure) {
 		List<Double> distance = new ArrayList<Double>(); //distance between departure and actual node
 		/*
 		 * Color of the node :
@@ -130,7 +127,7 @@ public class Djikstra {
 		//Initialize loop :
 		//Put 0 to distance to each node 
 		// Put the color white to each node because they haven't been visited yet
-		for(Intersection node : adjacensyList) {
+		for(Intersection node : adjacencyList) {
 			if(departure.equals(node)) { //Initialization of the departure
 				distance.add(0.0);
 				nodeColor.add(Color.GREY);
@@ -149,7 +146,7 @@ public class Djikstra {
 		while(existGreyNode(nodeColor)) {
 			int indexActualNode = minimalDistanceGreyNode(distance, nodeColor);
 			System.out.println("Actual Node : "+indexActualNode);
-			List<Segment> listSegmentFromActualNode = adjacensyList.get(indexActualNode).getSegments();
+			List<Segment> listSegmentFromActualNode = adjacencyList.get(indexActualNode).getSegments();
 			for(Segment s : listSegmentFromActualNode) {
 				System.out.println("Voisin : "+s.getDestination().getIndex()+" et couleur : "+nodeColor.get(s.getDestination().getIndex()));
 				if(nodeColor.get(s.getDestination().getIndex()) == Color.GREY || nodeColor.get(s.getDestination().getIndex()) == Color.WHITE) {
@@ -205,7 +202,10 @@ public class Djikstra {
 		int indexNodeMin = -1;
 				
 		for(int i = 0; i<distance.size(); i++) {
-			if(min > distance.get(i) && nodeColor.get(i) == Color.GREY) indexNodeMin = i;
+			if(min > distance.get(i) && nodeColor.get(i) == Color.GREY) {
+				indexNodeMin = i;
+				min = distance.get(i);
+			}
 		}
 		
 		

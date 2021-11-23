@@ -1,6 +1,7 @@
 package controller;
 
 import delivery.model.Plan;
+import delivery.model.Tour;
 
 /**
  * Controller class
@@ -21,8 +22,9 @@ public class InitialState implements State {
 		}
 		return instance;
 	}
-	
-	public void loadMap(Controller c, Plan plan) {
-		CommonActions.loadMap(c, plan);
+
+	@Override
+	public void loadMap(Controller c, Plan plan, Tour tour) {
+		CommonActions.loadMap(c, plan, tour);
 	}
 }

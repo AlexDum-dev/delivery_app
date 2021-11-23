@@ -13,6 +13,7 @@ import delivery.model.Path;
 import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Segment;
+import delivery.model.Tour;
 import observer.Observable;
 import observer.Observer;
 
@@ -23,14 +24,17 @@ public class MapView extends JPanel implements Observer{
 
 	private static final long serialVersionUID = 1L;
 	private int labelPadding = 0;
+	private Tour tour;
 	private Plan plan;
 	private int padding = 0;
 	double xScale;
 	double yScale;
 
-	public MapView(Plan plan) {
+	public MapView(Plan plan, Tour tour) {
 		this.plan = plan;
+		this.tour = tour;
 		plan.addObserver(this);
+		tour.addObserver(this);
 		System.out.println("TEST constructeur map");
 	}
 
@@ -67,9 +71,7 @@ public class MapView extends JPanel implements Observer{
 			}
 		}
 		
-		if (!plan.getIntersections().isEmpty()) {
-			List <Segment> listSeg = plan.getIntersections().get(0).getSegments();
-			Path path = new Path(listSeg);
+		for (Path path : tour.getPath()) {
 			drawRoute ( g,  maxLat,  maxLon, path);
 		}
 		loadRequests(g, maxLat, maxLon);

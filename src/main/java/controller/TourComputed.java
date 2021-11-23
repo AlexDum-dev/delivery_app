@@ -1,5 +1,8 @@
 package controller;
 
+import delivery.model.Plan;
+import delivery.model.Tour;
+
 /**
  * TourComputed State
  * 
@@ -20,15 +23,13 @@ public class TourComputed implements State {
 		return instance;
 	}
 
-	public void loadMap() {
-		//TODO: Load the map
+	@Override
+	public void loadMap(Controller c, Plan plan, Tour tour) {
+		CommonActions.loadMap(c, plan, tour);
 	}
 	
-	public void loadRequest() {
-		//TODO: Load the requests
-	}
-	
-	public void computeTour() {
-		//TODO: Compute the tour
+	@Override
+	public void loadRequest(Controller c, Plan plan, Tour tour) {
+		CommonActions.loadRequest(c, plan, tour);
 	}
 }

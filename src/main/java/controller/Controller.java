@@ -1,6 +1,7 @@
 package controller;
 
 import delivery.model.Plan;
+import delivery.model.Tour;
 import view.Window;
 
 /**
@@ -11,28 +12,30 @@ import view.Window;
  */
 public class Controller {
 	private Plan plan;
+	private Tour tour;
 	private Window window;
 	private State currentState;
 
-	public Controller(Plan plan) {
+	public Controller(Plan plan, Tour tour) {
 		this.plan = plan;
+		this.tour = tour;
 		this.currentState = InitialState.getInstance();
-		window = new Window(plan, this);
+		window = new Window(plan, tour, this);
 	}
 
 	public void setCurrentState(State currentState) {
 		this.currentState = currentState;
 	}
 	
-	public void loadMap(Plan p) {
-		currentState.loadMap(this, p);
+	public void loadMap() {
+		currentState.loadMap(this, plan, tour);
 	}
 	
-	public void loadRequest(Plan p) {
-		currentState.loadRequest(this, p);
+	public void loadRequest() {
+		currentState.loadRequest(this, plan, tour);
 	}
 	public void computeTour() {
-		currentState.computeTour(this);
+		currentState.computeTour(this, plan, tour);
 	}
 	public void addRequest() {
 		currentState.addRequest(this);
