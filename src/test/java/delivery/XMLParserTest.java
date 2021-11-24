@@ -40,7 +40,7 @@ public class XMLParserTest {
 		
 		
 		//Asset
-		/*
+		
 		assertEquals(intersections.size(), p.getIntersections().size());
 		
 		boolean intersectionsCorrect=true;
@@ -117,26 +117,26 @@ public class XMLParserTest {
 		for (int i=0; i<p.getRequests().size(); i++) {
 			assertTrue(requests.get(i).equals(p.getRequests().get(i)));
 		}
-		*/
+		
 	}
 	
 	@Test
 	public void loadRequestsTestIOExceptionOk() {
 		Plan p = new Plan();
-		/*assertThrows(IOException.class, () -> {
+		assertThrows(IOException.class, () -> {
 			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/notAFile.xml"), p);
-		});*/
+		});
 	}
 	
 	@Test
 	public void loadRequestsTestXMLParserExceptionOk() throws NumberFormatException, ParserConfigurationException, IOException, SAXException, XMLParserException {
 		Plan p = new Plan();
 		XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
-		/*assertThrows(XMLParserException.class, () -> {
+		assertThrows(XMLParserException.class, () -> {
 			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsWrongCheckpointTest.xml"), p);
 		});
 		assertThrows(XMLParserException.class, () -> {
 			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsWrongDepotTest.xml"), p);
-		});*/
+		});
 	}
 }

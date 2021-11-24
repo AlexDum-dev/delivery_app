@@ -37,8 +37,19 @@ public class Request {
 		this.index = index;
 	}
 
-	public Boolean equals(Request r) {
-		if (r.getDelivery().equals(this.getDelivery()) && r.getPickup().equals(this.getPickup())){
+	public boolean equals(Object r) {
+		// If the object is compared with itself then return true 
+        if (r == this) {
+            return true;
+        }
+        
+        if (!(r instanceof Request)) {
+            return false;
+        }
+         
+        Request tmpRequest = (Request) r;
+		if (tmpRequest.getDelivery().equals(this.getDelivery()) 
+				&& tmpRequest.getPickup().equals(this.getPickup())){
 			return true;
 		}
 		return false;
