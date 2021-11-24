@@ -15,7 +15,7 @@ public class DeliveryGraph implements Graph {
 	 * @param paths
 	 */
 	public DeliveryGraph(List<? extends List<Path>> paths, List<CheckPoint> checkPoints){
-		this.nbVertices = paths.get(0).size();
+		this.nbVertices = checkPoints.size();
 		this.paths = paths;
 		this.checkPoints = checkPoints;
 	}

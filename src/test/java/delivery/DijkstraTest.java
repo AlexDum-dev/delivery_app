@@ -44,7 +44,7 @@ public class DijkstraTest {
 			List<Intersection> adjacencyList = new ArrayList<Intersection>();
 			adjacencyList.add(i1);
 			
-			List<Integer> predecesor = Djikstra.djikstra(adjacencyList, i1);
+			List<Integer> predecesor = Dijkstra.dijkstra(adjacencyList, i1);
 			// TODO : GÉRER LE CAS LIMITE SUR DIJSKTRA
 			System.out.println(predecesor.get(0));
 			assertNull(predecesor.get(0));
