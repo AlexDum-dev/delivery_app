@@ -40,7 +40,6 @@ public class XMLParserTest {
 		
 		
 		//Asset
-		
 		assertEquals(intersections.size(), p.getIntersections().size());
 		
 		boolean intersectionsCorrect=true;
