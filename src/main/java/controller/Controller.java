@@ -15,12 +15,23 @@ public class Controller {
 	private Tour tour;
 	private Window window;
 	private State currentState;
+	private ComputeTourThread thread;
 
 	public Controller(Plan plan, Tour tour) {
 		this.plan = plan;
 		this.tour = tour;
 		this.currentState = InitialState.getInstance();
 		this.window = new Window(plan, tour, this);
+		this.thread = null;
+	}
+
+	
+	public ComputeTourThread getThread() {
+		return thread;
+	}
+	
+	public void setThread(ComputeTourThread thread) {
+		this.thread = thread;
 	}
 
 	public void setCurrentState(State currentState) {
@@ -36,6 +47,9 @@ public class Controller {
 	}
 	public void computeTour() {
 		currentState.computeTour(this, plan, tour);
+	}
+	public void stopTour() {
+		currentState.stopTour(this);
 	}
 	public void addRequest() {
 		currentState.addRequest(this);

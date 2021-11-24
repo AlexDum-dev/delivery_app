@@ -82,6 +82,15 @@ public class Window {
 			}
 		});
 		frame.getContentPane().add(btnComputeTour);
+
+		JButton btnStopComputing = new JButton("Stop Computing");
+		btnStopComputing.setBounds(492, 12, 134, 27);
+		btnStopComputing.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				c.stopTour();
+			}
+		});
+		frame.getContentPane().add(btnStopComputing);
 		
 		frame.setVisible(true);
 	}
