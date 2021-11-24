@@ -1,6 +1,7 @@
 package controller;
 
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
 
 /**
@@ -31,5 +32,10 @@ public class MapLoaded implements State {
 	@Override
 	public void loadRequest(Controller c, Plan plan, Tour tour) {
 		CommonActions.loadRequest(c, plan, tour);
+	}
+	
+	@Override
+	public void addRequest(Controller c, Plan plan, Tour tour, Request req) {
+		tour.
 	}
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
 
 /**
@@ -18,4 +19,5 @@ public interface State {
 	default void deleteRequest(Controller c) {}
 	default void undo(Controller c) {}
 	default void redo(Controller c) {}
+	default void addRequest(Controller c, Plan plan, Tour tour, Request req) {}
 }

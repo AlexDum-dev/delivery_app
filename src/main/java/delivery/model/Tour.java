@@ -23,6 +23,7 @@ public class Tour extends Observable {
 		time = null;
 	}
 	
+	
 	public List<Path> getPath() {
 		return path;
 	}

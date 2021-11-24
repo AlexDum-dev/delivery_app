@@ -12,6 +12,9 @@ import java.util.List;
  * @author 4IF Group H4144
  * @version 1.0 22 Nov 2021
  */
+
+/**TODO : faire une fonction qui change de couleur aléatoirement**/
+
 public class DrawAttributes {
 	private static List<Color> colorsRequest;
 	private static Color colorDepot = Color.GRAY;
