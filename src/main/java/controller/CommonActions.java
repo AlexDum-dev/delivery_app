@@ -1,10 +1,14 @@
 package controller;
 
+import java.awt.Component;
 import java.io.File;
+
+import javax.swing.JOptionPane;
 
 import delivery.model.Plan;
 import delivery.model.Tour;
 import delivery.model.XMLParser;
+import xml.ExceptionXML;
 import xml.XMLfileOpener;
 
 /**
@@ -24,8 +28,9 @@ public class CommonActions {
 	 * @param c the controller
 	 * @param plan the plan in which to load the map
 	 * @param tour 
+	 * @param frame 
 	 */
-	public static void loadMap(Controller c, Plan plan, Tour tour) {
+	public static void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
 		System.out.println("Loading Map...");
 		try {
 			File file = XMLfileOpener.getInstance().open();
@@ -33,9 +38,14 @@ public class CommonActions {
 			tour.clearPath();
 			tour.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
+		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(frame, 
+					"Invalid XML file.", 
+					"Error loading map",
+				    JOptionPane.ERROR_MESSAGE);
 			plan.clearPlan();
 			tour.clearPath();
 			tour.notifyObservers();
@@ -50,8 +60,9 @@ public class CommonActions {
 	 * @param c the controller
 	 * @param plan the plan in which to load the requests
 	 * @param tour 
+	 * @param frame 
 	 */
-	public static void loadRequest(Controller c, Plan plan, Tour tour) {
+	public static void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
 		System.out.println("Loading Requests...");
 		try {
 			File file = XMLfileOpener.getInstance().open();
@@ -60,9 +71,14 @@ public class CommonActions {
 			tour.clearPath();
 			tour.notifyObservers();
 			c.setCurrentState(RequestsLoaded.getInstance());
+		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(frame, 
+					"Invalid XML file.", 
+					"Error loading requests",
+				    JOptionPane.ERROR_MESSAGE);
 			plan.clearRequests();
 			tour.clearPath();
 			tour.notifyObservers();

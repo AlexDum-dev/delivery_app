@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.Component;
+
 import delivery.model.Plan;
 import delivery.model.Tour;
 
@@ -24,7 +26,7 @@ public class InitialState implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour) {
-		CommonActions.loadMap(c, plan, tour);
+	public void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
+		CommonActions.loadMap(c, plan, tour, frame);
 	}
 }
