@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.Component;
+
 import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Tour;
@@ -25,13 +27,13 @@ public class MapLoaded implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour) {
-		CommonActions.loadMap(c, plan, tour);
+	public void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
+		CommonActions.loadMap(c, plan, tour, frame);
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour) {
-		CommonActions.loadRequest(c, plan, tour);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
+		CommonActions.loadRequest(c, plan, tour, frame);
 	}
 	
 	@Override

@@ -20,7 +20,7 @@ public class Controller {
 		this.plan = plan;
 		this.tour = tour;
 		this.currentState = InitialState.getInstance();
-		window = new Window(plan, tour, this);
+		this.window = new Window(plan, tour, this);
 	}
 
 	public void setCurrentState(State currentState) {
@@ -28,11 +28,11 @@ public class Controller {
 	}
 	
 	public void loadMap() {
-		currentState.loadMap(this, plan, tour);
+		currentState.loadMap(this, plan, tour, window.getFrame());
 	}
 	
 	public void loadRequest() {
-		currentState.loadRequest(this, plan, tour);
+		currentState.loadRequest(this, plan, tour, window.getFrame());
 	}
 	public void computeTour() {
 		currentState.computeTour(this, plan, tour);
