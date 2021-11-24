@@ -8,7 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import controller.Controller;
+import delivery.model.CheckPoint;
+import delivery.model.CheckPointType;
+import delivery.model.Intersection;
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
 
 public class Window {
@@ -82,6 +86,21 @@ public class Window {
 			}
 		});
 		frame.getContentPane().add(btnComputeTour);
+		
+		JButton btnAddRequestTest = new JButton("Add Request");
+		btnAddRequestTest.setBounds(530, 12, 134, 27);
+		btnAddRequestTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test appui bouton");
+				CheckPoint pick = new CheckPoint(CheckPointType.PICKUP, p.getIntersection("25321359"),10); 
+				CheckPoint d = new CheckPoint(CheckPointType.DELIVERY, p.getIntersection("26317214"),10); 
+				Request req = new Request(pick,d);
+				p.addRequest(req);
+				p.notifyObservers();
+				c.addRequest();
+			}
+		});
+		frame.getContentPane().add(btnAddRequestTest);
 		
 		frame.setVisible(true);
 	}

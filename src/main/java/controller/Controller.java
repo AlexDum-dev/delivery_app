@@ -38,7 +38,8 @@ public class Controller {
 		currentState.computeTour(this, plan, tour);
 	}
 	public void addRequest() {
-		currentState.addRequest(this);
+		System.out.println("[Controller]");
+		currentState.addRequest(this, plan, tour);
 	}
 	public void modifyRequest() {
 		currentState.modifyRequest(this);

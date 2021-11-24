@@ -1,7 +1,12 @@
 package controller;
 
 import java.awt.Component;
+import java.util.List;
 
+import algorithm.Dijkstra;
+import delivery.model.CheckPoint;
+import delivery.model.Intersection;
+import delivery.model.Path;
 import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Tour;
@@ -37,7 +42,9 @@ public class MapLoaded implements State {
 	}
 	
 	@Override
-	public void addRequest(Controller c, Plan plan, Tour tour, Request req) {
-		tour.
+	public void addRequest(Controller c, Plan plan, Tour tour) {
+		System.out.println("Dans add request de MapLoaded");
+		CommonActions.addRequest(c, plan, tour);
 	}
+	
 }

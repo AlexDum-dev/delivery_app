@@ -13,6 +13,7 @@ import algorithm.tsp.TSP1;
 import delivery.model.CheckPoint;
 import delivery.model.Path;
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
 
 /**
@@ -89,5 +90,10 @@ public class RequestsLoaded implements State {
 		tour.setTime(t);
 		tour.notifyObservers();
 		c.setCurrentState(TourComputed.getInstance());
+	}
+	
+	@Override
+	public void addRequest(Controller c, Plan plan, Tour tour) {
+		CommonActions.addRequest(c, plan, tour);
 	}
 }

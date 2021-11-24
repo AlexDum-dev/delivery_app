@@ -16,10 +16,9 @@ public interface State {
 	default void loadMap(Controller c, Plan p, Tour t, Component frame) {}
 	default void loadRequest(Controller c, Plan p, Tour t, Component frame) {}
 	default void computeTour(Controller c, Plan p, Tour t) {}
-	default void addRequest(Controller c) {}
 	default void modifyRequest(Controller c) {}
 	default void deleteRequest(Controller c) {}
 	default void undo(Controller c) {}
 	default void redo(Controller c) {}
-	default void addRequest(Controller c, Plan plan, Tour tour, Request req) {}
+	default void addRequest(Controller c, Plan plan, Tour tour) {}
 }

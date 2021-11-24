@@ -3,6 +3,7 @@ package controller;
 import java.awt.Component;
 
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
 
 /**
@@ -33,5 +34,11 @@ public class TourComputed implements State {
 	@Override
 	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
 		CommonActions.loadRequest(c, plan, tour, frame);
+	}
+	
+	@Override
+	public void addRequest(Controller c, Plan plan, Tour tour) {
+		System.out.println("Dans add request de TourComputed");
+		CommonActions.addRequest(c, plan, tour);
 	}
 }
