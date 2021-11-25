@@ -169,7 +169,7 @@ public class Dijkstra {
 	 * @param precedor
 	 * @param distance
 	 */
-	public static void relacher(Segment s,  List<Color> nodeColor, List<Double> distance, List<Integer> nodePredecesor) {
+	private static void relacher(Segment s,  List<Color> nodeColor, List<Double> distance, List<Integer> nodePredecesor) {
 		int actualNode =  s.getOrigin().getIndex(); //4
 		int nextNode =  s.getDestination().getIndex();//0
 		if(distance.get(nextNode) > distance.get(actualNode) + s.getLength()) {
@@ -184,7 +184,7 @@ public class Dijkstra {
 	 * @return boolean
 	 */
 	
-	public static boolean existGreyNode(List<Color> nodeColor) {
+	private static boolean existGreyNode(List<Color> nodeColor) {
 		
 		for(int i = 0; i<nodeColor.size(); i++)
 			if(nodeColor.get(i) == Color.GREY) return true;
@@ -197,7 +197,7 @@ public class Dijkstra {
 	 * @param distance
 	 * @return
 	 */
-	public static int minimalDistanceGreyNode(List<Double> distance, List<Color> nodeColor) {
+	private static int minimalDistanceGreyNode(List<Double> distance, List<Color> nodeColor) {
 		double min = Double.MAX_VALUE;
 		int indexNodeMin = -1;
 				
