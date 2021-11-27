@@ -68,8 +68,7 @@ public class Intersection {
         if (tmpIntersection.getId().equals(this.getId())
         		&& tmpIntersection.getLatitude() == this.getLatitude()
         		&& tmpIntersection.getLongitude() == this.getLongitude()
-        		&& tmpIntersection.getIndex() == this.getIndex()
-        		&& tmpIntersection.getSegments().equals(this.getSegments())) {
+        		&& tmpIntersection.getIndex() == this.getIndex()) {
         	return true;
         }
 		return false;
