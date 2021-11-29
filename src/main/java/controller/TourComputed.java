@@ -37,8 +37,8 @@ public class TourComputed implements State {
 	}
 	
 	@Override
-	public void addRequest(Controller c, Plan plan, Tour tour) {
-		System.out.println("Dans add request de TourComputed");
-		CommonActions.addRequest(c, plan, tour);
+	public void addRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery, int durationPickup,
+			int durationDelivery) {
+		l.add(new AddRequestCommand(tour, plan, idPickup, idDelivery, durationPickup, durationDelivery));
 	}
 }

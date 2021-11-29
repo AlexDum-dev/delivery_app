@@ -63,42 +63,9 @@ public class RequestsLoaded implements State {
 		
 		tour.actualizeTime(g.getNbVertices(), tsp, listPath, tsp.getSolution(0), check, tour);
 		
-		/*
-		double mPerSec = 15000.0/3600.0;
-		
-		int previous = tsp.getSolution(0);
-		int current;
-		Path p;
-		System.out.println("Vertices: ");
-		for (int i=1;i<g.getNbVertices();++i) {
-			System.out.println(previous);
-			current = tsp.getSolution(i);
-			// TODO: Method
-			p = listPath.get(previous).get(current);
-			tour.addPath(p, check.get(previous));
-			LocalTime t = check.get(previous).getTime();
-			t = t.plusSeconds(check.get(previous).getDuration());
-			t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
-			check.get(current).setTime(t);
-			previous = current;
-		}
-		System.out.println(previous);
-		current = tsp.getSolution(0);
-		// TODO: Method to compute the time
-		p = listPath.get(previous).get(current);
-		tour.addPath(p, check.get(previous));
-		LocalTime t = check.get(previous).getTime();
-		t = t.plusSeconds(check.get(previous).getDuration());
-		t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
-		tour.setTime(t);
-		*/
 		tour.notifyObservers();
 		c.setCurrentState(TourComputed.getInstance());
 	
 	}
 	
-	@Override
-	public void addRequest(Controller c, Plan plan, Tour tour) {
-		CommonActions.addRequest(c, plan, tour);
-	}
 }

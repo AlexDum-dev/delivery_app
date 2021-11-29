@@ -18,7 +18,8 @@ public interface State {
 	default void computeTour(Controller c, Plan p, Tour t) {}
 	default void modifyRequest(Controller c) {}
 	default void deleteRequest(Controller c) {}
-	default void undo(Controller c) {}
-	default void redo(Controller c) {}
-	default void addRequest(Controller c, Plan plan, Tour tour) {}
+	default void undo(ListOfCommands l) {}
+	default void redo(ListOfCommands l) {}
+	default void addRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery,
+			int durationPickup, int durationDelivery) {}
 }

@@ -22,6 +22,7 @@ public class Controller {
 		this.tour = tour;
 		this.currentState = InitialState.getInstance();
 		this.window = new Window(plan, tour, this);
+		this.listOfCommands = new ListOfCommands();
 	}
 
 	public void setCurrentState(State currentState) {
@@ -38,9 +39,8 @@ public class Controller {
 	public void computeTour() {
 		currentState.computeTour(this, plan, tour);
 	}
-	public void addRequest() {
-		System.out.println("[Controller]");
-		currentState.addRequest(this, plan, tour);
+	public void addRequest(String idPickup, String idDelivery, int durationPickup, int durationDelivery) {
+		currentState.addRequest(listOfCommands, plan, tour, idPickup, idDelivery, durationPickup, durationDelivery);
 	}
 	public void modifyRequest() {
 		currentState.modifyRequest(this);
@@ -49,9 +49,9 @@ public class Controller {
 		currentState.deleteRequest(this);
 	}
 	public void undo() {
-		currentState.undo(this);
+		currentState.undo(this.listOfCommands);
 	}
 	public void redo() {
-		currentState.redo(this);
+		currentState.redo(this.listOfCommands);
 	}
 }

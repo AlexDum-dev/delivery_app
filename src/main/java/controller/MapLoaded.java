@@ -41,10 +41,4 @@ public class MapLoaded implements State {
 		CommonActions.loadRequest(c, plan, tour, frame);
 	}
 	
-	@Override
-	public void addRequest(Controller c, Plan plan, Tour tour) {
-		System.out.println("Dans add request de MapLoaded");
-		CommonActions.addRequest(c, plan, tour);
-	}
-	
 }

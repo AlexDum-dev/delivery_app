@@ -91,40 +91,4 @@ public class CommonActions {
 			c.setCurrentState(MapLoaded.getInstance());
 		}
 	}
-	/**
-	 * 
-	 * @param c
-	 * @param plan
-	 * @param tour
-	 * @param req
-	 */
-	public static void addRequest(Controller c, Plan plan, Tour tour) {
-		Request req = plan.getRequests().get(plan.getRequests().size() - 1);
-		System.out.println("*****************[addRequest] id du pickup : "+req.getPickup().getAddress().getId()+" id du deliv: "+req.getDelivery().getAddress().getId());
-		tour.removeLastPath();
-		CheckPoint lastCheckPoint = tour.removeLastCheckPoint();
-		
-		//launch dijkstra for the the pickup and the delivery and the last checkpoint
-		List<Integer> predecesorPickupDeparture =  Dijkstra.dijkstra(plan.getIntersections(),req.getPickup().getAddress());
-		List<Integer> predecesorDeliveryDeparture = Dijkstra.dijkstra(plan.getIntersections(),req.getDelivery().getAddress());
-		List<Integer> predecesorLastIntersectionTour = Dijkstra.dijkstra(plan.getIntersections(), lastCheckPoint.getAddress());
-		
-		
-		Path pathFromLastPontToNewPickup = Dijkstra.createPath(plan.getIntersections(), predecesorLastIntersectionTour, lastCheckPoint.getAddress().getIndex() , req.getPickup().getAddress().getIndex());
-		Path pathFromPickupToDelivery = Dijkstra.createPath(plan.getIntersections(), predecesorPickupDeparture, req.getPickup().getAddress().getIndex(), req.getDelivery().getIndex());
-		Path pathFromDeliveryToDepot = Dijkstra.createPath(plan.getIntersections(), predecesorDeliveryDeparture, req.getDelivery().getAddress().getIndex(), plan.getDepot().getAddress().getIndex());
-		//Create path between last Checkpoint of the last path and the pickup
-		//Create path between the pickup and the delivery
-		//create path between the delivery and the depot
-		//add all the paths
-		//update to vew
-		
-		tour.addPath(pathFromLastPontToNewPickup, lastCheckPoint );
-		tour.addPath(pathFromPickupToDelivery, req.getPickup());
-		tour.addPath(pathFromDeliveryToDepot, req.getDelivery());
-		
-		tour.actualizeTime();
-		
-		tour.notifyObservers();
-	}
 }

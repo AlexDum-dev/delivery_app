@@ -94,10 +94,7 @@ public class Window {
 				System.out.println("Test appui bouton");
 				CheckPoint pick = new CheckPoint(CheckPointType.PICKUP, p.getIntersection("25321359"),10); 
 				CheckPoint d = new CheckPoint(CheckPointType.DELIVERY, p.getIntersection("26317214"),10); 
-				Request req = new Request(pick,d);
-				p.addRequest(req);
-				p.notifyObservers();
-				c.addRequest();
+				c.addRequest("25321359", "26317214", 10, 11);;
 			}
 		});
 		frame.getContentPane().add(btnAddRequestTest);
