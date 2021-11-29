@@ -53,6 +53,7 @@ public class RequestsLoaded implements State {
 		w.setLoadMapButtonFalse();
 		w.setLoadRequestButtonFalse();
 		w.setStopComputingButtonTrue();
+		w.setComputeTourButtonFalse();
 		c.setCurrentState(TourComputing.getInstance());
 		ComputeTourThread thread = new ComputeTourThread(c, plan, tour, w);
 		c.setThread(thread);

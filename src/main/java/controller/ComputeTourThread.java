@@ -56,6 +56,7 @@ public class ComputeTourThread extends Thread implements Observer {
 		window.setLoadMapButtonTrue();
 		window.setLoadRequestButtonTrue();
 		window.setAddRequestTrue();
+		window.setComputeTourButtonFalse();
 	}
 
 	@Override
