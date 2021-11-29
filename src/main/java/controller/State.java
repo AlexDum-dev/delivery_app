@@ -17,7 +17,7 @@ public interface State {
 	default void loadRequest(Controller c, Plan p, Tour t, Component frame) {}
 	default void computeTour(Controller c, Plan p, Tour t) {}
 	default void modifyRequest(Controller c) {}
-	default void deleteRequest(Controller c) {}
+	default void deleteRequest(ListOfCommands l, Plan plan, Tour tour, Request request) {}
 	default void undo(ListOfCommands l) {}
 	default void redo(ListOfCommands l) {}
 	default void addRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery,
