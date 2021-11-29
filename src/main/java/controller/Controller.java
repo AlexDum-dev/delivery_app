@@ -15,6 +15,7 @@ public class Controller {
 	private Tour tour;
 	private Window window;
 	private State currentState;
+	private ListOfCommands listOfCommands;
 
 	public Controller(Plan plan, Tour tour) {
 		this.plan = plan;
