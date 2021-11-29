@@ -13,7 +13,10 @@ import algorithm.tsp.TSP1;
 import delivery.model.CheckPoint;
 import delivery.model.Path;
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
+import view.Window;
+
 
 /**
  * RequestsLoaded State
@@ -36,58 +39,24 @@ public class RequestsLoaded implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadMap(c, plan, tour, frame);
+	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadMap(c, plan, tour, frame, w);
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadRequest(c, plan, tour, frame);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadRequest(c, plan, tour, frame, w);
 	}
 	
 	@Override
-	public void computeTour(Controller c, Plan plan, Tour tour) {
-		//TODO: Compute the tour
-		DijkstraResult result = Dijkstra.computePaths(plan.getIntersections(), 
-				plan.getRequests(), plan.getDepot());
-		
-		List<? extends List<Path>> listPath = result.getPaths();
-		List<CheckPoint> check = result.getCheckpoints();
-
-		DeliveryGraph g = new DeliveryGraph(listPath, check);
-		TSP tsp = new TSP1();
-		tsp.searchSolution(20000, g);
-		
-		tour.clearPath();
-		
-		double mPerSec = 15000.0/3600.0;
-		
-		int previous = tsp.getSolution(0);
-		int current;
-		Path p;
-		System.out.println("Vertices: ");
-		for (int i=1;i<g.getNbVertices();++i) {
-			System.out.println(previous);
-			current = tsp.getSolution(i);
-			// TODO: Method
-			p = listPath.get(previous).get(current);
-			tour.addPath(p, check.get(previous));
-			LocalTime t = check.get(previous).getTime();
-			t = t.plusSeconds(check.get(previous).getDuration());
-			t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
-			check.get(current).setTime(t);
-			previous = current;
-		}
-		System.out.println(previous);
-		current = tsp.getSolution(0);
-		// TODO: Method
-		p = listPath.get(previous).get(current);
-		tour.addPath(p, check.get(previous));
-		LocalTime t = check.get(previous).getTime();
-		t = t.plusSeconds(check.get(previous).getDuration());
-		t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
-		tour.setTime(t);
-		tour.notifyObservers();
-		c.setCurrentState(TourComputed.getInstance());
+	public void computeTour(Controller c, Plan plan, Tour tour, Window w) {
+		w.setLoadMapButtonFalse();
+		w.setLoadRequestButtonFalse();
+		w.setStopComputingButtonTrue();
+		c.setCurrentState(TourComputing.getInstance());
+		ComputeTourThread thread = new ComputeTourThread(c, plan, tour, w);
+		c.setThread(thread);
+		thread.start();
 	}
+	
 }

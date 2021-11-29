@@ -1,5 +1,6 @@
 package view;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -30,13 +31,10 @@ public class CheckPointView extends JScrollPane implements Observer {
 			   
             public void valueChanged(ListSelectionEvent e) {  
             	int index = table.getSelectedRow();
-		    	String pickupRow = table.getValueAt(table.getSelectedRow(), 0).toString();
-	        	String deliveryRow = table.getValueAt(table.getSelectedRow(), 1).toString();
-	        	System.out.println("request row : "+pickupRow + "\t" + deliveryRow);
 	        	for(int i = 0 ; i<tour.getCheckPoint().size() && i<tour.getPath().size() ; ++i) {
 	        		CheckPoint checkPoint = tour.getCheckPoint().get(i);
 	        		Path path = tour.getPath().get(i);
-	        		if ( (checkPoint.getAddress().getId()).equals(pickupRow) ) {
+	        		if ( index==i ) {
 	        			checkPoint.setActive(true);
 	        			path.setActive(true);
 	        		}else {
@@ -56,29 +54,41 @@ public class CheckPointView extends JScrollPane implements Observer {
 		List<CheckPoint> checkPoints = tour.getCheckPoint();
 		Object[][] tabRequest;
 		if (checkPoints.size()>1) {
-			tabRequest = new Object[checkPoints.size()+1][2];
+			tabRequest = new Object[checkPoints.size()+1][3];
 		} else {
-			tabRequest = new Object[checkPoints.size()][2];
+			tabRequest = new Object[checkPoints.size()][3];
 		}
 
 		String addressTextGrid;
-		String timeTextGrid;
+		String arrTextGrid;
+		String depTextGrid;
 		CheckPoint check;
 		String[] line;
 		int i;
 		for(i = 0 ; i<checkPoints.size();i++) {
 			check = checkPoints.get(i);
-			addressTextGrid = check.getAddress().getId();
-			timeTextGrid = check.getTime().toString();
-			line = new String[]{addressTextGrid,timeTextGrid};
-			tabRequest[i] =  line; 
-			
+			addressTextGrid = check.getAddress().getAddress();
+			LocalTime t = check.getTime();
+			LocalTime t2 = t.minusSeconds(t.getSecond());
+			if (i>0) {
+				arrTextGrid = t2.toString();
+			} else {
+				arrTextGrid = "-";
+			}
+			t = t.plusSeconds(check.getDuration());
+			t2 = t.minusSeconds(t.getSecond());
+			depTextGrid = t2.toString();
+			line = new String[]{addressTextGrid,arrTextGrid,depTextGrid};
+			tabRequest[i] =  line;
 		}
 		if (checkPoints.size()>1) {
 			check = checkPoints.get(0);
-			addressTextGrid = check.getAddress().getId();
-			timeTextGrid = tour.getTime().toString();
-			line = new String[]{addressTextGrid,timeTextGrid};
+			addressTextGrid = check.getAddress().getAddress();
+			LocalTime t = tour.getTime();
+			LocalTime t2 = t.minusSeconds(t.getSecond());
+			arrTextGrid = t2.toString();
+			depTextGrid = "-";
+			line = new String[]{addressTextGrid,arrTextGrid,depTextGrid};
 			tabRequest[i] =  line; 
 		}
 		return tabRequest;
@@ -92,11 +102,11 @@ public class CheckPointView extends JScrollPane implements Observer {
 				
 				displayCheckPoint(), 
 			new String[] {
-				"Address", "Time"
+				"Address", "Arrival Time", "Departure Time"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class
+				String.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];

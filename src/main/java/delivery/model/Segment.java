@@ -42,11 +42,22 @@ public class Segment {
 		return name;
 	}
 	
-	public Boolean equals(Segment s) {
-		if (s.getDestination().equals(this.getDestination())
-				&& s.getOrigin().equals(this.getOrigin())
-				&& s.getLength() == this.getLength()
-				&& s.getName().equals(this.getName())){
+	public boolean equals(Object s) {
+		// If the object is compared with itself then return true 
+        if (s == this) {
+            return true;
+        }
+        
+        if (!(s instanceof Segment)) {
+            return false;
+        }
+         
+        Segment tmpSegment = (Segment) s;
+        
+		if (tmpSegment.getDestination().equals(this.getDestination())
+				&& tmpSegment.getOrigin().equals(this.getOrigin())
+				&& tmpSegment.getLength() == this.getLength()
+				&& tmpSegment.getName().equals(this.getName())){
 			return true;
 		}
 		return false;

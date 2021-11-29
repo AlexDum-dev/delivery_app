@@ -36,14 +36,12 @@ public class MapView extends JPanel implements Observer{
 		this.tour = tour;
 		plan.addObserver(this);
 		tour.addObserver(this);
-		System.out.println("TEST constructeur map");
 	}
 
 
 
 	@Override
 	protected void paintComponent(Graphics graph) {
-		System.out.println("Test fonction paintComponent");
 		super.paintComponent(graph);
 		Graphics2D g = (Graphics2D) graph;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

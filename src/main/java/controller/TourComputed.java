@@ -3,8 +3,9 @@ package controller;
 import java.awt.Component;
 
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
-
+import view.Window;
 /**
  * TourComputed State
  * 
@@ -26,12 +27,23 @@ public class TourComputed implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadMap(c, plan, tour, frame);
+	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadMap(c, plan, tour, frame, w);
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadRequest(c, plan, tour, frame);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadRequest(c, plan, tour, frame, w);
+	}
+	
+	@Override
+	public void addRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery, int durationPickup,
+			int durationDelivery) {
+		l.add(new AddRequestCommand(tour, plan, idPickup, idDelivery, durationPickup, durationDelivery));
+	}
+	
+	@Override
+	public void deleteRequest(ListOfCommands l, Plan plan, Tour tour, Request request) {
+		l.add(new ReverseCommand(new AddRequestCommand(plan, tour, request)));
 	}
 }

@@ -21,4 +21,23 @@ public class DijkstraResult {
 	public List<CheckPoint> getCheckpoints() {
 		return checkpoints;
 	}
+	
+	public boolean equals(Object d) {
+		// If the object is compared with itself then return true 
+        if (d == this) {
+            return true;
+        }
+        
+        if (!(d instanceof DijkstraResult)) {
+            return false;
+        }
+         
+        DijkstraResult tmpDijkstraResult = (DijkstraResult) d;
+        
+        if (tmpDijkstraResult.getPaths().equals(this.getPaths())
+        		&& tmpDijkstraResult.getCheckpoints().equals(this.getCheckpoints())) {
+        	return true;        	
+        }
+        return false;
+	}
 }

@@ -31,24 +31,20 @@ public class RequestView extends JScrollPane implements Observer {
 			   
             public void valueChanged(ListSelectionEvent e) {  
             	int index = table.getSelectedRow();
-		    	String pickupRow = table.getValueAt(table.getSelectedRow(), 0).toString();
-	        	String deliveryRow = table.getValueAt(table.getSelectedRow(), 1).toString();
-	        	System.out.println("request row : "+pickupRow + "\t" + deliveryRow);
+            	int i = 0;
 	        	for(Request req : plan.getRequests()) {
-	        		if ( (req.getPickup().getAddress().getId()).equals(pickupRow)
-	        				&& (req.getDelivery().getAddress().getId()).equals(deliveryRow) ) {
+	        		if (index==i) {
 	        			req.setActive(true);
 	        		}else {
 	        			req.setActive(false);
 	        		}
+	        		++i;
 	        	}
 	        	plan.notifyObservers("mapView");
 	        	table.setRowSelectionInterval(index, index);
 	        	//table.changeSelection(index, 0, false, false);
             }  
         }); 
-		
-		//table.setBounds(10, 72, 458, 382);
 	}
 	
 	
@@ -57,14 +53,14 @@ public class RequestView extends JScrollPane implements Observer {
 		List<Request> requests = plan.getRequests();
 		Object[][] tabRequest = new Object[requests.size()][2];
 						
-		String deliveryTextGrid;
-		String pickupTextGrid;
+		String delivery;
+		String pickup;
 	
 		for(int i = 0 ; i<requests.size();i++) {
-			deliveryTextGrid = requests.get(i).getDelivery().getAddress().getId();
-			pickupTextGrid = requests.get(i).getPickup().getAddress().getId();
+			delivery = requests.get(i).getDelivery().getAddress().getAddress();
+			pickup = requests.get(i).getPickup().getAddress().getAddress();
 			
-			String[] line = {pickupTextGrid, deliveryTextGrid};
+			String[] line = {pickup, delivery};
 			tabRequest[i] =  line; 
 			
 		}

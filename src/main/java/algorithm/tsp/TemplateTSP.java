@@ -4,17 +4,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public abstract class TemplateTSP implements TSP {
+import observer.Observable;
+
+public abstract class TemplateTSP extends Observable implements TSP {
 	private Integer[] bestSol;
 	protected Graph g;
 	private double bestSolCost;
 	private int timeLimit;
 	private long startTime;
+	private boolean stop;
 	
 	public void searchSolution(int timeLimit, Graph g){
 		if (timeLimit <= 0) return;
 		startTime = System.currentTimeMillis();	
 		this.timeLimit = timeLimit;
+		this.stop = false;
 		this.g = g;
 		bestSol = new Integer[g.getNbVertices()];
 		Collection<Integer> unvisited = new ArrayList<Integer>(g.getNbVertices()-1);
@@ -64,12 +68,13 @@ public abstract class TemplateTSP implements TSP {
 	 */	
 	private void branchAndBound(int currentVertex, Collection<Integer> unvisited, 
 			Collection<Integer> visited, double currentCost){
-		if (System.currentTimeMillis() - startTime > timeLimit) return;
+		if (System.currentTimeMillis() - startTime > timeLimit || stop) return;
 	    if (unvisited.size() == 0){ 
 	    	if (g.isArc(currentVertex,0)){ 
 	    		if (currentCost+g.getCost(currentVertex,0) < bestSolCost){ 
 	    			visited.toArray(bestSol);
 	    			bestSolCost = currentCost+g.getCost(currentVertex,0);
+	    			this.notifyObservers();
 	    		}
 	    	}
 	    } else if (currentCost+bound(currentVertex,unvisited) < bestSolCost){
@@ -84,6 +89,10 @@ public abstract class TemplateTSP implements TSP {
 	            unvisited.add(nextVertex);
 	        }	    
 	    }
+	}
+
+	public void setStop(boolean stop) {
+		this.stop = stop;
 	}
 
 }
