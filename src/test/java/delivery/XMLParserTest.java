@@ -104,11 +104,17 @@ public class XMLParserTest {
 		//Arrange
 		
 		Intersection i1 = new Intersection("208769457", 45.760174, 4.877455);
+		i1.setIndex(0);
 		Intersection i2 = new Intersection("208769499", 45.760597, 4.87622);
+		i2.setIndex(1);
 		Intersection i3 = new Intersection("55474978", 45.761276, 4.876554);
+		i3.setIndex(2);
 		Intersection i4 = new Intersection("55475018", 45.75978, 4.875795);
+		i4.setIndex(3);
 		Intersection i5 = new Intersection("26033277", 45.756165, 4.8574095);
+		i5.setIndex(4);
 		Intersection i6 = new Intersection("975886496", 45.756874, 4.8574047);
+		i6.setIndex(5);
 		
 		
 		CheckPoint d = new CheckPoint(CheckPointType.DEPOT,i1,LocalTime.of(8, 0, 0));	
@@ -127,6 +133,9 @@ public class XMLParserTest {
 				)
 		);
 		
+		requests.get(0).setIndex(0);
+		requests.get(1).setIndex(1);
+				
 		Plan p = new Plan();
 		
 		//Act
@@ -203,6 +212,16 @@ public class XMLParserTest {
 			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMalformedFileTest.xml"), p);
 		});		
 	}
+	
+	@Test
+	public void loadPlanLengthNANTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLengthNANTest.xml"), p);
+		});		
+	}
+	
+	
 	
 	
 	
