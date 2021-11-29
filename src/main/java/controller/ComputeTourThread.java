@@ -6,7 +6,7 @@ import java.util.List;
 import algorithm.Dijkstra;
 import algorithm.DijkstraResult;
 import algorithm.tsp.DeliveryGraph;
-import algorithm.tsp.TSP1;
+import algorithm.tsp.TSP3;
 import algorithm.tsp.TemplateTSP;
 import delivery.model.CheckPoint;
 import delivery.model.Path;
@@ -35,7 +35,7 @@ public class ComputeTourThread extends Thread implements Observer {
 		plan = p;
 		tour = t;
 		this.controller = c;
-		tsp = new TSP1();
+		tsp = new TSP3();
 	}
 
 	public void run(){

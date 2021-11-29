@@ -22,21 +22,20 @@ public class RequestView extends JScrollPane implements Observer {
 		this.plan = plan;
 		plan.addObserver(this);
 		table = new JTable();
-		//table.setBounds(10, 72, 458, 382);
 	}
 
 	private Object[][] displayRequest() {
 		List<Request> requests = plan.getRequests();
 		Object[][] tabRequest = new Object[requests.size()][2];
 						
-		String deliveryTextGrid;
-		String pickupTextGrid;
+		String delivery;
+		String pickup;
 	
 		for(int i = 0 ; i<requests.size();i++) {
-			deliveryTextGrid = requests.get(i).getDelivery().getAddress().getId();
-			pickupTextGrid = requests.get(i).getPickup().getAddress().getId();
+			delivery = requests.get(i).getDelivery().getAddress().getAddress();
+			pickup = requests.get(i).getPickup().getAddress().getAddress();
 			
-			String[] line = {pickupTextGrid, deliveryTextGrid};
+			String[] line = {pickup, delivery};
 			tabRequest[i] =  line; 
 			
 		}

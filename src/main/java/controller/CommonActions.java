@@ -43,8 +43,8 @@ public class CommonActions {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(frame, 
-					"Invalid XML file.", 
-					"Error loading map",
+					e.getMessage(), 
+					"Error loading XML map",
 				    JOptionPane.ERROR_MESSAGE);
 			plan.clearPlan();
 			tour.clearPath();
@@ -76,8 +76,8 @@ public class CommonActions {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(frame, 
-					"Invalid XML file.", 
-					"Error loading requests",
+					e.getMessage(), 
+					"Error loading XML requests",
 				    JOptionPane.ERROR_MESSAGE);
 			plan.clearRequests();
 			tour.clearPath();

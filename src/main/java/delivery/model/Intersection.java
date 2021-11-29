@@ -40,6 +40,12 @@ public class Intersection {
 		return segments;
 	}
 
+	public String getAddress() {
+		if (segments.isEmpty()) {
+			return "";
+		}
+		return segments.get(0).getName();
+	}
 	
 	public int getIndex() {
 		return index;

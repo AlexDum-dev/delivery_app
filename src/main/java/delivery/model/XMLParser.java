@@ -46,11 +46,19 @@ public class XMLParser {
 	 * @throws NumberFormatException
 	 * @throws XMLParserException 
 	 */
-	public static void loadPlan(File f, Plan p) throws ParserConfigurationException, 
-	IOException, SAXException,
-	NumberFormatException, XMLParserException {
-		Document xmlDocument = XMLParser.parse(f);
+	public static void loadPlan(File f, Plan p) throws XMLParserException {
+		Document xmlDocument;
+		try {
+			xmlDocument = XMLParser.parse(f);
+		} catch (ParserConfigurationException | IOException | SAXException e) {
+			throw new XMLParserException("Not a valid XML file.");
+		}
 		p.clearPlan();
+		NodeList root = xmlDocument.getChildNodes();
+		if (root.getLength()!=1 
+				|| !"map".equals(root.item(0).getNodeName())) {
+			throw new XMLParserException("Invalid root node.");
+		}
 		loadIntersections(xmlDocument, p);
 		loadSegments(xmlDocument, p);
 		p.notifyObservers();
@@ -65,7 +73,7 @@ public class XMLParser {
 	 * @throws XMLParserException 
 	 */
 	private static void loadSegments(Document xmlDocument, 
-			Plan p) throws IOException, XMLParserException {
+			Plan p) throws XMLParserException {
 		NodeList seg = xmlDocument.getElementsByTagName("segment");
 		for (int i=0; i<seg.getLength(); ++i) {
 			Node child = seg.item(i);
@@ -82,7 +90,16 @@ public class XMLParser {
 			String origin = orgNode.getNodeValue();
 			String destination = destNode.getNodeValue();
 			String name = nameNode.getNodeValue();
-			double len = Double.parseDouble(lenNode.getNodeValue());
+			double len = -1;
+			try {
+				len = Double.parseDouble(lenNode.getNodeValue());
+			} catch (NumberFormatException e) {
+				len = -1;
+			}
+			if (len<0) {
+				throw new XMLParserException("XML file not correctly formatted: "+
+						"Invalid segment length.");
+			}
 
 			Intersection interOrigin = p.getIntersection(origin);
 			Intersection interDest = p.getIntersection(destination);
@@ -104,7 +121,7 @@ public class XMLParser {
 	 * @throws XMLParserException 
 	 */
 	private static void loadIntersections(Document xmlDocument, Plan p)
-			throws IOException, XMLParserException {
+			throws XMLParserException {
 		NodeList inter = xmlDocument.getElementsByTagName("intersection");
 		for (int i=0; i<inter.getLength(); ++i) {
 			Node child = inter.item(i);
@@ -117,8 +134,20 @@ public class XMLParser {
 						"Intersection attribute not found.");
 			}
 			String id = idNode.getNodeValue();
-			double lat = Double.parseDouble(latNode.getNodeValue());
-			double lon = Double.parseDouble(lonNode.getNodeValue());
+			double lat = 0;
+			try {
+				lat = Double.parseDouble(latNode.getNodeValue());
+			} catch (NumberFormatException e) {
+				throw new XMLParserException("XML file not correctly formatted: "+
+						"Invalid Latitude.");
+			}
+			double lon = 0;
+			try {
+				lon = Double.parseDouble(lonNode.getNodeValue());
+			} catch (NumberFormatException e) {
+				throw new XMLParserException("XML file not correctly formatted: "+
+						"Invalid Longitude.");
+			}
 			p.addIntersection(new Intersection(id, lat, lon));
 		}
 	}
@@ -128,18 +157,21 @@ public class XMLParser {
 	 * 
 	 * @param f the XML file to load
 	 * @param p the plan to feed
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws NumberFormatException
 	 * @throws XMLParserException 
 	 */
-	public static void loadRequests(File f, Plan p) throws ParserConfigurationException, 
-	IOException, SAXException,
-	NumberFormatException, XMLParserException,
-	DateTimeParseException{
-		Document xmlDocument = XMLParser.parse(f);
+	public static void loadRequests(File f, Plan p) throws XMLParserException{
+		Document xmlDocument;
+		try {
+			xmlDocument = XMLParser.parse(f);
+		} catch (ParserConfigurationException | IOException | SAXException e) {
+			throw new XMLParserException("Not a valid XML file.");
+		}
 		p.clearRequests();
+		NodeList root = xmlDocument.getChildNodes();
+		if (root.getLength()!=1 
+				|| !"planningRequest".equals(root.item(0).getNodeName())) {
+			throw new XMLParserException("Invalid root node.");
+		}
 		loadDepot(xmlDocument, p);
 		loadCheckPoints(xmlDocument, p);
 		p.notifyObservers();
@@ -151,10 +183,9 @@ public class XMLParser {
 	 * @param xmlDocument xml document to load
 	 * @param p the plan to feed
 	 * @throws XMLParserException
-	 * @throws NumberFormatException
 	 */
 	private static void loadCheckPoints(Document xmlDocument, Plan p)
-			throws XMLParserException, NumberFormatException {
+			throws XMLParserException {
 		NodeList req = xmlDocument.getElementsByTagName("request");
 		for (int i=0; i<req.getLength(); ++i) {
 			Node child = req.item(i);
@@ -170,8 +201,26 @@ public class XMLParser {
 			}
 			String pkAddr = pkAddrNode.getNodeValue();
 			String dlAddr = dlAddrNode.getNodeValue();
-			int pkDur = Integer.parseInt(pkDurNode.getNodeValue());
-			int dlDur = Integer.parseInt(dlDurNode.getNodeValue());
+			int pkDur = -1;
+			try {
+				pkDur = Integer.parseInt(pkDurNode.getNodeValue());
+			} catch (NumberFormatException e) {
+				pkDur = -1;
+			}
+			if (pkDur<0) {
+				throw new XMLParserException("XML file not correctly formatted: "+
+						"Invalid pickup duration.");
+			}
+			int dlDur = -1;
+			try {
+				dlDur = Integer.parseInt(dlDurNode.getNodeValue());
+			} catch (NumberFormatException e) {
+				dlDur = -1;
+			}
+			if (dlDur<0) {
+				throw new XMLParserException("XML file not correctly formatted: "+
+						"Invalid delivery duration.");
+			}
 
 			Intersection interPk = p.getIntersection(pkAddr);
 			Intersection interDl = p.getIntersection(dlAddr);
@@ -197,7 +246,7 @@ public class XMLParser {
 	 * @throws NumberFormatException
 	 */
 	private static void loadDepot(Document xmlDocument, Plan p)
-			throws XMLParserException, NumberFormatException{
+			throws XMLParserException{
 		NodeList dep = xmlDocument.getElementsByTagName("depot");
 		if (dep.getLength()!=1) {
 			throw new XMLParserException("XML file not correctly formatted: "+
@@ -222,10 +271,16 @@ public class XMLParser {
 			throw new XMLParserException("XML file not correctly formatted: "+
 					"Invalid timestamp.");
 		}
-		int h = Integer.parseInt(timestamp[0]);
-		int m = Integer.parseInt(timestamp[1]);
-		int s = Integer.parseInt(timestamp[2]);
-		LocalTime time = LocalTime.of(h, m, s);
-		p.setDepot(new CheckPoint(CheckPointType.DEPOT, inter, time));
+
+		try {
+			int h = Integer.parseInt(timestamp[0]);
+			int m = Integer.parseInt(timestamp[1]);
+			int s = Integer.parseInt(timestamp[2]);
+			LocalTime time = LocalTime.of(h, m, s);
+			p.setDepot(new CheckPoint(CheckPointType.DEPOT, inter, time));
+		} catch (NumberFormatException e) {
+			throw new XMLParserException("XML file not correctly formatted: "+
+					"Invalid Departure Time.");
+		}
 	}
 }

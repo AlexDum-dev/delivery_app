@@ -59,37 +59,32 @@ public class Dijkstra {
 	}
 
 	private static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
-		//System.out.println("OriginIndex = "+OriginIndex);
-		//System.out.println("DestinationIndex = "+DestinationIndex);
-		System.out.println("==================================  createPath ===========================================");
-		System.out.println("=OriginIndex="+OriginIndex);
-		System.out.println("=DestinationIndex="+DestinationIndex);
+		// System.out.println("==================================  createPath ===========================================");
+		// System.out.println("=OriginIndex="+OriginIndex);
+		// System.out.println("=DestinationIndex="+DestinationIndex);
 		List<Segment> segments = new ArrayList<Segment>();
 		int currentIndex = DestinationIndex;
 		int NextIndex = currentIndex;
 		while(currentIndex != OriginIndex) {
-			System.out.println("======== WHILE =========");
-			//System.out.println("NextIndex : "+NextIndex);
-			//System.out.println("currentIndex : "+currentIndex);
+			// System.out.println("======== WHILE =========");
 			NextIndex = nodePredecesor.get(currentIndex);
-			//System.out.println("2/NextIndex : "+NextIndex);
 			Segment s = getSegmentFromList(adjacencyList,NextIndex,currentIndex);//we need to get the segment from the list of segments
-			System.out.println("=currentIndex="+currentIndex);
-			System.out.println("=NextIndex="+NextIndex);
-			System.out.println("=getOrigin="+s.getOrigin().getIndex());
-			System.out.println("=getDestination="+s.getDestination().getIndex());
+			// System.out.println("=currentIndex="+currentIndex);
+			// System.out.println("=NextIndex="+NextIndex);
+			// System.out.println("=getOrigin="+s.getOrigin().getIndex());
+			// System.out.println("=getDestination="+s.getDestination().getIndex());
 			
 			segments.add(s);
 			currentIndex = NextIndex;
 		}
 		//System.out.println("segments.size() = "+segments.size() );
 		for (Segment s : segments) {
-			System.out.println(s.getOrigin().getIndex());
-			System.out.println(s.getDestination().getIndex());
+			// System.out.println(s.getOrigin().getIndex());
+			// System.out.println(s.getDestination().getIndex());
 		}
 		Collections.reverse(segments);
 		Path p = new Path(segments);
-		System.out.println("==================================  FIN : createPath ===========================================");
+		// System.out.println("==================================  FIN : createPath ===========================================");
 		return p;
 	}
 
@@ -141,21 +136,19 @@ public class Dijkstra {
 			
 		}
 		
-		//System.out.println("Couleur du 5 "+nodeColor.get("5")+ "and distance "+);
-		
 		while(existGreyNode(nodeColor)) {
 			int indexActualNode = minimalDistanceGreyNode(distance, nodeColor);
-			System.out.println("Actual Node : "+indexActualNode);
+			// System.out.println("Actual Node : "+indexActualNode);
 			List<Segment> listSegmentFromActualNode = adjacencyList.get(indexActualNode).getSegments();
 			for(Segment s : listSegmentFromActualNode) {
-				System.out.println("Voisin : "+s.getDestination().getIndex()+" et couleur : "+nodeColor.get(s.getDestination().getIndex()));
+				// System.out.println("Neighbor: "+s.getDestination().getIndex()+" color: "+nodeColor.get(s.getDestination().getIndex()));
 				if(nodeColor.get(s.getDestination().getIndex()) == Color.GREY || nodeColor.get(s.getDestination().getIndex()) == Color.WHITE) {
 					relacher(s, nodeColor, distance, nodePredecesor);
 					if(nodeColor.get(s.getDestination().getIndex()) == Color.WHITE) {
 						nodeColor.set(s.getDestination().getIndex(), Color.GREY);
 					}
-					//System.out.println("id noeud actuel : "+e.getOrigin().getId()+ " noeud voisin : "+e.getDestination().getId());
-					//System.out.println("Couleur noeud actuelle : "+nodeColor.get(e.getOrigin().getId())+ " noeud voisin : "+nodeColor.get(e.getDestination().getId()));
+					//System.out.println("current node id: "+e.getOrigin().getId()+ " neighbor node: "+e.getDestination().getId());
+					//System.out.println("current node color: "+nodeColor.get(e.getOrigin().getId())+ " neighbor node: "+nodeColor.get(e.getDestination().getId()));
 				}
 			}
 			nodeColor.set(indexActualNode, Color.BLACK);
