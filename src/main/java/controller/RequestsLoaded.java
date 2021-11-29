@@ -14,6 +14,8 @@ import delivery.model.CheckPoint;
 import delivery.model.Path;
 import delivery.model.Plan;
 import delivery.model.Tour;
+import view.Window;
+
 
 /**
  * RequestsLoaded State
@@ -36,8 +38,8 @@ public class RequestsLoaded implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadMap(c, plan, tour, frame);
+	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadMap(c, plan, tour, frame, w);
 	}
 	
 	@Override
@@ -46,7 +48,7 @@ public class RequestsLoaded implements State {
 	}
 	
 	@Override
-	public void computeTour(Controller c, Plan plan, Tour tour) {
+	public void computeTour(Controller c, Plan plan, Tour tour, Window w) {
 		c.setCurrentState(TourComputing.getInstance());
 		ComputeTourThread thread = new ComputeTourThread(c, plan, tour);
 		c.setThread(thread);
