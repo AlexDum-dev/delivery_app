@@ -16,6 +16,7 @@ public class Controller {
 	private Window window;
 	private State currentState;
 	private ComputeTourThread thread;
+	private ListOfCommands listOfCommands;
 
 	public Controller(Plan plan, Tour tour) {
 		this.plan = plan;
@@ -23,6 +24,7 @@ public class Controller {
 		this.currentState = InitialState.getInstance();
 		this.window = new Window(plan, tour, this);
 		this.thread = null;
+		this.listOfCommands = new ListOfCommands();
 	}
 
 	
@@ -51,8 +53,8 @@ public class Controller {
 	public void stopTour() {
 		currentState.stopTour(this);
 	}
-	public void addRequest() {
-		currentState.addRequest(this);
+	public void addRequest(String idPickup, String idDelivery, int durationPickup, int durationDelivery) {
+		currentState.addRequest(listOfCommands, plan, tour, idPickup, idDelivery, durationPickup, durationDelivery);
 	}
 	public void modifyRequest() {
 		currentState.modifyRequest(this);
@@ -61,9 +63,9 @@ public class Controller {
 		currentState.deleteRequest(this);
 	}
 	public void undo() {
-		currentState.undo(this);
+		currentState.undo(this.listOfCommands);
 	}
 	public void redo() {
-		currentState.redo(this);
+		currentState.redo(this.listOfCommands);
 	}
 }

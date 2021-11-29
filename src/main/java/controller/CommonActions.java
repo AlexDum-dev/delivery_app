@@ -3,10 +3,15 @@ package controller;
 import java.awt.Component;
 import view.Window;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import algorithm.Dijkstra;
+import delivery.model.CheckPoint;
+import delivery.model.Path;
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
 import delivery.model.XMLParser;
 import xml.ExceptionXML;
@@ -50,6 +55,7 @@ public class CommonActions {
 				    JOptionPane.ERROR_MESSAGE);
 			w.setLoadRequestButtonFalse();
 			w.setComputeTourButtonFalse();
+			w.setAddRequestFalse();
 			plan.clearPlan();
 			tour.clearPath();
 			tour.notifyObservers();
@@ -87,6 +93,7 @@ public class CommonActions {
 					"Error loading XML requests",
 				    JOptionPane.ERROR_MESSAGE);
 			w.setComputeTourButtonFalse();
+			w.setAddRequestFalse();
 			plan.clearRequests();
 			tour.clearPath();
 			tour.notifyObservers();

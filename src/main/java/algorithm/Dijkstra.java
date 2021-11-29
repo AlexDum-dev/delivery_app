@@ -58,7 +58,7 @@ public class Dijkstra {
 		return checkpoints;
 	}
 
-	private static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
+	public static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
 		// System.out.println("==================================  createPath ===========================================");
 		// System.out.println("=OriginIndex="+OriginIndex);
 		// System.out.println("=DestinationIndex="+DestinationIndex);

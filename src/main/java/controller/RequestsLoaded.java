@@ -13,6 +13,7 @@ import algorithm.tsp.TSP1;
 import delivery.model.CheckPoint;
 import delivery.model.Path;
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
 import view.Window;
 
@@ -57,4 +58,5 @@ public class RequestsLoaded implements State {
 		c.setThread(thread);
 		thread.start();
 	}
+	
 }

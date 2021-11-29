@@ -5,7 +5,11 @@ import java.awt.event.ActionListener;
 
 
 import controller.Controller;
+import delivery.model.CheckPoint;
+import delivery.model.CheckPointType;
+import delivery.model.Intersection;
 import delivery.model.Plan;
+import delivery.model.Request;
 import delivery.model.Tour;
 
 
@@ -23,6 +27,8 @@ public class Window {
 	private JButton btnLoadRequest = new JButton("Load Request");
 	private JButton btnComputeTour = new JButton("Compute Tour");
 	private JButton btnStopComputing = new JButton("Stop Computing");
+	private JButton btnAddRequestTest = new JButton("Add Request");
+
 
 
 	/**
@@ -34,6 +40,7 @@ public class Window {
 		setStopComputingButtonFalse();
 		setComputeTourButtonFalse();
 		setLoadRequestButtonFalse();
+		setAddRequestFalse();
 	}
 
 	/**
@@ -100,6 +107,17 @@ public class Window {
 		});
 		frame.getContentPane().add(btnStopComputing);
 		
+		btnAddRequestTest.setBounds(650, 12, 134, 27);
+		btnAddRequestTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test appui bouton");
+				CheckPoint pick = new CheckPoint(CheckPointType.PICKUP, p.getIntersection("25321359"),10); 
+				CheckPoint d = new CheckPoint(CheckPointType.DELIVERY, p.getIntersection("26317214"),10); 
+				c.addRequest("25321359", "26317214", 10, 11);;
+			}
+		});
+		frame.getContentPane().add(btnAddRequestTest);
+		
 		frame.setVisible(true);
 	}
 
@@ -127,10 +145,12 @@ public class Window {
 		btnStopComputing.setEnabled(false);
 	}
 	
+	public void setAddRequestFalse() {
+		btnAddRequestTest.setEnabled(false);
+	}
+	
 	public void setLoadMapButtonTrue() {
 		btnLoadMap.setEnabled(true);
-
-
 	}
 	
 	public void setLoadRequestButtonTrue() {
@@ -146,6 +166,11 @@ public class Window {
 	public void setStopComputingButtonTrue() {
 		btnStopComputing.setEnabled(true);
 	}
+	
+	public void setAddRequestTrue() {
+		btnAddRequestTest.setEnabled(true);
+	}
+
 	
 	
 	

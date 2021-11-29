@@ -55,38 +55,15 @@ public class ComputeTourThread extends Thread implements Observer {
 		window.setStopComputingButtonFalse();
 		window.setLoadMapButtonTrue();
 		window.setLoadRequestButtonTrue();
+		window.setAddRequestTrue();
 	}
 
 	@Override
 	public void update(Observable observed, Object arg) {
 		tour.clearPath();
 		
-		double mPerSec = 15000.0/3600.0;
+		tour.actualizeTime(g.getNbVertices(), tsp, listPath, tsp.getSolution(0), check, tour);
 		
-		int previous = tsp.getSolution(0);
-		int current;
-		
-		Path p;
-		for (int i=1;i<g.getNbVertices();++i) {
-			current = tsp.getSolution(i);
-			// TODO: Method
-			p = listPath.get(previous).get(current);
-			tour.addPath(p, check.get(previous));
-			LocalTime t = check.get(previous).getTime();
-			t = t.plusSeconds(check.get(previous).getDuration());
-			t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
-			check.get(current).setTime(t);
-			previous = current;
-		}
-		System.out.println(previous);
-		current = tsp.getSolution(0);
-		// TODO: Method
-		p = listPath.get(previous).get(current);
-		tour.addPath(p, check.get(previous));
-		LocalTime t = check.get(previous).getTime();
-		t = t.plusSeconds(check.get(previous).getDuration());
-		t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
-		tour.setTime(t);
 		tour.notifyObservers();
 	}
 
