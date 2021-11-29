@@ -34,7 +34,7 @@ public class MapView extends JPanel implements Observer{
 	public MapView(Plan plan, Tour tour) {
 		this.plan = plan;
 		this.tour = tour;
-		// plan.addObserver(this);
+		plan.addObserver(this);
 		tour.addObserver(this);
 		System.out.println("TEST constructeur map");
 	}
@@ -75,6 +75,11 @@ public class MapView extends JPanel implements Observer{
 		for (Path path : tour.getPath()) {
 			drawRoute ( g,  maxLat,  maxLon, path);
 		}
+		for (Path path : tour.getPath()) {
+			if(path.isActive()) {
+				drawRoute ( g,  maxLat,  maxLon, path);
+			}
+		}
 		loadRequests(g, maxLat, maxLon);
 		
 		
@@ -82,50 +87,67 @@ public class MapView extends JPanel implements Observer{
 
 	public void loadRequests(Graphics2D g, double maxLat, double maxLon) {
 		int i = 0;
+		
 		for(Request r : plan.getRequests()) {
 			Intersection p = r.getPickup().getAddress();
 			Intersection d = r.getDelivery().getAddress();
 			g.setColor(DrawAttributes.getColorRequest(i));
-			drawPoint(g, maxLat, maxLon, p, r.getPickup().getType());
+			drawPoint(g, maxLat, maxLon, p, r.getPickup().getType(),r.getPickup().isActive());
 			g.setColor(DrawAttributes.getColorRequest(i));
-			drawPoint(g, maxLat, maxLon, d, r.getDelivery().getType());
+			drawPoint(g, maxLat, maxLon, d, r.getDelivery().getType(),r.getDelivery().isActive());
 			++i;
 		}
 		
 		if (plan.getDepot()!=null) {
 			Intersection depot = plan.getDepot().getAddress();
 			g.setColor(Color.BLACK);
-			drawPoint(g , maxLat, maxLon, depot, plan.getDepot().getType());
+			drawPoint(g , maxLat, maxLon, depot, plan.getDepot().getType(),plan.getDepot().isActive());
 		}
 	}
 	
 	public void drawPoint(Graphics2D g, double maxLat, double maxLon, 
-			Intersection point, CheckPointType checkPointType) {
+			Intersection point, CheckPointType checkPointType , boolean active) {
 		int pointWidth = DrawAttributes.getPointWidth();
 		int x = weightLatitude(point.getLatitude(), maxLat, xScale); 
 		int y = weightLongitude(point.getLongitude(), maxLon, yScale);
 		int x1 = getWidth() - y - pointWidth / 2;
 		int y1 = x - pointWidth / 2;
-		g.setStroke(DrawAttributes.getStrokePoint());
+		
+		
 		switch (checkPointType) {
 		case DEPOT:
 			g.fillRoundRect(x1, y1, pointWidth, pointWidth, 5, 5);
-			g.setColor(Color.BLACK);
+			setColor(g,active);
 			g.drawRoundRect(x1, y1, pointWidth, pointWidth, 5, 5);
 			break;
 		case PICKUP:
 			g.fillRect(x1, y1, pointWidth, pointWidth);
-			g.setColor(Color.BLACK);
+			setColor(g,active);
 			g.drawRect(x1, y1, pointWidth, pointWidth);
 			break;
 		case DELIVERY:
 			g.fillOval(x1, y1, pointWidth, pointWidth);
-			g.setColor(Color.BLACK);
+			setColor(g,active);
 			g.drawOval(x1, y1, pointWidth, pointWidth);
 			break;
 		}
+		
 	}
 	
+	private void setColor(Graphics2D g, boolean active) {
+		// TODO Auto-generated method stub
+		if(active) {
+			g.setStroke(DrawAttributes.getStrokeActive());
+			g.setColor(DrawAttributes.getColorActive());
+		}else {
+			g.setStroke(DrawAttributes.getStrokePoint());
+			g.setColor(Color.BLACK);
+		}
+		
+	}
+
+
+
 	public int weightLatitude(double coord, double max, double yScale) {
 		return (int) ((max - coord) * yScale + padding);
 
@@ -137,21 +159,29 @@ public class MapView extends JPanel implements Observer{
 
 	
 	public void drawRoute(Graphics2D g, double maxLat, double maxLon,Path path) {
+		if(path.isActive()) {
+			g.setColor(DrawAttributes.getColorPathActive());
+		}else {
 			g.setColor(DrawAttributes.getColorPath());
-			g.setStroke(DrawAttributes.getStrokePath());
-			for (Segment s : path.getPath()) {
-				int x1 = weightLatitude(s.getOrigin().getLatitude(), maxLat, xScale); 
-				int y1 = weightLongitude(s.getOrigin().getLongitude(), maxLon, yScale);
-				int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
-				int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
-				g.drawLine(getWidth() - y1,x1,getWidth() -  y2,x2);
-			}
+		}
+		g.setStroke(DrawAttributes.getStrokePath());
+		for (Segment s : path.getPath()) {
+			int x1 = weightLatitude(s.getOrigin().getLatitude(), maxLat, xScale); 
+			int y1 = weightLongitude(s.getOrigin().getLongitude(), maxLon, yScale);
+			int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
+			int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
+			g.drawLine(getWidth() - y1,x1,getWidth() -  y2,x2);
+		}
+			
 	}
 	
-	
+
+
+
 	@Override
 	public void update(Observable observed, Object arg) {
 		// TODO Auto-generated method stub
+		System.out.println("MapView Update methode");
 		repaint();
 	}
 

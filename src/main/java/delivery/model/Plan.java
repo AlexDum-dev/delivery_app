@@ -28,6 +28,7 @@ public class Plan extends Observable {
 		clearRequests();
 	}
 	
+	
 	public void clearRequests() {
 		requests.clear();
 		depot = null;
@@ -106,4 +107,36 @@ public class Plan extends Observable {
 	}
 	
 
+	public Boolean equals(Plan p) {
+		
+		if (!p.getDepot().equals(this.getDepot())) {
+			return false;
+		}		
+		
+		if (intersections.size()!=p.intersections.size()) {
+			return false;
+		}
+		for (int i=0; i<intersections.size(); ++i) {
+			if (!p.intersections.get(i).equals(this.intersections.get(i))) {
+				return false;
+			}	
+		}
+		
+		if (this.requests.size()!=p.getRequests().size()) {
+			return false;
+		}
+		for (int i=0; i<requests.size(); i++) {
+			boolean found=false;
+			for (int j=0; j<requests.size(); j++) {
+				if (p.getRequests().get(i).equals(this.getRequests().get(j))) {
+					found=true;
+				}	
+			}
+			if (!found) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

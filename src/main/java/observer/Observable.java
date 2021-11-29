@@ -18,8 +18,11 @@ public class Observable {
 		if (!obs.contains(o)) obs.add(o);
 	}
 	public void notifyObservers(Object arg){
-		for (Observer o : obs) 
-			o.update(this, arg);
+		
+		for (Observer o : obs) {
+				o.update(this, arg);
+		}
+			
 	}
 	public void notifyObservers(){
 		notifyObservers(null);

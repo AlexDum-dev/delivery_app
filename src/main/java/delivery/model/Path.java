@@ -6,6 +6,8 @@ public class Path {
 	private List<Segment> path;
 	private double length;
 	private Intersection destination;
+	private boolean active;
+	
 	
 	
 	public Path(List<Segment> path) {
@@ -32,6 +34,12 @@ public class Path {
 	}
 	public void setDestination(Intersection destination) {
 		this.destination = destination;
+	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	public boolean equals(Path p) {
