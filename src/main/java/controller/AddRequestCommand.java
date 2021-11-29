@@ -31,7 +31,7 @@ public class AddRequestCommand implements Command {
 		this.durationDelivery = durationDelivery;	
 	}
 	
-	public AddRequestCommand(Tour tour, Plan plan, Request request) {
+	public AddRequestCommand(Plan plan, Tour tour, Request request) {
 		this.tour = tour;
 		this.plan = plan;
 		this.request = request;

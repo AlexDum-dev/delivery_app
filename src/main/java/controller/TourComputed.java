@@ -41,4 +41,9 @@ public class TourComputed implements State {
 			int durationDelivery) {
 		l.add(new AddRequestCommand(tour, plan, idPickup, idDelivery, durationPickup, durationDelivery));
 	}
+	
+	@Override
+	public void deleteRequest(ListOfCommands l, Plan plan, Tour tour, Request request) {
+		l.add(new ReverseCommand(new AddRequestCommand(plan, tour, request)));
+	}
 }
