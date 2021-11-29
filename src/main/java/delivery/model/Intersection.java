@@ -59,13 +59,24 @@ public class Intersection {
 		this.segments.add(segment);
 	}
 
-	public Boolean equals(Intersection i) {
-		// TODO Test segments
-		if (i.getId().equals(this.getId()) 
-				&& i.getLatitude() == this.getLatitude() 
-				&& i.getLongitude() == this.getLongitude()){
-			return true;
-		}
+	public boolean equals(Object i) {
+		// If the object is compared with itself then return true 
+        if (i == this) {
+            return true;
+        }
+        
+        if (!(i instanceof Intersection)) {
+            return false;
+        }
+         
+        Intersection tmpIntersection = (Intersection) i;
+        
+        if (tmpIntersection.getId().equals(this.getId())
+        		&& tmpIntersection.getLatitude() == this.getLatitude()
+        		&& tmpIntersection.getLongitude() == this.getLongitude()
+        		&& tmpIntersection.getIndex() == this.getIndex()) {
+        	return true;
+        }
 		return false;
 	}
 }
