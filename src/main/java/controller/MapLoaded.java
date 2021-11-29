@@ -4,6 +4,7 @@ import java.awt.Component;
 
 import delivery.model.Plan;
 import delivery.model.Tour;
+import view.Window;
 
 /**
  * MapLoaded State
@@ -26,8 +27,11 @@ public class MapLoaded implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadMap(c, plan, tour, frame);
+	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadMap(c, plan, tour, frame, w);
+		/*w.setLoadRequestButton();
+		w.setComputeTourButton();
+		w.setComputeTourButton();*/
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.Component;
+import view.Window;
 import java.io.File;
 
 import javax.swing.JOptionPane;
@@ -30,7 +31,7 @@ public class CommonActions {
 	 * @param tour 
 	 * @param frame 
 	 */
-	public static void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
+	public static void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
 		System.out.println("Loading Map...");
 		try {
 			File file = XMLfileOpener.getInstance().open();

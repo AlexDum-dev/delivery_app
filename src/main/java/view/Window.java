@@ -3,13 +3,14 @@ package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import controller.Controller;
 import delivery.model.Plan;
 import delivery.model.Tour;
+
+
+import javax.swing.*;
+import java.awt.*;
 
 public class Window {
 
@@ -18,6 +19,10 @@ public class Window {
 	private CheckPointView checkPointView;
 	private MapView mapView;
 	private MapInfoView mapInfoView;
+	private JButton btnLoadMap = new JButton("Load Map");
+	private JButton btnLoadRequest = new JButton("Load Request");
+	private JButton btnComputeTour = new JButton("Compute Tour");
+
 
 	/**
 	 * Create the application.
@@ -55,7 +60,7 @@ public class Window {
 		checkPointView.setBounds(746, 389, 300, 300);
 		frame.getContentPane().add(checkPointView);
 		
-		JButton btnLoadMap = new JButton("Load Map");
+		
 		btnLoadMap.setBounds(12, 12, 134, 27);
 		btnLoadMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -65,7 +70,7 @@ public class Window {
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(btnLoadMap);
 		
-		JButton btnLoadRequest = new JButton("Load Request");
+		
 		btnLoadRequest.setBounds(176, 12, 134, 27);
 		btnLoadRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -74,11 +79,14 @@ public class Window {
 		});
 		frame.getContentPane().add(btnLoadRequest);
 		
-		JButton btnComputeTour = new JButton("Compute Tour");
 		btnComputeTour.setBounds(334, 12, 134, 27);
 		btnComputeTour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				btnLoadMap.setEnabled(false);
+				btnLoadRequest.setEnabled(false);
 				c.computeTour();
+				btnLoadMap.setEnabled(true);
+				btnLoadRequest.setEnabled(true);
 			}
 		});
 		frame.getContentPane().add(btnComputeTour);
@@ -89,4 +97,24 @@ public class Window {
 	public JFrame getFrame() {
 		return frame;
 	}
+	
+	public void setLoadMapButton() {
+		btnLoadMap.setEnabled(false);
+		btnLoadMap.setBackground(Color.RED);
+
+	}
+	
+	public void setLoadRequestButton() {
+		btnLoadRequest.setEnabled(false);
+		
+
+	}
+	public void setComputeTourButton() {
+		btnComputeTour.setEnabled(false);
+		
+
+	}
+	
+	
+	
 }
