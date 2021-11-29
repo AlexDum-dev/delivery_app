@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import algorithm.tsp.TSP;
 import observer.Observable;
 
 public class Tour extends Observable {
@@ -33,6 +34,56 @@ public class Tour extends Observable {
 		//erase the last path
 		
 		this.path.remove(this.path.size() - 1); //remove last path
+	}
+	
+	public LocalTime actualizeTime(int nbVertices, TSP tsp, List<? extends List<Path>> listPath, int previous,
+			List<CheckPoint> check, Tour tour) {
+		int current;
+		Path p;
+		double mPerSec = 15000.0/3600.0;
+		
+		for (int i=1;i<nbVertices;++i) {
+			//System.out.println(previous);
+			current = tsp.getSolution(i);
+			// TODO: Method
+			p = listPath.get(previous).get(current);
+			tour.addPath(p, check.get(previous));
+			LocalTime t = check.get(previous).getTime();
+			t = t.plusSeconds(check.get(previous).getDuration());
+			t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
+			check.get(current).setTime(t);
+			previous = current;
+		}
+		
+		System.out.println(previous);
+		current = tsp.getSolution(0);
+		// TODO: Method to compute the time
+		p = listPath.get(previous).get(current);
+		tour.addPath(p, check.get(previous));
+		LocalTime t = check.get(previous).getTime();
+		t = t.plusSeconds(check.get(previous).getDuration());
+		t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
+		tour.setTime(t);
+		
+		return t;
+	}
+	
+	public void actualizeTime() {
+		
+		double mPerSec = 15000.0/3600.0;
+		
+		for(int i = 1; i<this.getCheckPoint().size();i++) {
+			LocalTime t = this.getCheckPoint().get(i-1).getTime();
+			t = t.plusSeconds(this.getCheckPoint().get(i-1).getDuration());
+			t = t.plusNanos((long) (this.getPath().get(i-1).getLength()/mPerSec)*1000000000);
+			this.getCheckPoint().get(i).setTime(t);
+		}
+		
+		int indexLast = this.getCheckPoint().size() -1;
+		LocalTime t = this.getCheckPoint().get(indexLast).getTime();
+		t = t.plusSeconds(this.getCheckPoint().get(indexLast).getDuration());
+		t = t.plusNanos((long) (this.getPath().get(indexLast).getLength()/mPerSec)*1000000000);
+		this.setTime(t);
 	}
 	
 	public CheckPoint removeLastCheckPoint() {

@@ -100,6 +100,7 @@ public class CommonActions {
 	 */
 	public static void addRequest(Controller c, Plan plan, Tour tour) {
 		Request req = plan.getRequests().get(plan.getRequests().size() - 1);
+		System.out.println("*****************[addRequest] id du pickup : "+req.getPickup().getAddress().getId()+" id du deliv: "+req.getDelivery().getAddress().getId());
 		tour.removeLastPath();
 		CheckPoint lastCheckPoint = tour.removeLastCheckPoint();
 		
@@ -122,6 +123,7 @@ public class CommonActions {
 		tour.addPath(pathFromPickupToDelivery, req.getPickup());
 		tour.addPath(pathFromDeliveryToDepot, req.getDelivery());
 		
+		tour.actualizeTime();
 		
 		tour.notifyObservers();
 	}

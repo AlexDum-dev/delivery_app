@@ -61,6 +61,9 @@ public class RequestsLoaded implements State {
 		
 		tour.clearPath();
 		
+		tour.actualizeTime(g.getNbVertices(), tsp, listPath, tsp.getSolution(0), check, tour);
+		
+		/*
 		double mPerSec = 15000.0/3600.0;
 		
 		int previous = tsp.getSolution(0);
@@ -81,15 +84,17 @@ public class RequestsLoaded implements State {
 		}
 		System.out.println(previous);
 		current = tsp.getSolution(0);
-		// TODO: Method
+		// TODO: Method to compute the time
 		p = listPath.get(previous).get(current);
 		tour.addPath(p, check.get(previous));
 		LocalTime t = check.get(previous).getTime();
 		t = t.plusSeconds(check.get(previous).getDuration());
 		t = t.plusNanos((long) (p.getLength()/mPerSec)*1000000000);
 		tour.setTime(t);
+		*/
 		tour.notifyObservers();
 		c.setCurrentState(TourComputed.getInstance());
+	
 	}
 	
 	@Override
