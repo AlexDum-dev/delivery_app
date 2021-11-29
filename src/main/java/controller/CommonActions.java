@@ -39,6 +39,7 @@ public class CommonActions {
 			tour.clearPath();
 			tour.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
+			w.setLoadRequestButtonTrue();
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -47,6 +48,8 @@ public class CommonActions {
 					e.getMessage(), 
 					"Error loading XML map",
 				    JOptionPane.ERROR_MESSAGE);
+			w.setLoadRequestButtonFalse();
+			w.setComputeTourButtonFalse();
 			plan.clearPlan();
 			tour.clearPath();
 			tour.notifyObservers();
@@ -63,7 +66,7 @@ public class CommonActions {
 	 * @param tour 
 	 * @param frame 
 	 */
-	public static void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
+	public static void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
 		System.out.println("Loading Requests...");
 		try {
 			File file = XMLfileOpener.getInstance().open();
@@ -72,6 +75,9 @@ public class CommonActions {
 			tour.clearPath();
 			tour.notifyObservers();
 			c.setCurrentState(RequestsLoaded.getInstance());
+			w.setComputeTourButtonTrue();
+			
+			
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -80,6 +86,7 @@ public class CommonActions {
 					e.getMessage(), 
 					"Error loading XML requests",
 				    JOptionPane.ERROR_MESSAGE);
+			w.setComputeTourButtonFalse();
 			plan.clearRequests();
 			tour.clearPath();
 			tour.notifyObservers();

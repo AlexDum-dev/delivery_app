@@ -43,7 +43,7 @@ public class Controller {
 	}
 	
 	public void loadRequest() {
-		currentState.loadRequest(this, plan, tour, window.getFrame());
+		currentState.loadRequest(this, plan, tour, window.getFrame(), window);
 	}
 	public void computeTour() {
 		currentState.computeTour(this, plan, tour, window);

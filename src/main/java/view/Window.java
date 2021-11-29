@@ -22,6 +22,7 @@ public class Window {
 	private JButton btnLoadMap = new JButton("Load Map");
 	private JButton btnLoadRequest = new JButton("Load Request");
 	private JButton btnComputeTour = new JButton("Compute Tour");
+	private JButton btnStopComputing = new JButton("Stop Computing");
 
 
 	/**
@@ -30,6 +31,9 @@ public class Window {
 	 */
 	public Window(Plan p, Tour t, Controller c) {
 		initialize(p, t, c);
+		setStopComputingButtonFalse();
+		setComputeTourButtonFalse();
+		setLoadRequestButtonFalse();
 	}
 
 	/**
@@ -82,16 +86,12 @@ public class Window {
 		btnComputeTour.setBounds(334, 12, 134, 27);
 		btnComputeTour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				btnLoadMap.setEnabled(false);
-				btnLoadRequest.setEnabled(false);
 				c.computeTour();
-				btnLoadMap.setEnabled(true);
-				btnLoadRequest.setEnabled(true);
 			}
 		});
 		frame.getContentPane().add(btnComputeTour);
 
-		JButton btnStopComputing = new JButton("Stop Computing");
+		
 		btnStopComputing.setBounds(492, 12, 134, 27);
 		btnStopComputing.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -107,21 +107,44 @@ public class Window {
 		return frame;
 	}
 	
-	public void setLoadMapButton() {
+	public void setLoadMapButtonFalse() {
 		btnLoadMap.setEnabled(false);
-		btnLoadMap.setBackground(Color.RED);
+
 
 	}
 	
-	public void setLoadRequestButton() {
+	public void setLoadRequestButtonFalse() {
 		btnLoadRequest.setEnabled(false);
 		
 
 	}
-	public void setComputeTourButton() {
+	public void setComputeTourButtonFalse() {
 		btnComputeTour.setEnabled(false);
 		
 
+	}
+	public void setStopComputingButtonFalse() {
+		btnStopComputing.setEnabled(false);
+	}
+	
+	public void setLoadMapButtonTrue() {
+		btnLoadMap.setEnabled(true);
+
+
+	}
+	
+	public void setLoadRequestButtonTrue() {
+		btnLoadRequest.setEnabled(true);
+		
+
+	}
+	public void setComputeTourButtonTrue() {
+		btnComputeTour.setEnabled(true);
+		
+
+	}
+	public void setStopComputingButtonTrue() {
+		btnStopComputing.setEnabled(true);
 	}
 	
 	

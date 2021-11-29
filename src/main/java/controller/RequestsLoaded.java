@@ -43,14 +43,17 @@ public class RequestsLoaded implements State {
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadRequest(c, plan, tour, frame);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadRequest(c, plan, tour, frame, w);
 	}
 	
 	@Override
 	public void computeTour(Controller c, Plan plan, Tour tour, Window w) {
+		w.setLoadMapButtonFalse();
+		w.setLoadRequestButtonFalse();
+		w.setStopComputingButtonTrue();
 		c.setCurrentState(TourComputing.getInstance());
-		ComputeTourThread thread = new ComputeTourThread(c, plan, tour);
+		ComputeTourThread thread = new ComputeTourThread(c, plan, tour, w);
 		c.setThread(thread);
 		thread.start();
 	}

@@ -35,7 +35,7 @@ public class MapLoaded implements State {
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadRequest(c, plan, tour, frame);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadRequest(c, plan, tour, frame, w);
 	}
 }

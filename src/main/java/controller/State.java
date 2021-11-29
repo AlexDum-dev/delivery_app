@@ -14,7 +14,7 @@ import view.Window;
  */
 public interface State {
 	default void loadMap(Controller c, Plan p, Tour t, Component frame, Window w) {}
-	default void loadRequest(Controller c, Plan p, Tour t, Component frame) {}
+	default void loadRequest(Controller c, Plan p, Tour t, Component frame, Window w) {}
 	default void computeTour(Controller c, Plan p, Tour t, Window w) {}
 	default void stopTour(Controller c) {}
 	default void addRequest(Controller c) {}

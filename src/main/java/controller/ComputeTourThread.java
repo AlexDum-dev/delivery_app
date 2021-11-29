@@ -14,6 +14,7 @@ import delivery.model.Plan;
 import delivery.model.Tour;
 import observer.Observable;
 import observer.Observer;
+import view.Window;
 
 /**
  * Thread that computes the minimal tour
@@ -30,12 +31,14 @@ public class ComputeTourThread extends Thread implements Observer {
 	private List<? extends List<Path>> listPath;
 	private List<CheckPoint> check;
 	private Controller controller;
+	private Window window;
 	
-	public ComputeTourThread(Controller c, Plan p, Tour t) {
+	public ComputeTourThread(Controller c, Plan p, Tour t, Window w) {
 		plan = p;
 		tour = t;
 		this.controller = c;
 		tsp = new TSP3();
+		this.window=w;
 	}
 
 	public void run(){
@@ -49,6 +52,9 @@ public class ComputeTourThread extends Thread implements Observer {
 		tsp.addObserver(this);
 		tsp.searchSolution(20000, g);
 		controller.setCurrentState(TourComputed.getInstance());
+		window.setStopComputingButtonFalse();
+		window.setLoadMapButtonTrue();
+		window.setLoadRequestButtonTrue();
 	}
 
 	@Override
