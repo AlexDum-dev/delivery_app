@@ -3,9 +3,6 @@ package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import controller.Controller;
 import delivery.model.CheckPoint;
@@ -15,6 +12,10 @@ import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Tour;
 
+
+import javax.swing.*;
+import java.awt.*;
+
 public class Window {
 
 	private JFrame frame;
@@ -22,6 +23,13 @@ public class Window {
 	private CheckPointView checkPointView;
 	private MapView mapView;
 	private MapInfoView mapInfoView;
+	private JButton btnLoadMap = new JButton("Load Map");
+	private JButton btnLoadRequest = new JButton("Load Request");
+	private JButton btnComputeTour = new JButton("Compute Tour");
+	private JButton btnStopComputing = new JButton("Stop Computing");
+	private JButton btnAddRequestTest = new JButton("Add Request");
+
+
 
 	/**
 	 * Create the application.
@@ -29,6 +37,10 @@ public class Window {
 	 */
 	public Window(Plan p, Tour t, Controller c) {
 		initialize(p, t, c);
+		setStopComputingButtonFalse();
+		setComputeTourButtonFalse();
+		setLoadRequestButtonFalse();
+		setAddRequestFalse();
 	}
 
 	/**
@@ -59,7 +71,7 @@ public class Window {
 		checkPointView.setBounds(746, 389, 300, 300);
 		frame.getContentPane().add(checkPointView);
 		
-		JButton btnLoadMap = new JButton("Load Map");
+		
 		btnLoadMap.setBounds(12, 12, 134, 27);
 		btnLoadMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -69,7 +81,7 @@ public class Window {
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(btnLoadMap);
 		
-		JButton btnLoadRequest = new JButton("Load Request");
+		
 		btnLoadRequest.setBounds(176, 12, 134, 27);
 		btnLoadRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -78,7 +90,6 @@ public class Window {
 		});
 		frame.getContentPane().add(btnLoadRequest);
 		
-		JButton btnComputeTour = new JButton("Compute Tour");
 		btnComputeTour.setBounds(334, 12, 134, 27);
 		btnComputeTour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -86,9 +97,17 @@ public class Window {
 			}
 		});
 		frame.getContentPane().add(btnComputeTour);
+
 		
-		JButton btnAddRequestTest = new JButton("Add Request");
-		btnAddRequestTest.setBounds(530, 12, 134, 27);
+		btnStopComputing.setBounds(492, 12, 134, 27);
+		btnStopComputing.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				c.stopTour();
+			}
+		});
+		frame.getContentPane().add(btnStopComputing);
+		
+		btnAddRequestTest.setBounds(650, 12, 134, 27);
 		btnAddRequestTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton");
@@ -105,4 +124,54 @@ public class Window {
 	public JFrame getFrame() {
 		return frame;
 	}
+	
+	public void setLoadMapButtonFalse() {
+		btnLoadMap.setEnabled(false);
+
+
+	}
+	
+	public void setLoadRequestButtonFalse() {
+		btnLoadRequest.setEnabled(false);
+		
+
+	}
+	public void setComputeTourButtonFalse() {
+		btnComputeTour.setEnabled(false);
+		
+
+	}
+	public void setStopComputingButtonFalse() {
+		btnStopComputing.setEnabled(false);
+	}
+	
+	public void setAddRequestFalse() {
+		btnAddRequestTest.setEnabled(false);
+	}
+	
+	public void setLoadMapButtonTrue() {
+		btnLoadMap.setEnabled(true);
+	}
+	
+	public void setLoadRequestButtonTrue() {
+		btnLoadRequest.setEnabled(true);
+		
+
+	}
+	public void setComputeTourButtonTrue() {
+		btnComputeTour.setEnabled(true);
+		
+
+	}
+	public void setStopComputingButtonTrue() {
+		btnStopComputing.setEnabled(true);
+	}
+	
+	public void setAddRequestTrue() {
+		btnAddRequestTest.setEnabled(true);
+	}
+
+	
+	
+	
 }

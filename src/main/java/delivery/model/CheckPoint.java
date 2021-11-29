@@ -72,11 +72,23 @@ public class CheckPoint {
 		this.index = index;
 	}
 	
-	public Boolean equals(CheckPoint c) {
-		if (c.getType().equals(this.getType()) 
-				&& c.getAddress().equals(this.getAddress()) 
-				&& ((c.getTime() == null && this.getTime() == null) || c.getTime().equals(this.getTime()))
-				&& c.getDuration() == this.getDuration()){
+	public boolean equals(Object c) {
+		// If the object is compared with itself then return true 
+        if (c == this) {
+            return true;
+        }
+        
+        if (!(c instanceof CheckPoint)) {
+            return false;
+        }
+         
+        CheckPoint tmpCheckpoint = (CheckPoint) c;
+		
+		if (tmpCheckpoint.getType().equals(this.getType()) 
+				&& tmpCheckpoint.getAddress().equals(this.getAddress()) 
+				&& ((tmpCheckpoint.getTime() == null && this.getTime() == null) || tmpCheckpoint.getTime().equals(this.getTime()))
+				&& tmpCheckpoint.getDuration() == this.getDuration()
+				&& tmpCheckpoint.getIndex() == this.getIndex()){
 			return true;
 		}
 		return false;

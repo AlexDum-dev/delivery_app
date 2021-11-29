@@ -15,6 +15,8 @@ import delivery.model.Path;
 import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Tour;
+import view.Window;
+
 
 /**
  * RequestsLoaded State
@@ -37,35 +39,24 @@ public class RequestsLoaded implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadMap(c, plan, tour, frame);
+	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadMap(c, plan, tour, frame, w);
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadRequest(c, plan, tour, frame);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadRequest(c, plan, tour, frame, w);
 	}
 	
 	@Override
-	public void computeTour(Controller c, Plan plan, Tour tour) {
-		//TODO: Compute the tour
-		DijkstraResult result = Dijkstra.computePaths(plan.getIntersections(), 
-				plan.getRequests(), plan.getDepot());
-		
-		List<? extends List<Path>> listPath = result.getPaths();
-		List<CheckPoint> check = result.getCheckpoints();
-
-		DeliveryGraph g = new DeliveryGraph(listPath, check);
-		TSP tsp = new TSP1();
-		tsp.searchSolution(20000, g);
-		
-		tour.clearPath();
-		
-		tour.actualizeTime(g.getNbVertices(), tsp, listPath, tsp.getSolution(0), check, tour);
-		
-		tour.notifyObservers();
-		c.setCurrentState(TourComputed.getInstance());
-	
+	public void computeTour(Controller c, Plan plan, Tour tour, Window w) {
+		w.setLoadMapButtonFalse();
+		w.setLoadRequestButtonFalse();
+		w.setStopComputingButtonTrue();
+		c.setCurrentState(TourComputing.getInstance());
+		ComputeTourThread thread = new ComputeTourThread(c, plan, tour, w);
+		c.setThread(thread);
+		thread.start();
 	}
 	
 }

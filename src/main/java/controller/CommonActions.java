@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.Component;
+import view.Window;
 import java.io.File;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class CommonActions {
 	 * @param tour 
 	 * @param frame 
 	 */
-	public static void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
+	public static void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
 		System.out.println("Loading Map...");
 		try {
 			File file = XMLfileOpener.getInstance().open();
@@ -43,14 +44,18 @@ public class CommonActions {
 			tour.clearPath();
 			tour.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
+			w.setLoadRequestButtonTrue();
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(frame, 
-					"Invalid XML file.", 
-					"Error loading map",
+					e.getMessage(), 
+					"Error loading XML map",
 				    JOptionPane.ERROR_MESSAGE);
+			w.setLoadRequestButtonFalse();
+			w.setComputeTourButtonFalse();
+			w.setAddRequestFalse();
 			plan.clearPlan();
 			tour.clearPath();
 			tour.notifyObservers();
@@ -67,7 +72,7 @@ public class CommonActions {
 	 * @param tour 
 	 * @param frame 
 	 */
-	public static void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
+	public static void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
 		System.out.println("Loading Requests...");
 		try {
 			File file = XMLfileOpener.getInstance().open();
@@ -76,14 +81,19 @@ public class CommonActions {
 			tour.clearPath();
 			tour.notifyObservers();
 			c.setCurrentState(RequestsLoaded.getInstance());
+			w.setComputeTourButtonTrue();
+			
+			
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(frame, 
-					"Invalid XML file.", 
-					"Error loading requests",
+					e.getMessage(), 
+					"Error loading XML requests",
 				    JOptionPane.ERROR_MESSAGE);
+			w.setComputeTourButtonFalse();
+			w.setAddRequestFalse();
 			plan.clearRequests();
 			tour.clearPath();
 			tour.notifyObservers();

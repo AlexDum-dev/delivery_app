@@ -34,16 +34,26 @@ public class Path {
 		this.destination = destination;
 	}
 	
-	public boolean equals(Path p) {
-		if (!this.getDestination().equals(p.getDestination())) {
+	public boolean equals(Object p) {
+		// If the object is compared with itself then return true 
+        if (p == this) {
+            return true;
+        }
+        
+        if (!(p instanceof Path)) {
+            return false;
+        }
+         
+        Path tmpPath = (Path) p;
+		if (!this.getDestination().equals(tmpPath.getDestination())) {
 			return false;
 		}
 		
-		if (!(this.getPath().size() == p.getPath().size())) {
+		if (!(this.getPath().size() == tmpPath.getPath().size())) {
 			return false;
 		}
 		for (int i = 0; i<this.getPath().size(); i++) {
-			if (!this.getPath().get(i).equals(p.getPath().get(i))) {
+			if (!this.getPath().get(i).equals(tmpPath.getPath().get(i))) {
 				return false;
 			}
 		}		

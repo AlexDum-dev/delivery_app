@@ -10,6 +10,7 @@ import delivery.model.Path;
 import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Tour;
+import view.Window;
 
 /**
  * MapLoaded State
@@ -32,13 +33,16 @@ public class MapLoaded implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadMap(c, plan, tour, frame);
+	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadMap(c, plan, tour, frame, w);
+		/*w.setLoadRequestButton();
+		w.setComputeTourButton();
+		w.setComputeTourButton();*/
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame) {
-		CommonActions.loadRequest(c, plan, tour, frame);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
+		CommonActions.loadRequest(c, plan, tour, frame, w);
 	}
 	
 }
