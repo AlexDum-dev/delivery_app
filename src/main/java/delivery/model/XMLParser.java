@@ -3,7 +3,8 @@ package delivery.model;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,7 +27,8 @@ public class XMLParser {
 		
 	}
 	
-	private static Document parse(File file) throws ParserConfigurationException, IOException, SAXException {
+	private static Document parse(File file) 
+			throws ParserConfigurationException, IOException, SAXException {
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    factory.setIgnoringElementContentWhitespace(true);
 	    DocumentBuilder builder = factory.newDocumentBuilder();
@@ -40,17 +42,15 @@ public class XMLParser {
 	 * 
 	 * @param f the XML file to load
 	 * @param p the plan to feed
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws NumberFormatException
 	 * @throws XMLParserException 
+	 * @throws IOException
 	 */
-	public static void loadPlan(File f, Plan p) throws XMLParserException {
+	public static void loadPlan(File f, Plan p) 
+			throws XMLParserException, IOException {
 		Document xmlDocument;
 		try {
 			xmlDocument = XMLParser.parse(f);
-		} catch (ParserConfigurationException | IOException | SAXException e) {
+		} catch (ParserConfigurationException | SAXException e) {
 			throw new XMLParserException("Not a valid XML file.");
 		}
 		p.clearPlan();
@@ -69,7 +69,6 @@ public class XMLParser {
 	 * 
 	 * @param xmlDocument xml document to load
 	 * @param p the plan to feed
-	 * @throws IOException
 	 * @throws XMLParserException 
 	 */
 	private static void loadSegments(Document xmlDocument, 
@@ -117,12 +116,12 @@ public class XMLParser {
 	 * 
 	 * @param xmlDocument the document to load
 	 * @param p the plan to feed
-	 * @throws IOException
 	 * @throws XMLParserException 
 	 */
 	private static void loadIntersections(Document xmlDocument, Plan p)
 			throws XMLParserException {
 		NodeList inter = xmlDocument.getElementsByTagName("intersection");
+		Set<String> inter_set = new TreeSet<String>();
 		for (int i=0; i<inter.getLength(); ++i) {
 			Node child = inter.item(i);
 			NamedNodeMap attr = child.getAttributes();
@@ -148,6 +147,11 @@ public class XMLParser {
 				throw new XMLParserException("XML file not correctly formatted: "+
 						"Invalid Longitude.");
 			}
+			if (inter_set.contains(id)) {
+				throw new XMLParserException("XML file not correctly formatted: "+
+						"Duplicate Intersection.");
+			}
+			inter_set.add(id);
 			p.addIntersection(new Intersection(id, lat, lon));
 		}
 	}
@@ -158,12 +162,14 @@ public class XMLParser {
 	 * @param f the XML file to load
 	 * @param p the plan to feed
 	 * @throws XMLParserException 
+	 * @throws IOException 
 	 */
-	public static void loadRequests(File f, Plan p) throws XMLParserException{
+	public static void loadRequests(File f, Plan p) 
+			throws XMLParserException, IOException{
 		Document xmlDocument;
 		try {
 			xmlDocument = XMLParser.parse(f);
-		} catch (ParserConfigurationException | IOException | SAXException e) {
+		} catch (ParserConfigurationException | SAXException e) {
 			throw new XMLParserException("Not a valid XML file.");
 		}
 		p.clearRequests();
@@ -243,7 +249,6 @@ public class XMLParser {
 	 * @param xmlDocument xml document to load
 	 * @param p the plan to feed
 	 * @throws XMLParserException
-	 * @throws NumberFormatException
 	 */
 	private static void loadDepot(Document xmlDocument, Plan p)
 			throws XMLParserException{
