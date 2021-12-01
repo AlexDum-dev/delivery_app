@@ -28,6 +28,8 @@ public class Window {
 	private JButton btnComputeTour = new JButton("Compute Tour");
 	private JButton btnStopComputing = new JButton("Stop Computing");
 	private JButton btnAddRequestTest = new JButton("Add Request");
+	private JLabel message1=new JLabel("Optimization in progress...");
+	private JLabel message2=new JLabel("Tour computed");
 
 
 
@@ -62,7 +64,7 @@ public class Window {
 		requestView = new RequestView(p);
 		requestView.setBounds(746, 49, 300, 200);
 		frame.getContentPane().add(requestView);
-
+		
 		mapInfoView = new MapInfoView(p);  
 		mapInfoView.setBounds(746,259,300,120);
 		frame.getContentPane().add(mapInfoView);
@@ -117,12 +119,32 @@ public class Window {
 			}
 		});
 		frame.getContentPane().add(btnAddRequestTest);
+		
+		
+		message1.setBounds(746, 700, 300, 30);
+		frame.getContentPane().add(message1);
+		setMessageVisible(message1, false);
+		
+		
+		message2.setBounds(746, 700, 300, 30);
+		frame.getContentPane().add(message2);
+		setMessageVisible(message2, false);
+		
+		
 				
 		frame.setVisible(true);
 	}
 
 	public JFrame getFrame() {
 		return frame;
+	}
+	
+	public JLabel getMessage1() {
+		return message1;
+	}
+	
+	public JLabel getMessage2() {
+		return message2;
 	}
 	
 	public void setLoadMapButtonFalse() {
@@ -170,6 +192,12 @@ public class Window {
 	public void setAddRequestTrue() {
 		btnAddRequestTest.setEnabled(true);
 	}
+	
+	
+	public void setMessageVisible(JLabel message, boolean visible) {
+		message.setVisible(visible);
+	}
+
 
 	
 	
