@@ -45,6 +45,7 @@ public class CommonActions {
 			tour.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
 			w.setLoadRequestButtonTrue();
+			w.getMapView().zoomOut();
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -82,7 +83,7 @@ public class CommonActions {
 			tour.notifyObservers();
 			c.setCurrentState(RequestsLoaded.getInstance());
 			w.setComputeTourButtonTrue();
-			
+			w.getMapView().zoomOut();
 			
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
@@ -99,6 +100,7 @@ public class CommonActions {
 			tour.notifyObservers();
 			plan.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
+			w.getMapView().zoomOut();
 		}
 	}
 }
