@@ -51,7 +51,6 @@ public class AddRequestCommand implements Command {
 		plan.notifyObservers();
 		
 		Request req = plan.getRequests().get(plan.getRequests().size() - 1);
-		System.out.println("*****************[addRequest] id du pickup : "+req.getPickup().getAddress().getId()+" id du deliv: "+req.getDelivery().getAddress().getId());
 		tour.removeLastPath();
 		CheckPoint lastCheckPoint = tour.removeLastCheckPoint();
 		
@@ -86,7 +85,6 @@ public class AddRequestCommand implements Command {
 		
 		int index = 0;
 		for(int i = 1; i < tour.getCheckPoint().size() ; i++) {
-			System.out.println("CheckPoint : "+tour.getCheckPoint().get(i).getAddress().getId());
 			if(tour.getCheckPoint().get(i).getAddress().getId().equals(this.idPickup)){
 				index = tour.getCheckPoint().get(i).getIndex();
 				tour.actualizeTour(tour.getCheckPoint().get(i).getIndex());
