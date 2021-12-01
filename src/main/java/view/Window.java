@@ -28,6 +28,9 @@ public class Window {
 	private JButton btnComputeTour = new JButton("Compute Tour");
 	private JButton btnStopComputing = new JButton("Stop Computing");
 	private JButton btnAddRequestTest = new JButton("Add Request");
+	private JButton btnDeleteRequestTest = new JButton("Delete Request");
+	private CheckPoint pick;
+	private CheckPoint d;
 
 
 
@@ -107,16 +110,26 @@ public class Window {
 		});
 		frame.getContentPane().add(btnStopComputing);
 		
+		
 		btnAddRequestTest.setBounds(650, 12, 134, 27);
 		btnAddRequestTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton");
-				CheckPoint pick = new CheckPoint(CheckPointType.PICKUP, p.getIntersection("25321359"),10); 
-				CheckPoint d = new CheckPoint(CheckPointType.DELIVERY, p.getIntersection("26317214"),10); 
 				c.addRequest("25321359", "26317214", 10, 11);
 			}
 		});
 		frame.getContentPane().add(btnAddRequestTest);
+		
+		btnDeleteRequestTest.setBounds(850, 12, 134, 27);
+		btnDeleteRequestTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test appui bouton delete");
+				c.deleteRequest("25321359", "26317214");
+			}
+		});
+		frame.getContentPane().add(btnDeleteRequestTest);
+		
+		
 				
 		frame.setVisible(true);
 	}

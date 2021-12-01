@@ -18,7 +18,6 @@ public class AddRequestCommand implements Command {
 	private String idDelivery;
 	private int durationPickup;
 	private int durationDelivery;
-	private Request request;
 	
 	
 	public AddRequestCommand(Tour tour, Plan plan, String idPickup, String idDelivery, int durationPickup, int durationDelivery) {
@@ -31,10 +30,11 @@ public class AddRequestCommand implements Command {
 		this.durationDelivery = durationDelivery;	
 	}
 	
-	public AddRequestCommand(Plan plan, Tour tour, Request request) {
+	public AddRequestCommand(Plan plan, Tour tour, String idPickup, String idDelivery) {
 		this.tour = tour;
 		this.plan = plan;
-		this.request = request;
+		this.idPickup = idPickup;
+		this.idDelivery = idDelivery;
 		
 	}
 	
@@ -78,6 +78,7 @@ public class AddRequestCommand implements Command {
 
 	@Override
 	public void undoCommand() {
+		System.out.println("Dans le undo command");
 		//Get checkpoint avant pickup et after et reconnect
 		//same for delivery
 		CheckPoint beforePickup = null;
@@ -87,21 +88,40 @@ public class AddRequestCommand implements Command {
 		int pathPickupIndex = 0;
 		int pathDeliveryIndex = 0;
 		for(int i = 1; i < tour.getCheckPoint().size() ; i++) {
-			if(tour.getCheckPoint().get(i).equals(request.getPickup())){
+			System.out.println("CheckPoint : "+tour.getCheckPoint().get(i).getAddress().getId());
+			if(tour.getCheckPoint().get(i).getAddress().getId().equals(this.idPickup)){
 				beforePickup = tour.getCheckPoint().get(i-1);
 				afterPickup = tour.getCheckPoint().get(i+1);
-				tour.getPath().remove(i-1);
-				tour.getPath().remove(i);
 				pathPickupIndex = i-1;
 			}
 			
-			if(tour.getCheckPoint().get(i).equals(request.getDelivery())){
+			if(tour.getCheckPoint().get(i).getAddress().getId().equals(this.idDelivery)){
 				beforeDelivery = tour.getCheckPoint().get(i-1);
-				afterDelivery = tour.getCheckPoint().get(i+1);
+				
+				if(i == tour.getCheckPoint().size() - 1) {
+					afterDelivery = this.plan.getDepot();
+				} else {
+					afterDelivery = tour.getCheckPoint().get(i+1);
+				}
+				
+	
 				pathDeliveryIndex = i-1;
-				break;
 			}
 		}
+		tour.getCheckPoint().remove(pathPickupIndex+1);
+		tour.getCheckPoint().remove(pathDeliveryIndex);
+		
+		tour.getPath().remove(pathPickupIndex);
+		tour.getPath().remove(pathPickupIndex);
+		
+		tour.getPath().remove(pathDeliveryIndex-2);
+		tour.getPath().remove(pathDeliveryIndex-2);
+		
+		//TODO Update all the index of request and path in the plan
+		//just have to put the index = the position in the list
+		
+		System.out.println("Before pickup : "+beforePickup.getAddress().getId()+ " after pickup "+beforePickup.getAddress().getId());
+		System.out.println("Before deliv : "+beforeDelivery.getAddress().getId()+ "after deliv "+afterDelivery.getAddress().getId());
 		
 		
 		List<Integer> predecesorBeforePickupDeparture =  Dijkstra.dijkstra(plan.getIntersections(),beforePickup.getAddress());
@@ -111,10 +131,12 @@ public class AddRequestCommand implements Command {
 		Path pathFromBeforePickupToAfterPickup = Dijkstra.createPath(plan.getIntersections(),predecesorBeforePickupDeparture, beforePickup.getIndex(), afterPickup.getIndex());
 		Path pathFromBeforeDeliverytToAfterDelivery = Dijkstra.createPath(plan.getIntersections(),predecesorBeforePickupDeparture, beforeDelivery.getIndex(), afterDelivery.getIndex());
 		
+		plan.getRequests().remove(this.idPickup);
+		
 		tour.getPath().add(pathPickupIndex, pathFromBeforePickupToAfterPickup);
 		tour.getPath().add(pathDeliveryIndex, pathFromBeforeDeliverytToAfterDelivery);
 		
-		plan.getRequests().remove(request.getIndex());
+		
 		
 		plan.notifyObservers();
 		tour.notifyObservers();

@@ -53,6 +53,16 @@ public class Plan extends Observable {
 		return inter;
 	}
 	
+	public void deleteRequestByCheckPoint(String idDeliveryOrPickup) {
+		for(Request r : this.requests) {
+			if(r.getPickup().getAddress().getId().equals(idDeliveryOrPickup) ||
+					r.getDelivery().getAddress().getId().equals(idDeliveryOrPickup)) {
+				this.requests.remove(r);
+			}
+				
+		}
+	}
+	
 	public List<Intersection> getIntersections() {
 		return intersections;
 	}
@@ -103,6 +113,15 @@ public class Plan extends Observable {
 		}
 		
 		return min;
+	}
+	
+	/**
+	 * 
+	 */
+	public void actualizeRequestsIndex() {
+		for(int i = 0; i<this.requests.size();i++) {
+			
+		}
 	}
 	
 
