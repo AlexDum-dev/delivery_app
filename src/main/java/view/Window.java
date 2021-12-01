@@ -120,7 +120,7 @@ public class Window {
 		btnAddRequestTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton");
-				c.addRequest("55457297", "249081135", 10, 11);
+				c.addRequest("1679901326", "984186416", 10, 11);
 			}
 		});
 		frame.getContentPane().add(btnAddRequestTest);
