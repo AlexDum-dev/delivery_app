@@ -20,7 +20,7 @@ import model.Segment;
 public class MinFirstIterTest {
 
 	@Test
-	public void candidatesTest() {
+	public void successorsTest() {
 		
 		Intersection i1 = new Intersection("1", 1.1, 1.2);
 		i1.setIndex(0);
