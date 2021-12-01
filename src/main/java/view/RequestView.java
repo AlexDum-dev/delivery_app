@@ -41,8 +41,6 @@ public class RequestView extends JScrollPane implements Observer {
 	        		++i;
 	        	}
 	        	plan.notifyObservers("mapView");
-	        	table.setRowSelectionInterval(index, index);
-	        	//table.changeSelection(index, 0, false, false);
             }  
         }); 
 	}
@@ -71,7 +69,7 @@ public class RequestView extends JScrollPane implements Observer {
 	@Override
 	public void update(Observable observed, Object arg) {
 
-		if(arg == null || arg.toString().equals("onlyMapView")) {
+		if(arg == null || !arg.toString().equals("mapView")) {
 		System.out.println("RequestView Update methode");
 		table.setModel(new DefaultTableModel(
 				

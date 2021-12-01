@@ -43,8 +43,6 @@ public class CheckPointView extends JScrollPane implements Observer {
 	        		}
 	        	}
 	        	tour.notifyObservers("mapView");
-	        	table.setRowSelectionInterval(index, index);
-	        	//table.changeSelection(index, 0, false, false);
             }  
         }); 
 		
@@ -96,7 +94,7 @@ public class CheckPointView extends JScrollPane implements Observer {
 
 	@Override
 	public void update(Observable observed, Object arg) {
-		if(arg == null || arg.toString().equals("onlyMapView")) {
+		if(arg == null || !arg.toString().equals("mapView")) {
 			System.out.println("CheckPointView Update methode");
 		table.setModel(new DefaultTableModel(
 				
