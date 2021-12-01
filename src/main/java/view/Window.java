@@ -33,6 +33,9 @@ public class Window {
 	private JButton btnAddRequestTest = new JButton("Add Request");
 	private JLabel message1=new JLabel("Optimization in progress...");
 	private JLabel message2=new JLabel("Tour computed");
+	private JButton btnDeleteRequestTest = new JButton("Delete Request");
+	private CheckPoint pick;
+	private CheckPoint d;
 
 
 
@@ -113,13 +116,12 @@ public class Window {
 		});
 		frame.getContentPane().add(btnStopComputing);
 		
+		
 		btnAddRequestTest.setBounds(650, 12, 134, 27);
 		btnAddRequestTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton");
-				CheckPoint pick = new CheckPoint(CheckPointType.PICKUP, p.getIntersection("25321359"),10); 
-				CheckPoint d = new CheckPoint(CheckPointType.DELIVERY, p.getIntersection("26317214"),10); 
-				c.addRequest("25321359", "26317214", 10, 11);
+				c.addRequest("55457297", "249081135", 10, 11);
 			}
 		});
 		frame.getContentPane().add(btnAddRequestTest);
@@ -133,6 +135,14 @@ public class Window {
 		message2.setBounds(746, 700, 300, 30);
 		frame.getContentPane().add(message2);
 		setMessageVisible(message2, false);
+		btnDeleteRequestTest.setBounds(850, 12, 134, 27);
+		btnDeleteRequestTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test appui bouton delete");
+				c.deleteRequest("26121686", "191134392");
+			}
+		});
+		frame.getContentPane().add(btnDeleteRequestTest);
 		
 		
 				

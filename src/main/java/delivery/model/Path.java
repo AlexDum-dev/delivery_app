@@ -30,6 +30,10 @@ public class Path {
 		this.destination = path.get(path.size()-1).getDestination();
 		
 	}
+	
+	public Path() {
+		this.length = -1;
+	}
 	public List<Segment> getPath() {
 		return path;
 	}

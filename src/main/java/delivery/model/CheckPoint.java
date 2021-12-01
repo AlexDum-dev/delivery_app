@@ -93,10 +93,11 @@ public class CheckPoint {
         }
          
         CheckPoint tmpCheckpoint = (CheckPoint) c;
+        
+        System.out.println("[equals] tmp : "+tmpCheckpoint.getAddress().getIndex()+ " this :"+this.getAddress().getId());
 		
 		if (tmpCheckpoint.getType().equals(this.getType()) 
 				&& tmpCheckpoint.getAddress().equals(this.getAddress()) 
-				&& ((tmpCheckpoint.getTime() == null && this.getTime() == null) || tmpCheckpoint.getTime().equals(this.getTime()))
 				&& tmpCheckpoint.getDuration() == this.getDuration()
 				&& tmpCheckpoint.getIndex() == this.getIndex()){
 			return true;

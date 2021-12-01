@@ -60,8 +60,8 @@ public class Controller {
 	public void modifyRequest() {
 		currentState.modifyRequest(this);
 	}
-	public void deleteRequest(Request request, Window w) {
-		currentState.deleteRequest(listOfCommands, plan, tour, request, w);
+	public void deleteRequest(String idPickup, String idDelivery) {
+		currentState.deleteRequest(listOfCommands, plan, tour, idPickup, idDelivery, window);
 	}
 	public void undo() {
 		currentState.undo(this.listOfCommands);

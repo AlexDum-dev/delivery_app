@@ -36,6 +36,19 @@ public class Tour extends Observable {
 		this.path.remove(this.path.size() - 1); //remove last path
 	}
 	
+	public void actualizeTour(int checkPointIndex) {
+		for(int i = 0; i<this.checkPoint.size(); i++) {
+			if(this.checkPoint.get(i).getIndex() == checkPointIndex) {
+				this.checkPoint.remove(i);
+				this.path.remove(i-1);
+				this.path.remove(i-1);
+				this.path.add(i-1, new Path());
+				i--;
+			}
+		}
+		
+	}
+	
 	public LocalTime actualizeTime(int nbVertices, TSP tsp, List<? extends List<Path>> listPath, int previous,
 			List<CheckPoint> check, Tour tour) {
 		int current;
