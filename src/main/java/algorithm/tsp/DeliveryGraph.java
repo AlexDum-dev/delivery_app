@@ -4,6 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import delivery.model.*;
 
+/**
+ * Graph of checkpoints with their min paths
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class DeliveryGraph implements Graph {
 	int nbVertices;
 	List<? extends List<Path>> paths;

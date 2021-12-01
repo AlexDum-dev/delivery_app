@@ -6,6 +6,7 @@ import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Tour;
 import view.Window;
+
 /**
  * TourComputed State
  * 

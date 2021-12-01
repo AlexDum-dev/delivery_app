@@ -13,9 +13,15 @@ import delivery.model.Request;
 import observer.Observable;
 import observer.Observer;
 
-
+/**
+ * Table View for all requests
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class RequestView extends JScrollPane implements Observer {
 
+	private static final long serialVersionUID = 1L;
 	private JTable table;
     private Plan plan;
     private String lastSelected;

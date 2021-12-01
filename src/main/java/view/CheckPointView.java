@@ -10,15 +10,20 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import delivery.model.CheckPoint;
-import delivery.model.Request;
 import delivery.model.Path;
 import delivery.model.Tour;
 import observer.Observable;
 import observer.Observer;
 
-
+/**
+ * Table View for checkpoints of the tour
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class CheckPointView extends JScrollPane implements Observer {
 
+	private static final long serialVersionUID = 1L;
 	private JTable table;
     private Tour tour;
 	

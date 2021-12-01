@@ -1,9 +1,5 @@
 package delivery.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.Point;
-
 /**
  * Represents an intersection of the XML File
  * 

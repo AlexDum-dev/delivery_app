@@ -3,6 +3,12 @@ package algorithm.tsp;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * Sequence iterator
+ * 
+ * @author Christine Solnon (from tsp package)
+ * @version 1.0
+ */
 public class SeqIter implements Iterator<Integer> {
 	private Integer[] candidates;
 	private int nbCandidates;

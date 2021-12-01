@@ -2,11 +2,11 @@ package controller;
 
 import java.awt.Component;
 
-
 import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Tour;
 import view.Window;
+
 /**
  * State interface, represents one state of the application
  * 

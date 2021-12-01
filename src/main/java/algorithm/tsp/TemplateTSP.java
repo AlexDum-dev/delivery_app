@@ -6,6 +6,12 @@ import java.util.Iterator;
 
 import observer.Observable;
 
+/**
+ * Initial template for TSP
+ * 
+ * @author Christine Solnon (from tsp package)
+ * @version 1.0
+ */
 public abstract class TemplateTSP extends Observable implements TSP {
 	private Integer[] bestSol;
 	protected Graph g;

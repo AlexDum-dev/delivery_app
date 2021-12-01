@@ -2,6 +2,12 @@ package algorithm.tsp;
 
 import java.util.Collection;
 
+/**
+ * Graph interface for TSP
+ * 
+ * @author Christine Solnon (from tsp package)
+ * @version 1.0
+ */
 public interface Graph {
 	/**
 	 * @return the number of vertices in <code>this</code>

@@ -2,6 +2,13 @@ package delivery.model;
 
 import java.util.List;
 
+
+/**
+ * Represents a path between 2 intersections
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class Path {
 	private List<Segment> path;
 	private double length;
