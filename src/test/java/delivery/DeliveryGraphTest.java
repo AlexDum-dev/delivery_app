@@ -9,7 +9,7 @@ import org.junit.Test;
 import algorithm.Dijkstra;
 import algorithm.DijkstraResult;
 import algorithm.tsp.DeliveryGraph;
-import delivery.model.*;
+import model.*;
 
 public class DeliveryGraphTest {
 	

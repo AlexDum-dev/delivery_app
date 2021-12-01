@@ -2,7 +2,8 @@ package algorithm.tsp;
 
 import java.util.Collection;
 import java.util.List;
-import delivery.model.*;
+
+import model.*;
 
 /**
  * Graph of checkpoints with their min paths

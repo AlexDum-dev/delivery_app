@@ -9,9 +9,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import delivery.model.CheckPoint;
-import delivery.model.Path;
-import delivery.model.Tour;
+import model.CheckPoint;
+import model.Path;
+import model.Tour;
 import observer.Observable;
 import observer.Observer;
 

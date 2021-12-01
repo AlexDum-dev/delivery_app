@@ -7,7 +7,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
-import delivery.model.Plan;
+import model.Plan;
 import observer.Observable;
 import observer.Observer;
 

@@ -1,4 +1,4 @@
-package delivery.model;
+package model;
 
 /**
  * Enumeration of the types of checkpoint

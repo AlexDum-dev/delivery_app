@@ -10,15 +10,16 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import model.CheckPointType;
+import model.Intersection;
+import model.Path;
+import model.Plan;
+import model.Request;
+import model.Segment;
+import model.Tour;
+
 import java.awt.event.MouseWheelEvent;
 
-import delivery.model.CheckPointType;
-import delivery.model.Intersection;
-import delivery.model.Path;
-import delivery.model.Plan;
-import delivery.model.Request;
-import delivery.model.Segment;
-import delivery.model.Tour;
 import observer.Observable;
 import observer.Observer;
 

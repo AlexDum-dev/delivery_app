@@ -1,4 +1,4 @@
-package delivery.model;
+package model;
 
 /**
  * Represents a checkpoint in the request

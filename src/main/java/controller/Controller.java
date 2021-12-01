@@ -1,8 +1,8 @@
 package controller;
 
-import delivery.model.Plan;
-import delivery.model.Request;
-import delivery.model.Tour;
+import model.Plan;
+import model.Request;
+import model.Tour;
 import view.Window;
 
 /**

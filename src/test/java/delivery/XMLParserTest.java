@@ -11,7 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import delivery.model.*;
+import model.*;
 
 public class XMLParserTest {
 	

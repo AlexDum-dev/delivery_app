@@ -7,12 +7,12 @@ import algorithm.DijkstraResult;
 import algorithm.tsp.DeliveryGraph;
 import algorithm.tsp.TSP;
 import algorithm.tsp.TSP1;
-import delivery.model.CheckPoint;
-import delivery.model.CheckPointType;
-import delivery.model.Intersection;
-import delivery.model.Path;
-import delivery.model.Request;
-import delivery.model.Segment;
+import model.CheckPoint;
+import model.CheckPointType;
+import model.Intersection;
+import model.Path;
+import model.Request;
+import model.Segment;
 
 public class TestDijkstra {
 

@@ -1,4 +1,4 @@
-package delivery.model;
+package model;
 
 /**
  * Common exception class for plan data formatting errors

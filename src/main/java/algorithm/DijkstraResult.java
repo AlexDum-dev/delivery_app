@@ -2,8 +2,8 @@ package algorithm;
 
 import java.util.List;
 
-import delivery.model.CheckPoint;
-import delivery.model.Path;
+import model.CheckPoint;
+import model.Path;
 
 /**
  * Container class for Dijkstra result

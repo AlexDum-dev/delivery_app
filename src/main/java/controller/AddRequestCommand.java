@@ -3,12 +3,12 @@ package controller;
 import java.util.List;
 
 import algorithm.Dijkstra;
-import delivery.model.CheckPoint;
-import delivery.model.CheckPointType;
-import delivery.model.Path;
-import delivery.model.Plan;
-import delivery.model.Request;
-import delivery.model.Tour;
+import model.CheckPoint;
+import model.CheckPointType;
+import model.Path;
+import model.Plan;
+import model.Request;
+import model.Tour;
 import view.Window;;
 
 public class AddRequestCommand implements Command {

@@ -2,8 +2,8 @@ package controller;
 
 import java.awt.Component;
 
-import delivery.model.Plan;
-import delivery.model.Tour;
+import model.Plan;
+import model.Tour;
 import view.Window;
 
 

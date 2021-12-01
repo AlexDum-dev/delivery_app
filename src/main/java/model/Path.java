@@ -1,4 +1,4 @@
-package delivery.model;
+package model;
 
 import java.util.List;
 

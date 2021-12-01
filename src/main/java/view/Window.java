@@ -5,13 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
 import controller.Controller;
-import delivery.model.CheckPoint;
-import delivery.model.CheckPointType;
-import delivery.model.Intersection;
-import delivery.model.Plan;
-import delivery.model.Request;
-import delivery.model.Tour;
-
+import model.CheckPoint;
+import model.CheckPointType;
+import model.Intersection;
+import model.Plan;
+import model.Request;
+import model.Tour;
 
 import javax.swing.*;
 

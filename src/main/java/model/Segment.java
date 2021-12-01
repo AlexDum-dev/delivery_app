@@ -1,4 +1,4 @@
-package delivery.model;
+package model;
 
 /**
  * Represents an intersection of the XML File

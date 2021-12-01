@@ -1,7 +1,7 @@
 package delivery;
 import controller.Controller;
-import delivery.model.Plan;
-import delivery.model.Tour;
+import model.Plan;
+import model.Tour;
 
 /**
  * Main class of the Delivery application

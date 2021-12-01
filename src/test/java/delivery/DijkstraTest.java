@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.ArrayList;
 import org.junit.Test;
-import delivery.model.*;
 
 import java.time.LocalTime;
 import java.util.*;
 
 import algorithm.*;
+import model.*;
 
 public class DijkstraTest {
 	

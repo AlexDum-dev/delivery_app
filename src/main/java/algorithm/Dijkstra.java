@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import delivery.model.CheckPoint;
-import delivery.model.Intersection;
-import delivery.model.Path;
-import delivery.model.Request;
-import delivery.model.Segment;
+import model.CheckPoint;
+import model.Intersection;
+import model.Path;
+import model.Request;
+import model.Segment;
 
 /**
  * Class for Dijkstra algorithm

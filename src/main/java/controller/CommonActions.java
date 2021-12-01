@@ -8,12 +8,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import algorithm.Dijkstra;
-import delivery.model.CheckPoint;
-import delivery.model.Path;
-import delivery.model.Plan;
-import delivery.model.Request;
-import delivery.model.Tour;
-import delivery.model.XMLParser;
+import model.CheckPoint;
+import model.Path;
+import model.Plan;
+import model.Request;
+import model.Tour;
+import model.XMLParser;
 import xml.ExceptionXML;
 import xml.XMLfileOpener;
 
