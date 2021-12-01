@@ -55,13 +55,13 @@ public class Controller {
 		currentState.stopTour(this);
 	}
 	public void addRequest(String idPickup, String idDelivery, int durationPickup, int durationDelivery) {
-		currentState.addRequest(listOfCommands, plan, tour, idPickup, idDelivery, durationPickup, durationDelivery);
+		currentState.addRequest(listOfCommands, plan, tour, idPickup, idDelivery, durationPickup, durationDelivery, window);
 	}
 	public void modifyRequest() {
 		currentState.modifyRequest(this);
 	}
-	public void deleteRequest(Request request) {
-		currentState.deleteRequest(listOfCommands, plan, tour, request);
+	public void deleteRequest(Request request, Window w) {
+		currentState.deleteRequest(listOfCommands, plan, tour, request, w);
 	}
 	public void undo() {
 		currentState.undo(this.listOfCommands);

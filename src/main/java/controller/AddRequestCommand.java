@@ -9,6 +9,7 @@ import delivery.model.Path;
 import delivery.model.Plan;
 import delivery.model.Request;
 import delivery.model.Tour;
+import view.Window;;
 
 public class AddRequestCommand implements Command {
 	
@@ -19,23 +20,25 @@ public class AddRequestCommand implements Command {
 	private int durationPickup;
 	private int durationDelivery;
 	private Request request;
+	private Window window;
 	
 	
-	public AddRequestCommand(Tour tour, Plan plan, String idPickup, String idDelivery, int durationPickup, int durationDelivery) {
+	public AddRequestCommand(Tour tour, Plan plan, String idPickup, String idDelivery, int durationPickup, int durationDelivery, Window w) {
 		super();
 		this.tour = tour;
 		this.plan = plan;
 		this.idPickup = idPickup;
 		this.idDelivery = idDelivery;
 		this.durationPickup = durationPickup;
-		this.durationDelivery = durationDelivery;	
+		this.durationDelivery = durationDelivery;
+		this.window = w;
 	}
 	
-	public AddRequestCommand(Plan plan, Tour tour, Request request) {
+	public AddRequestCommand(Plan plan, Tour tour, Request request, Window w) {
 		this.tour = tour;
 		this.plan = plan;
 		this.request = request;
-		
+		this.window = w;
 	}
 	
 
@@ -52,7 +55,7 @@ public class AddRequestCommand implements Command {
 		tour.removeLastPath();
 		CheckPoint lastCheckPoint = tour.removeLastCheckPoint();
 		
-		//launch dijkstra for the the pickup and the delivery and the last checkpoint
+		//launch dijkstra for the the pickup and the delivery and the all the other checkpoints
 		List<Integer> predecesorPickupDeparture =  Dijkstra.dijkstra(plan.getIntersections(),req.getPickup().getAddress());
 		List<Integer> predecesorDeliveryDeparture = Dijkstra.dijkstra(plan.getIntersections(),req.getDelivery().getAddress());
 		List<Integer> predecesorLastIntersectionTour = Dijkstra.dijkstra(plan.getIntersections(), lastCheckPoint.getAddress());
@@ -65,7 +68,7 @@ public class AddRequestCommand implements Command {
 		//Create path between the pickup and the delivery
 		//create path between the delivery and the depot
 		//add all the paths
-		//update to vew
+		//update to view
 		
 		tour.addPath(pathFromLastPontToNewPickup, lastCheckPoint );
 		tour.addPath(pathFromPickupToDelivery, req.getPickup());
@@ -74,11 +77,13 @@ public class AddRequestCommand implements Command {
 		tour.actualizeTime();
 		
 		tour.notifyObservers();
+		window.setMessageVisible(window.getMessage1(), false);
+		window.setMessageVisible(window.getMessage2(), false);
 	}
 
 	@Override
 	public void undoCommand() {
-		//Get checkpoint avant pickup et after et reconnect
+		//Get checkpoint avant pickup and after and reconnect
 		//same for delivery
 		CheckPoint beforePickup = null;
 		CheckPoint beforeDelivery = null;

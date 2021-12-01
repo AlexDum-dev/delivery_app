@@ -78,5 +78,7 @@ public class MapInfoView extends JPanel implements Observer{
 	public void update(Observable observed, Object arg) {
 		repaint();
 	}
+	
+	
 
 }
