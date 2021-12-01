@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.w3c.dom.events.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 import delivery.model.CheckPointType;
 import delivery.model.Intersection;
@@ -48,52 +48,25 @@ public class MapView extends JPanel implements Observer{
 		this.minLat = plan.getMinLatitude();
 		this.maxLon = plan.getMaxLongitude();
 		this.minLon = plan.getMinLongitude();
-		System.out.println("CConstructor "+plan.getIntersections().size());
-		this.update(plan, "firstTime");
-		System.out.println("maxLat : "+this.maxLat);
-		System.out.println("minLat : "+minLat);
-		System.out.println("maxLon : "+maxLon);
-		System.out.println("minLon : "+minLon);
-		this.addMouseListener(new MouseListener() {
+		this.addMouseWheelListener(e -> {
+            System.out.println("MouseWheelListenerDemo.mouseWheelMoved");
 
-			@Override
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println(x + "," + y);
-				zoomIn(x,y,172);
-				
-				
-			}
+            // If wheel rotation value is a negative it means rotate up, while
+            // positive value means rotate down
 
-		
+            int x = e.getX();
+			int y = e.getY();
+			System.out.println(x + "," + y);
+			
+            if (e.getWheelRotation() < 0) {
+                System.out.println("Rotated Up... " + e.getWheelRotation());
+				zoomIn(x,y,90);
+            } else {
+                System.out.println("Rotated Down... " + e.getWheelRotation());
+				zoomIn(x,y,110);
+            }
+        });
 
-			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			});
-			this.update(plan, "firstTime");
 	}
 
 	
@@ -147,12 +120,54 @@ public class MapView extends JPanel implements Observer{
 		
 	}
 
-	public void zoomIn (int x , int y ,int zoom) {
-		//zoom = 172;
-		this.setMaxLat(maxLat - ((y-zoom+(DrawAttributes.getPointWidth()/2))/(xScale)));//y1
-		this.setMaxLon(maxLon - (((double) getWidth()-(x+zoom)-(DrawAttributes.getPointWidth()/2))/(yScale))); // la premiere valeur X1
-		this.setMinLat( maxLat - ((y+zoom+(DrawAttributes.getPointWidth()/2))/(xScale)));
-		this.setMinLon( maxLon - (((double) getWidth()-(x-zoom)-(DrawAttributes.getPointWidth()/2))/(yScale))); // la premiere valeur X1
+	public double getLatitudeFromY(int y) {
+		return maxLat - (y/xScale);
+	}
+	public double getLongitudeFromX(int x) {
+		return maxLon - (((double) getWidth()-x)/yScale);
+	}
+	
+	
+	public void zoomIn (int x , int y ,int p) {
+//		//zoom = 172;
+//		int zoom = (int)(getHeight() * p /100);
+//		System.out.println("Zoom = "+ zoom);
+//		int x1 = x-zoom/2;
+////		if(x1<0) x1 =0;
+////		if (x1>getWidth()) {x1=getWidth();}
+//		
+//		int x2 = x+zoom/2;
+////		if (x2>getWidth()) {x2=getWidth();}
+////		if(x2<0) {x2 = 0;}
+//		
+//		int y1 = y-zoom/2;
+////		if(y1<0) y1 = 0;
+////		if (y1>getHeight()) {y1=getHeight();}
+//		
+//		int y2 = y+zoom/2;
+////		if (y2<0) y2=0;
+////		if (y2>getHeight()) {y2=getHeight();}
+//		
+//		this.setMaxLat(maxLat - (y1/(xScale)));//y1
+//		this.setMaxLon(maxLon - (((double) getWidth()-x2)/(yScale))); // la premiere valeur X1
+//		this.setMinLat( maxLat - (y2/xScale));
+//		this.setMinLon( maxLon - ((double) getWidth()-x1)/yScale); // la premiere valeur X1
+		
+		double centLat = (minLat+maxLat)/2;
+		double centLon = (minLon+maxLon)/2;
+		double lenLat = (maxLat-minLat)*p/100.0;
+		double lenLon = (maxLon-minLon)*p/100.0;
+		double pointLat = getLatitudeFromY(y);
+		double pointLon = getLongitudeFromX(x);
+		
+		centLat += (pointLat-centLat)*(1-p/100.0);
+		centLon += (pointLon-centLon)*(1-p/100.0);
+		
+		minLat = centLat-lenLat/2;
+		maxLat = centLat+lenLat/2;
+		minLon = centLon-lenLon/2;
+		maxLon = centLon+lenLon/2;
+		
 		this.update(plan, null);
 	}
 	
@@ -299,19 +314,16 @@ public class MapView extends JPanel implements Observer{
 	
 
 
-
+	public void zoomOut() {
+		this.maxLat = plan.getMaxLatitude();
+		this.minLat = plan.getMinLatitude();
+		this.maxLon = plan.getMaxLongitude();
+		this.minLon = plan.getMinLongitude();
+	}
 	@Override
 	public void update(Observable observed, Object arg) {
 		// TODO Auto-generated method stub
 		System.out.println("MapView Update methode");
-		System.out.println("arg"+arg);
-		if(arg != null && arg.toString().equals("doneWithIntersections")) {
-			System.out.println("firstTime");
-			this.maxLat = plan.getMaxLatitude();
-			this.minLat = plan.getMinLatitude();
-			this.maxLon = plan.getMaxLongitude();
-			this.minLon = plan.getMinLongitude();
-		}
 		
 		repaint();
 	}

@@ -175,7 +175,7 @@ public class Window {
 		btnAddRequestTest.setEnabled(true);
 	}
 
-	
-	
-	
+	public MapView getMapView() {
+		return mapView;
+	}
 }

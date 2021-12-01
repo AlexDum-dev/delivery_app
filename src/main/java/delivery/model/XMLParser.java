@@ -154,7 +154,7 @@ public class XMLParser {
 			inter_set.add(id);
 			p.addIntersection(new Intersection(id, lat, lon));
 		}
-		p.notifyObservers("doneWithIntersections");
+		
 	}
 	
 	/**
