@@ -48,6 +48,28 @@ public class Tour extends Observable {
 		}
 		
 	}
+	/**
+	 * replace the path at index indexCheckPoint and at indexCheckPoint - 1
+	 * with default path which has a length = - 1
+	 * @param indexCheckpoint
+	 */
+	public void removeConnectedPath(int indexCheckpoint) {
+		//remove index et index -1
+		this.path.remove(indexCheckpoint);
+		this.path.add(indexCheckpoint, new Path());
+		//this.path.remove(indexCheckpoint - 1);
+		//this.path.add(indexCheckpoint-1, new Path());
+		/*
+		for(int i = 0;i<this.path.size();i++) {
+			if(this.path.get(i).getPath().get(0).getOrigin().getAddress().equals(addressCheckpoint) ||
+					this.path.get(i).getDestination().getAddress().equals(addressCheckpoint)) {
+				this.path.remove(i);
+				this.path.add(i-1, new Path());
+			}
+		}
+		*/
+	}
+	
 	
 	public LocalTime actualizeTime(int nbVertices, TSP tsp, List<? extends List<Path>> listPath, int previous,
 			List<CheckPoint> check, Tour tour) {
