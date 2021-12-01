@@ -115,7 +115,7 @@ public class Window {
 		btnAddRequestTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton");
-				c.addRequest("25321359", "26317214", 10, 11);
+				c.addRequest("55457297", "249081135", 10, 11);
 			}
 		});
 		frame.getContentPane().add(btnAddRequestTest);
@@ -124,7 +124,7 @@ public class Window {
 		btnDeleteRequestTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton delete");
-				c.deleteRequest("25321359", "26317214");
+				c.deleteRequest("26121686", "191134392");
 			}
 		});
 		frame.getContentPane().add(btnDeleteRequestTest);

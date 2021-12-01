@@ -78,71 +78,42 @@ public class AddRequestCommand implements Command {
 
 	@Override
 	public void undoCommand() {
-		System.out.println("Dans le undo command");
-		//Get checkpoint avant pickup et after et reconnect
-		//same for delivery
-		CheckPoint beforePickup = null;
-		CheckPoint beforeDelivery = null;
-		CheckPoint afterPickup = null;
-		CheckPoint afterDelivery = null;
-		int pathPickupIndex = 0;
-		int pathDeliveryIndex = 0;
+		
+		int index = 0;
 		for(int i = 1; i < tour.getCheckPoint().size() ; i++) {
 			System.out.println("CheckPoint : "+tour.getCheckPoint().get(i).getAddress().getId());
 			if(tour.getCheckPoint().get(i).getAddress().getId().equals(this.idPickup)){
-				beforePickup = tour.getCheckPoint().get(i-1);
-				afterPickup = tour.getCheckPoint().get(i+1);
-				pathPickupIndex = i-1;
+				index = tour.getCheckPoint().get(i).getIndex();
+				tour.actualizeTour(tour.getCheckPoint().get(i).getIndex());
 			}
 			
-			if(tour.getCheckPoint().get(i).getAddress().getId().equals(this.idDelivery)){
-				beforeDelivery = tour.getCheckPoint().get(i-1);
-				
-				if(i == tour.getCheckPoint().size() - 1) {
-					afterDelivery = this.plan.getDepot();
+		}
+		
+		plan.getRequests().remove(index); //delete the request in the plan
+		plan.actualizeRequestsIndex(); //actualize the index of the requests
+		
+		for(int i=0; i<tour.getPath().size();i++) {
+			if(tour.getPath().get(i).getLength() == -1) {
+				List<Integer> predecesorCheckpoint =  Dijkstra.dijkstra(plan.getIntersections(), 
+						tour.getCheckPoint().get(i).getAddress());
+				Path pathFromBeforeCheckPointtoNextCheckPoint = null;
+				if(i+1 == tour.getPath().size()) {
+					pathFromBeforeCheckPointtoNextCheckPoint = Dijkstra.createPath(plan.getIntersections(),predecesorCheckpoint, 
+																tour.getCheckPoint().get(i).getAddress().getIndex(), 
+																plan.getDepot().getAddress().getIndex());
 				} else {
-					afterDelivery = tour.getCheckPoint().get(i+1);
+					pathFromBeforeCheckPointtoNextCheckPoint = Dijkstra.createPath(plan.getIntersections(),predecesorCheckpoint,
+																tour.getCheckPoint().get(i).getAddress().getIndex(), 
+																tour.getCheckPoint().get(i+1).getIndex());
 				}
-				
-	
-				pathDeliveryIndex = i-1;
+				tour.getPath().remove(i);
+				tour.getPath().add(i, pathFromBeforeCheckPointtoNextCheckPoint);
 			}
 		}
-		tour.getCheckPoint().remove(pathPickupIndex+1);
-		tour.getCheckPoint().remove(pathDeliveryIndex);
-		
-		tour.getPath().remove(pathPickupIndex);
-		tour.getPath().remove(pathPickupIndex);
-		
-		tour.getPath().remove(pathDeliveryIndex-2);
-		tour.getPath().remove(pathDeliveryIndex-2);
-		
-		//TODO Update all the index of request and path in the plan
-		//just have to put the index = the position in the list
-		
-		System.out.println("Before pickup : "+beforePickup.getAddress().getId()+ " after pickup "+beforePickup.getAddress().getId());
-		System.out.println("Before deliv : "+beforeDelivery.getAddress().getId()+ "after deliv "+afterDelivery.getAddress().getId());
-		
-		
-		List<Integer> predecesorBeforePickupDeparture =  Dijkstra.dijkstra(plan.getIntersections(),beforePickup.getAddress());
-		
-		List<Integer> predecesorBeforeDeliveryDeparture =  Dijkstra.dijkstra(plan.getIntersections(),beforeDelivery.getAddress());
-		
-		Path pathFromBeforePickupToAfterPickup = Dijkstra.createPath(plan.getIntersections(),predecesorBeforePickupDeparture, beforePickup.getIndex(), afterPickup.getIndex());
-		Path pathFromBeforeDeliverytToAfterDelivery = Dijkstra.createPath(plan.getIntersections(),predecesorBeforePickupDeparture, beforeDelivery.getIndex(), afterDelivery.getIndex());
-		
-		plan.getRequests().remove(this.idPickup);
-		
-		tour.getPath().add(pathPickupIndex, pathFromBeforePickupToAfterPickup);
-		tour.getPath().add(pathDeliveryIndex, pathFromBeforeDeliverytToAfterDelivery);
-		
-		
-		
+
 		plan.notifyObservers();
 		tour.notifyObservers();
 		
-		
-
 	}
 
 }

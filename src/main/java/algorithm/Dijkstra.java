@@ -67,6 +67,7 @@ public class Dijkstra {
 		int NextIndex = currentIndex;
 		while(currentIndex != OriginIndex) {
 			// System.out.println("======== WHILE =========");
+			System.out.println("[createPath]"+currentIndex);
 			NextIndex = nodePredecesor.get(currentIndex);
 			Segment s = getSegmentFromList(adjacencyList,NextIndex,currentIndex);//we need to get the segment from the list of segments
 			// System.out.println("=currentIndex="+currentIndex);
@@ -132,8 +133,6 @@ public class Dijkstra {
 				
 			}
 			nodePredecesor.add(null);
-			
-			
 		}
 		
 		while(existGreyNode(nodeColor)) {

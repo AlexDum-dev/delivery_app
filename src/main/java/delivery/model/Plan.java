@@ -116,11 +116,12 @@ public class Plan extends Observable {
 	}
 	
 	/**
-	 * 
+	 * actualize the index of requests by assining the index to the position
+	 * in the list
 	 */
 	public void actualizeRequestsIndex() {
-		for(int i = 0; i<this.requests.size();i++) {
-			
+		for(int i = 0; i<this.requests.size();i++){
+			this.requests.get(i).setIndex(i); //set index actualizes the index for the two checkpoints as well
 		}
 	}
 	
