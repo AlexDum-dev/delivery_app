@@ -5,16 +5,25 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import delivery.model.CheckPoint;
+import delivery.model.Path;
 import delivery.model.Tour;
 import observer.Observable;
 import observer.Observer;
 
-
+/**
+ * Table View for checkpoints of the tour
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class CheckPointView extends JScrollPane implements Observer {
 
+	private static final long serialVersionUID = 1L;
 	private JTable table;
     private Tour tour;
 	
@@ -23,6 +32,25 @@ public class CheckPointView extends JScrollPane implements Observer {
 		this.tour = tour;
 		tour.addObserver(this);
 		table = new JTable();
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {  
+			   
+            public void valueChanged(ListSelectionEvent e) {  
+            	int index = table.getSelectedRow();
+	        	for(int i = 0 ; i<tour.getCheckPoint().size() && i<tour.getPath().size() ; ++i) {
+	        		CheckPoint checkPoint = tour.getCheckPoint().get(i);
+	        		Path path = tour.getPath().get(i);
+	        		if ( index==i ) {
+	        			checkPoint.setActive(true);
+	        			path.setActive(true);
+	        		}else {
+	        			checkPoint.setActive(false);
+	        			path.setActive(false);
+	        		}
+	        	}
+	        	tour.notifyObservers("mapView");
+            }  
+        }); 
+		
 	}
 
 	private Object[][] displayCheckPoint() {
@@ -71,6 +99,8 @@ public class CheckPointView extends JScrollPane implements Observer {
 
 	@Override
 	public void update(Observable observed, Object arg) {
+		if(arg == null || !arg.toString().equals("mapView")) {
+			System.out.println("CheckPointView Update methode");
 		table.setModel(new DefaultTableModel(
 				
 				displayCheckPoint(), 
@@ -86,5 +116,6 @@ public class CheckPointView extends JScrollPane implements Observer {
 			}
 		});
 		this.setViewportView(table);
+		}
 	}
 }

@@ -2,7 +2,6 @@ package delivery;
 import controller.Controller;
 import delivery.model.Plan;
 import delivery.model.Tour;
-import view.Window;
 
 /**
  * Main class of the Delivery application
@@ -13,13 +12,10 @@ import view.Window;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Plan p = new Plan();
 		Tour t = new Tour();
 		
 		Controller c = new Controller(p, t);
-		
-		//Window w= new Window(p, t, c);
 	}
 
 }

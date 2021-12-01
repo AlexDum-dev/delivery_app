@@ -2,6 +2,13 @@ package algorithm.tsp;
 
 import java.util.Collection;
 
+/**
+ * Level 2 of TSP implementation
+ * search a minimal bound by taking the minimal edge cost for each vertex
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class TSP2 extends TSP1 {
 
 	@Override

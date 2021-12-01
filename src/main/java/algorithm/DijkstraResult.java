@@ -5,6 +5,12 @@ import java.util.List;
 import delivery.model.CheckPoint;
 import delivery.model.Path;
 
+/**
+ * Container class for Dijkstra result
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class DijkstraResult {
 	List<? extends List<Path>> paths;
 	List<CheckPoint> checkpoints;

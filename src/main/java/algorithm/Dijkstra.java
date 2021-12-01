@@ -1,7 +1,6 @@
 package algorithm;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,6 +10,12 @@ import delivery.model.Path;
 import delivery.model.Request;
 import delivery.model.Segment;
 
+/**
+ * Class for Dijkstra algorithm
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class Dijkstra {
 	
 	public static DijkstraResult computePaths(List<Intersection> adjacencyList, List<Request> listRequest,CheckPoint depot){
@@ -67,6 +72,7 @@ public class Dijkstra {
 		int NextIndex = currentIndex;
 		while(currentIndex != OriginIndex) {
 			// System.out.println("======== WHILE =========");
+			System.out.println("[createPath]"+currentIndex);
 			NextIndex = nodePredecesor.get(currentIndex);
 			Segment s = getSegmentFromList(adjacencyList,NextIndex,currentIndex);//we need to get the segment from the list of segments
 			// System.out.println("=currentIndex="+currentIndex);
@@ -132,8 +138,6 @@ public class Dijkstra {
 				
 			}
 			nodePredecesor.add(null);
-			
-			
 		}
 		
 		while(existGreyNode(nodeColor)) {

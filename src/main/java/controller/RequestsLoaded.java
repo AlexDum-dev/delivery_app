@@ -1,19 +1,8 @@
 package controller;
 
 import java.awt.Component;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import algorithm.Dijkstra;
-import algorithm.DijkstraResult;
-import algorithm.tsp.DeliveryGraph;
-import algorithm.tsp.TSP;
-import algorithm.tsp.TSP1;
-import delivery.model.CheckPoint;
-import delivery.model.Path;
 import delivery.model.Plan;
-import delivery.model.Request;
 import delivery.model.Tour;
 import view.Window;
 
@@ -54,6 +43,8 @@ public class RequestsLoaded implements State {
 		w.setLoadRequestButtonFalse();
 		w.setStopComputingButtonTrue();
 		w.setComputeTourButtonFalse();
+		w.setMessageVisible(w.getMessage1(), true);
+		w.setMessageVisible(w.getMessage2(), false);
 		c.setCurrentState(TourComputing.getInstance());
 		ComputeTourThread thread = new ComputeTourThread(c, plan, tour, w);
 		c.setThread(thread);

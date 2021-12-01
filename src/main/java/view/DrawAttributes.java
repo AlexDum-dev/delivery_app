@@ -12,22 +12,28 @@ import java.util.List;
  * @author 4IF Group H4144
  * @version 1.0 22 Nov 2021
  */
-
-/**TODO : faire une fonction qui change de couleur aléatoirement**/
-
 public class DrawAttributes {
 	private static List<Color> colorsRequest;
 	private static Color colorDepot = Color.GRAY;
 	private static Color colorLine = new Color(0,0,0);
 	private static Color colorPath = new Color(255,0,255);
+	private static Color colorActive = new Color(0, 0, 255);
+	private static Color ColorPathActive = new Color(255, 102, 0);
+	
+
+
 	private static Stroke strokeLine = new BasicStroke(2f);
 	private static Stroke strokePath = new BasicStroke(5f);
 	private static Stroke strokePoint = new BasicStroke(1f);
+	private static Stroke strokeActive = new BasicStroke(5f);
 	private static int pointWidth = 15;
 	
+	
+
+
 	static {
 		colorsRequest = new ArrayList<Color>();
-		colorsRequest.add(Color.BLUE);
+		colorsRequest.add(Color.YELLOW);
 		colorsRequest.add(Color.CYAN);
 		colorsRequest.add(Color.MAGENTA);
 		colorsRequest.add(Color.GREEN);
@@ -73,5 +79,16 @@ public class DrawAttributes {
 
 	public static int getPointWidth() {
 		return pointWidth;
+	}
+	
+	public static Color getColorActive() {
+		return colorActive;
+	}
+
+	public static Stroke getStrokeActive() {
+		return strokeActive;
+	}
+	public static Color getColorPathActive() {
+		return ColorPathActive;
 	}
 }

@@ -1,5 +1,11 @@
 package algorithm.tsp;
 
+/**
+ * Interface for TSP algorithm
+ * 
+ * @author Christine Solnon (from tsp package)
+ * @version 1.0
+ */
 public interface TSP {
 	/**
 	 * Search for a shortest cost hamiltonian circuit in <code>g</code> within <code>timeLimit</code> milliseconds

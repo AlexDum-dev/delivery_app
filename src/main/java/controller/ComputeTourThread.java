@@ -1,6 +1,5 @@
 package controller;
 
-import java.time.LocalTime;
 import java.util.List;
 
 import algorithm.Dijkstra;
@@ -57,6 +56,8 @@ public class ComputeTourThread extends Thread implements Observer {
 		window.setLoadRequestButtonTrue();
 		window.setAddRequestTrue();
 		window.setComputeTourButtonFalse();
+		window.setMessageVisible(window.getMessage1(), false);
+		window.setMessageVisible(window.getMessage2(), true);
 	}
 
 	@Override

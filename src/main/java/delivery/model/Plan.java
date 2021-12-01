@@ -28,6 +28,7 @@ public class Plan extends Observable {
 		clearRequests();
 	}
 	
+	
 	public void clearRequests() {
 		requests.clear();
 		depot = null;
@@ -51,6 +52,16 @@ public class Plan extends Observable {
 			}
 		}
 		return inter;
+	}
+	
+	public void deleteRequestByCheckPoint(String idDeliveryOrPickup) {
+		for(Request r : this.requests) {
+			if(r.getPickup().getAddress().getId().equals(idDeliveryOrPickup) ||
+					r.getDelivery().getAddress().getId().equals(idDeliveryOrPickup)) {
+				this.requests.remove(r);
+			}
+				
+		}
 	}
 	
 	public List<Intersection> getIntersections() {
@@ -105,5 +116,47 @@ public class Plan extends Observable {
 		return min;
 	}
 	
+	/**
+	 * actualize the index of requests by assining the index to the position
+	 * in the list
+	 */
+	public void actualizeRequestsIndex() {
+		for(int i = 0; i<this.requests.size();i++){
+			this.requests.get(i).setIndex(i); //set index actualizes the index for the two checkpoints as well
+		}
+	}
+	
 
+	public Boolean equals(Plan p) {
+		
+		if (!p.getDepot().equals(this.getDepot())) {
+			return false;
+		}		
+		
+		if (intersections.size()!=p.intersections.size()) {
+			return false;
+		}
+		for (int i=0; i<intersections.size(); ++i) {
+			if (!p.intersections.get(i).equals(this.intersections.get(i))) {
+				return false;
+			}	
+		}
+		
+		if (this.requests.size()!=p.getRequests().size()) {
+			return false;
+		}
+		for (int i=0; i<requests.size(); i++) {
+			boolean found=false;
+			for (int j=0; j<requests.size(); j++) {
+				if (p.getRequests().get(i).equals(this.getRequests().get(j))) {
+					found=true;
+				}	
+			}
+			if (!found) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

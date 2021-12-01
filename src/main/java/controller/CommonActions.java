@@ -45,8 +45,11 @@ public class CommonActions {
 			tour.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
 			w.setLoadRequestButtonTrue();
+			w.getMapView().zoomOut();
 			w.setComputeTourButtonFalse();
 			w.setAddRequestFalse();
+			w.setMessageVisible(w.getMessage1(), false);
+			w.setMessageVisible(w.getMessage2(), false);
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -58,6 +61,8 @@ public class CommonActions {
 			w.setLoadRequestButtonFalse();
 			w.setComputeTourButtonFalse();
 			w.setAddRequestFalse();
+			w.setMessageVisible(w.getMessage1(), false);
+			w.setMessageVisible(w.getMessage2(), false);
 			plan.clearPlan();
 			tour.clearPath();
 			tour.notifyObservers();
@@ -84,7 +89,10 @@ public class CommonActions {
 			tour.notifyObservers();
 			c.setCurrentState(RequestsLoaded.getInstance());
 			w.setComputeTourButtonTrue();
+			w.getMapView().zoomOut();
 			w.setAddRequestFalse();
+			w.setMessageVisible(w.getMessage1(), false);
+			w.setMessageVisible(w.getMessage2(), false);
 			
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
@@ -96,11 +104,14 @@ public class CommonActions {
 				    JOptionPane.ERROR_MESSAGE);
 			w.setComputeTourButtonFalse();
 			w.setAddRequestFalse();
+			w.setMessageVisible(w.getMessage1(), false);
+			w.setMessageVisible(w.getMessage2(), false);
 			plan.clearRequests();
 			tour.clearPath();
 			tour.notifyObservers();
 			plan.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
+			w.getMapView().zoomOut();
 		}
 	}
 }

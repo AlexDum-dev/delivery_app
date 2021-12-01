@@ -7,6 +7,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Iterator that returns the vertices in order of the nearest first
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 1 Dec 2021
+ */
 public class MinFirstIter implements Iterator<Integer> {
 	List<Integer> candidates;
 	private int nbCandidates;

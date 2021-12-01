@@ -14,6 +14,7 @@ public class CheckPoint {
 	private LocalTime time;
 	private int duration; // duration in seconds
 	private int index;
+	private boolean active;
 	
 	/**
 	 * Constructor for the depot
@@ -28,6 +29,7 @@ public class CheckPoint {
 		this.time = time;
 		this.duration = 0;
 		this.index = -1;
+		this.active = false;
 	}
 	
 	/**
@@ -72,6 +74,14 @@ public class CheckPoint {
 		this.index = index;
 	}
 	
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public boolean equals(Object c) {
 		// If the object is compared with itself then return true 
         if (c == this) {
@@ -83,15 +93,17 @@ public class CheckPoint {
         }
          
         CheckPoint tmpCheckpoint = (CheckPoint) c;
+        
+        System.out.println("[equals] tmp : "+tmpCheckpoint.getAddress().getIndex()+ " this :"+this.getAddress().getId());
 		
 		if (tmpCheckpoint.getType().equals(this.getType()) 
 				&& tmpCheckpoint.getAddress().equals(this.getAddress()) 
-				&& ((tmpCheckpoint.getTime() == null && this.getTime() == null) || tmpCheckpoint.getTime().equals(this.getTime()))
 				&& tmpCheckpoint.getDuration() == this.getDuration()
 				&& tmpCheckpoint.getIndex() == this.getIndex()){
 			return true;
 		}
 		return false;
 	}
+	
 	
 }

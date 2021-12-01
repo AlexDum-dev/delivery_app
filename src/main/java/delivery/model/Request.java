@@ -10,11 +10,23 @@ public class Request {
 	private CheckPoint delivery;
 	private CheckPoint pickup;
 	private int index;
+	private boolean active;
 	
 	public Request(CheckPoint pickup, CheckPoint delivery) {
 		this.delivery = delivery;
 		this.pickup = pickup;
 		this.index = -1;
+		this.active = false;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.delivery.setActive(active);
+		this.pickup.setActive(active);
+		this.active = active;
 	}
 
 	public CheckPoint getDelivery() {

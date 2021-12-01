@@ -2,7 +2,7 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.MouseListener;
 
 import controller.Controller;
 import delivery.model.CheckPoint;
@@ -14,6 +14,9 @@ import delivery.model.Tour;
 
 
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.awt.*;
 
 public class Window {
@@ -28,6 +31,11 @@ public class Window {
 	private JButton btnComputeTour = new JButton("Compute Tour");
 	private JButton btnStopComputing = new JButton("Stop Computing");
 	private JButton btnAddRequestTest = new JButton("Add Request");
+	private JLabel message1=new JLabel("Optimization in progress...");
+	private JLabel message2=new JLabel("Tour computed");
+	private JButton btnDeleteRequestTest = new JButton("Delete Request");
+	private CheckPoint pick;
+	private CheckPoint d;
 
 
 
@@ -54,6 +62,7 @@ public class Window {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		mapView = new MapView(p, t);
+		
 		mapView.setBounds(20,45,690,690);
 		frame.getContentPane().add(mapView);
 		//mapView.colorBackground(java.awt.Color.WHITE);
@@ -62,7 +71,7 @@ public class Window {
 		requestView = new RequestView(p);
 		requestView.setBounds(746, 49, 300, 200);
 		frame.getContentPane().add(requestView);
-
+		
 		mapInfoView = new MapInfoView(p);  
 		mapInfoView.setBounds(746,259,300,120);
 		frame.getContentPane().add(mapInfoView);
@@ -107,22 +116,49 @@ public class Window {
 		});
 		frame.getContentPane().add(btnStopComputing);
 		
+		
 		btnAddRequestTest.setBounds(650, 12, 134, 27);
 		btnAddRequestTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton");
-				CheckPoint pick = new CheckPoint(CheckPointType.PICKUP, p.getIntersection("25321359"),10); 
-				CheckPoint d = new CheckPoint(CheckPointType.DELIVERY, p.getIntersection("26317214"),10); 
-				c.addRequest("25321359", "26317214", 10, 11);
+				c.addRequest("55457297", "249081135", 10, 11);
 			}
 		});
 		frame.getContentPane().add(btnAddRequestTest);
+		
+		
+		message1.setBounds(746, 700, 300, 30);
+		frame.getContentPane().add(message1);
+		setMessageVisible(message1, false);
+		
+		
+		message2.setBounds(746, 700, 300, 30);
+		frame.getContentPane().add(message2);
+		setMessageVisible(message2, false);
+		btnDeleteRequestTest.setBounds(850, 12, 134, 27);
+		btnDeleteRequestTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test appui bouton delete");
+				c.deleteRequest("26121686", "191134392");
+			}
+		});
+		frame.getContentPane().add(btnDeleteRequestTest);
+		
+		
 				
 		frame.setVisible(true);
 	}
 
 	public JFrame getFrame() {
 		return frame;
+	}
+	
+	public JLabel getMessage1() {
+		return message1;
+	}
+	
+	public JLabel getMessage2() {
+		return message2;
 	}
 	
 	public void setLoadMapButtonFalse() {
@@ -170,8 +206,14 @@ public class Window {
 	public void setAddRequestTrue() {
 		btnAddRequestTest.setEnabled(true);
 	}
+	
+	
+	public void setMessageVisible(JLabel message, boolean visible) {
+		message.setVisible(visible);
+	}
 
-	
-	
-	
+
+	public MapView getMapView() {
+		return mapView;
+	}
 }
