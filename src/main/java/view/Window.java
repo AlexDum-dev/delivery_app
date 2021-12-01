@@ -2,7 +2,7 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.MouseListener;
 
 import controller.Controller;
 import delivery.model.CheckPoint;
@@ -14,6 +14,9 @@ import delivery.model.Tour;
 
 
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.awt.*;
 
 public class Window {
@@ -54,6 +57,7 @@ public class Window {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		mapView = new MapView(p, t);
+		
 		mapView.setBounds(20,45,690,690);
 		frame.getContentPane().add(mapView);
 		//mapView.colorBackground(java.awt.Color.WHITE);
