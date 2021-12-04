@@ -9,6 +9,12 @@ import model.Plan;
 import model.Tour;
 import view.Window;
 
+/**
+ * Class to implement the modify tour command (change the order)
+ * @author alex
+ *
+ */
+
 public class ModifyTourCommand implements Command {
 	
 	private int indexCheckpoint;
