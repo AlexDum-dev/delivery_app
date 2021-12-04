@@ -56,7 +56,7 @@ public class Tour extends Observable {
 	public void removeConnectedPath(int indexCheckpoint) {
 		//remove index et index -1
 		this.path.remove(indexCheckpoint);
-		this.path.add(indexCheckpoint, new Path());
+		//this.path.add(indexCheckpoint, new Path());
 		//this.path.remove(indexCheckpoint - 1);
 		//this.path.add(indexCheckpoint-1, new Path());
 		/*
