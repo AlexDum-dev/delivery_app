@@ -57,8 +57,8 @@ public class Controller {
 	public void addRequest(String idPickup, String idDelivery, int durationPickup, int durationDelivery) {
 		currentState.addRequest(listOfCommands, plan, tour, idPickup, idDelivery, durationPickup, durationDelivery, window);
 	}
-	public void modifyRequest() {
-		currentState.modifyRequest(this);
+	public void modifyRequest(int indexCheckPoint, int newIndexCheckPoint) {
+		currentState.modifyRequest(listOfCommands, plan, tour, indexCheckPoint, newIndexCheckPoint, window);
 	}
 	public void deleteRequest(String idPickup, String idDelivery) {
 		currentState.deleteRequest(listOfCommands, plan, tour, idPickup, idDelivery, window);
