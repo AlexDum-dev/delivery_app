@@ -83,7 +83,8 @@ public class Dijkstra {
 	 * @return
 	 */
 	public static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
-		if(nodePredecesor.get(DestinationIndex) == null) { //case where we can't create the path (node not connected to the rest of the graph
+		if(nodePredecesor.get(DestinationIndex) == null
+				&& OriginIndex!=DestinationIndex) { //case where we can't create the path (node not connected to the rest of the graph
 			return null;
 		}
 		

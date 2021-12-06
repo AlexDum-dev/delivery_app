@@ -41,8 +41,9 @@ public class AddRequestPickup implements State {
 		if (duration!=null) {
 			w.getMapView().setPickupToAdd(
 					new CheckPoint(CheckPointType.PICKUP, pickup, duration));
+			c.setCurrentState(AddRequestDelivery.getInstance());
+			w.getMessage().setText("Please select a delivery location.");
 		}
-		c.setCurrentState(AddRequestDelivery.getInstance());
 		p.notifyObservers();
 	}
 }

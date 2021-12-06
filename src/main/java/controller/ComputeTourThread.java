@@ -51,15 +51,14 @@ public class ComputeTourThread extends Thread implements Observer {
 		tsp.addObserver(this);
 		tsp.searchSolution(20000, g);
 		controller.setCurrentState(TourComputed.getInstance());
-		window.setStopComputingButtonFalse();
-		window.setLoadMapButtonTrue();
-		window.setLoadRequestButtonTrue();
-		window.setAddRequestTrue();
-		window.setComputeTourButtonFalse();
-		window.setMessageVisible(window.getMessage1(), false);
-		window.setMessageVisible(window.getMessage2(), true);
-		window.setDeleteButton(true);
-		window.setModifyButton(true);
+		window.setStopComputingButtonEnabled(false);
+		window.setLoadMapButtonEnabled(true);
+		window.setLoadRequestButtonEnabled(true);
+		window.setAddRequestEnabled(true);
+		window.setComputeTourButtonEnabled(false);
+		window.setDeleteButtonEnabled(true);
+		window.setModifyButtonsEnabled(true);
+		window.getMessage().setText("Tour computed!");
 	}
 
 	@Override

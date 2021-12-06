@@ -39,6 +39,7 @@ public class TourComputed implements State {
 	
 	@Override
 	public void addRequest(Controller c, Window w) {
+		w.getMessage().setText("Please select a pickup location.");
 		c.setCurrentState(AddRequestPickup.getInstance());
 	}
 	
