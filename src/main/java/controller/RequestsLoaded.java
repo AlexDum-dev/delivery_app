@@ -46,6 +46,7 @@ public class RequestsLoaded implements State {
 		w.setMessageVisible(w.getMessage1(), true);
 		w.setMessageVisible(w.getMessage2(), false);
 		w.setDeleteButton(false);
+		w.setModifyButton(false);
 		c.setCurrentState(TourComputing.getInstance());
 		ComputeTourThread thread = new ComputeTourThread(c, plan, tour, w);
 		c.setThread(thread);

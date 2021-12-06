@@ -137,7 +137,7 @@ public class Window {
 		message2.setBounds(746, 700, 300, 30);
 		frame.getContentPane().add(message2);
 		setMessageVisible(message2, false);
-		btnDeleteRequestTest.setBounds(850, 12, 134, 27);
+		btnDeleteRequestTest.setBounds(808, 12, 134, 27);
 		btnDeleteRequestTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton delete");
@@ -154,6 +154,7 @@ public class Window {
 				c.modifyRequest(5, 3);
 			}
 		});
+		setModifyButton(false);
 		frame.getContentPane().add(btnModifyTour);
 				
 		frame.setVisible(true);
@@ -228,5 +229,9 @@ public class Window {
 	}
 	public void setDeleteButton(boolean b) {
 		btnDeleteRequestTest.setEnabled(b);
+	}
+	
+	public void setModifyButton(boolean b) {
+		btnModifyTour.setEnabled(b);
 	}
 }

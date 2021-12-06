@@ -84,6 +84,7 @@ public class AddRequestCommand implements Command {
 		window.setMessageVisible(window.getMessage1(), false);
 		window.setMessageVisible(window.getMessage2(), false);
 		window.setDeleteButton(true);
+		window.setModifyButton(true);
 	}
 
 	@Override
