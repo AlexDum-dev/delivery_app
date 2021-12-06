@@ -396,6 +396,15 @@ public class XMLParserTest {
 	}
 	
 	@Test
+	public void loadRequestsNegativeDepartureTimeTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsNegativeDepartureTimeTest.xml"), p);
+		});
+	}
+	
+	@Test
 	public void loadRequestsPickupNotExistingTestNotOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
