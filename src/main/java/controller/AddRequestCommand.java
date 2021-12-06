@@ -78,6 +78,7 @@ public class AddRequestCommand implements Command {
 		tour.notifyObservers();
 		window.setMessageVisible(window.getMessage1(), false);
 		window.setMessageVisible(window.getMessage2(), false);
+		window.setDeleteButton(true);
 	}
 
 	@Override

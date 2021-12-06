@@ -142,6 +142,7 @@ public class Window {
 			}
 		});
 		frame.getContentPane().add(btnDeleteRequestTest);
+		setDeleteButton(false);
 		
 		
 				
@@ -214,5 +215,8 @@ public class Window {
 
 	public MapView getMapView() {
 		return mapView;
+	}
+	public void setDeleteButton(boolean b) {
+		btnDeleteRequestTest.setEnabled(b);
 	}
 }

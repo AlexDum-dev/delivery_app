@@ -58,6 +58,7 @@ public class ComputeTourThread extends Thread implements Observer {
 		window.setComputeTourButtonFalse();
 		window.setMessageVisible(window.getMessage1(), false);
 		window.setMessageVisible(window.getMessage2(), true);
+		window.setDeleteButton(true);
 	}
 
 	@Override
