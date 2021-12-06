@@ -14,6 +14,8 @@ import model.Path;
 import model.Plan;
 import model.Request;
 import model.Segment;
+import model.Tour;
+import view.Window;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -24,7 +26,7 @@ public class AddRequestCommandTest {
 	public void addRequestWithNoTour() {
 		
 	}
-	/*
+	
 	@Test
 	public void addRequestWithTour() {
 		Plan plan = new Plan();
@@ -63,6 +65,7 @@ public class AddRequestCommandTest {
 
 		
 		CheckPoint depot = new CheckPoint(CheckPointType.DEPOT, i1, LocalTime.now());
+		plan.setDepot(depot);
 		CheckPoint pickup = new CheckPoint(CheckPointType.PICKUP, i3,10);
 		CheckPoint delivery = new CheckPoint(CheckPointType.DELIVERY, i5,20);
 		
@@ -74,73 +77,50 @@ public class AddRequestCommandTest {
 		listCheckPoint.add(pickup);
 		listCheckPoint.add(delivery);
 		
+		Request r1 = new Request(pickup, delivery);		
+		plan.addRequest(r1);
+		
 		List<ArrayList<Path>> listPath = new ArrayList<ArrayList<Path>>();
 		
-		ArrayList <Path> paths0 = new ArrayList<Path>();
-		
-		List<Segment> segments01 =new ArrayList<Segment>();
-		segments01.add(si13);
-		
-		Path path01= new Path (segments01);
-		
-		List<Segment> segments02 =new ArrayList<Segment>();
-		segments02.add(si13);
-		segments02.add(si34);
-		segments02.add(si45);
-		
-		Path path02= new Path (segments02);
-		
-		paths0.add(null);
-		paths0.add(path01);
-		paths0.add(path02);
-		
-		ArrayList <Path> paths1 = new ArrayList<Path>();
-		
-		List<Segment> segments10 =new ArrayList<Segment>();
-		segments10.add(si34);
-		segments10.add(si45);
-		segments10.add(si51);
-		
-		Path path10= new Path (segments10);
-		
-		List<Segment> segments12 =new ArrayList<Segment>();
-		segments12.add(si34);
-		segments12.add(si45);
-		
-		Path path12= new Path (segments12);
-		
-		paths1.add(path10);
-		paths1.add(null);
-		paths1.add(path12);
-		
-		ArrayList <Path> paths2 = new ArrayList<Path>();
-		
-		List<Segment> segments20 =new ArrayList<Segment>();
-		segments20.add(si51);
-		
-		Path path20= new Path (segments20);
-		
-		List<Segment> segments21 =new ArrayList<Segment>();
-		segments21.add(si51);
-		segments21.add(si13);
-		
-		Path path21= new Path (segments21);
-		
-		paths2.add(path20);
-		paths2.add(path21);
-		paths2.add(null);
-		
-		listPath.add(paths0);
-		listPath.add(paths1);
-		listPath.add(paths2);
-		
-		DeliveryGraph g = new DeliveryGraph(listPath, listCheckPoint);
-		TSP tsp = new TSP1();
-		tsp.searchSolution(20000, g);
-		g.g
+		Tour tour = new Tour();
+		List<Segment> list = new ArrayList<Segment>();
+		list.add(si13);
+		Path pathI1toI3 = new Path(list);
 		
 		
-		AddRequestCommand addCommand = new AddRequestCommand(plan, tsp.)
+		List<Segment> list35 = new ArrayList<Segment>();
+		list35.add(si34);
+		list35.add(si45);
+		Path pathi3I5 = new Path(list35);
+		
+		List<Segment> list51 = new ArrayList<Segment>();
+		list51.add(si51);
+		Path pathI5toI1 = new Path(list51);
+		
+		tour.addPath(pathI1toI3, depot);
+		tour.addPath(pathi3I5, pickup);
+		tour.addPath(pathI5toI1, delivery);
+		
+		AddRequestCommand addCommand = new AddRequestCommand(plan, tour,"2", "4", new Window());
+		
+		addCommand.doCommand();
+		
+		assert(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");
+		assert(tour.getPath().get(0).getDestination().getId() == "3");
+		
+		assert(tour.getPath().get(1).getPath().get(0).getOrigin().getId() == "3");
+		assert(tour.getPath().get(1).getDestination().getId() == "5");
+
+		assert(tour.getPath().get(2).getPath().get(0).getOrigin().getId() == "5");
+		assert(tour.getPath().get(2).getDestination().getId() == "2");
+		
+		assert(tour.getPath().get(3).getPath().get(0).getOrigin().getId() == "2");
+		assert(tour.getPath().get(3).getDestination().getId() == "4");
+		
+		assert(tour.getPath().get(4).getPath().get(0).getOrigin().getId() == "4");
+		assert(tour.getPath().get(4).getDestination().getId() == "1");
+		
+		
 	}
-*/
+
 }

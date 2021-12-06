@@ -51,6 +51,10 @@ public class Window {
 		setAddRequestFalse();
 	}
 
+	public Window() {
+		super();
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
