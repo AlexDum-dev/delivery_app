@@ -36,6 +36,11 @@ public class ModifyTourCommand implements Command {
 		for(int i =  0; i < this.tour.getPath().size();i++) {
 			System.out.println(this.tour.getPath().get(i).getPath().get(0).getOrigin().getId());
 		}
+		
+		//get the checkpoint before the new place and after and delete the path between both
+		Intersection intersectionNewAfterCheckPoint = this.tour.getPath().get(newIndexCheckPoint).getPath().get(0).getOrigin();
+		Intersection intersectionNewBeforeCheckPoint = this.tour.getPath().get(newIndexCheckPoint - 1).getPath().get(0).getOrigin();
+		
 		//Delete the two path connected to the checkpoint that we want to modify
 		//Connect the two checkpoint that was connected to the checkpoint
 		Intersection intersectionBeforeCheckpoint = this.tour.getPath().get(indexCheckpoint - 1).getPath().get(0).getOrigin();
@@ -56,9 +61,6 @@ public class ModifyTourCommand implements Command {
 											intersectionNextCheckPoint.getIndex());
 		this.tour.getPath().set(indexCheckpoint-1, pathToReconnect);
 
-		//get the checkpoint before the new place and after and delete the path between both
-		Intersection intersectionNewAfterCheckPoint = this.tour.getPath().get(newIndexCheckPoint).getPath().get(0).getOrigin();
-		Intersection intersectionNewBeforeCheckPoint = this.tour.getPath().get(newIndexCheckPoint - 1).getPath().get(0).getOrigin();
 		
 		
 		//Launch djikstra for the the checkpoint before
