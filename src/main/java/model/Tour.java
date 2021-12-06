@@ -32,8 +32,9 @@ public class Tour extends Observable {
 		//determine the path between the last checkpoint and the pickup and between the pickup and the delivery
 		//then between the delivery and the pickup
 		//erase the last path
-		
-		this.path.remove(this.path.size() - 1); //remove last path
+		if (this.path.size() > 0) {
+			this.path.remove(this.path.size() - 1); //remove last path
+		}		
 	}
 	/**
 	 * Remove paths connected to checkpoint (at checkpointIndex) and replace by path which length is -1
