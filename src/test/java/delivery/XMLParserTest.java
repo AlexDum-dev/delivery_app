@@ -15,7 +15,7 @@ import model.*;
 
 public class XMLParserTest {
 	
-	
+	//Testing XMLParser.loadPlan
 	@Test
 	public void loadPlanTestOk() throws NumberFormatException, ParserConfigurationException, IOException, SAXException, XMLParserException {
 		//Arrange
@@ -40,13 +40,6 @@ public class XMLParserTest {
 		intersections.add(i4);
 		intersections.add(i5);
 		intersections.add(i6);
-		
-		/*
-			<segment destination="208769457" length="106.73056" name="Rue Frédéric Passy" origin="208769499"/>
-			<segment destination="55474978" length="79.801414" name="Rue Édouard Aynard" origin="208769499"/>
-			<segment destination="55475018" length="96.57731" name="Rue Édouard Aynard" origin="208769499"/>
-			<segment destination="26033277" length="78.72686" name="Rue Danton" origin="975886496"/> 
-		*/
 		
 		Segment s1 = new Segment(i2, i1, 106.73056, "Rue Frédéric Passy");
 		Segment s2 = new Segment(i2, i3, 79.801414, "Rue Édouard Aynard");
@@ -100,6 +93,160 @@ public class XMLParserTest {
 		});
 	}
 	
+	@Test
+	public void loadPlanMapTagMissingTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMapTagMissingTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanMalformedFileTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMalformedFileTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanMissingIntersectionIdTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMissingIntersectionIdTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanDuplicateIntersectionIdTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanDuplicateIntersectionIdTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanIntersectionNotExistingTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanIntersectionNotExistingTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanMissingLatitudeTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMissingLatitudeTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanLatitudeNANTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLatitudeNANTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanLatitudeOver90TestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLatitudeOver90Test.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanLatitudeLessThanMinus90TestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLatitudeLessThanMinus90Test.xml"), p);
+		});
+	}
+	
+	@Test
+	public void loadPlanLongitudeNANTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLongitudeNANTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanMissingLongitudeTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMissingLongitudeTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanLongitudeOver90TestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLongitudeOver180Test.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanLongitudeLessThanMinus180TestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLongitudeLessThanMinus180Test.xml"), p);
+		});
+	}	
+	
+	@Test
+	public void loadPlanMissingOriginTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMissingOriginTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanMissingNameTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMissingNameTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanMissingLengthTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMissingLengthTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanMissingDestinationTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMissingDestinationTest.xml"), p);
+		});		
+	}
+		
+	@Test
+	public void loadPlanNegativeLengthTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanNegativeLengthTest.xml"), p);
+		});		
+	}
+	
+	@Test
+	public void loadPlanLengthNANTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLengthNANTest.xml"), p);
+		});		
+	}
+	
+	
+	//Testing XMLParser.loadRequests
 	
 	@Test
 	public void loadRequestsTestOk() throws NumberFormatException, ParserConfigurationException, IOException, SAXException, XMLParserException {
@@ -164,67 +311,143 @@ public class XMLParserTest {
 	}
 	
 	@Test
-	public void loadRequestsTestXMLParserExceptionOk() throws NumberFormatException, ParserConfigurationException, IOException, SAXException, XMLParserException {
+	public void loadRequestsTestXMLParserExceptionOk() {
 		Plan p = new Plan();
-		XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
 		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
 			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsWrongCheckpointTest.xml"), p);
 		});
 		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
 			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsWrongDepotTest.xml"), p);
 		});
 	}
 	
 	@Test
-	public void loadPlanDuplicateIntersectionIdTestNotOk() {
+	public void loadRequestsMissingAddressTestNotOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanDuplicateIntersectionIdTest.xml"), p);
-		});		
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsMissingAddressTest.xml"), p);
+		});
 	}
 	
 	@Test
-	public void loadPlanIntersectionNotExistingTestNotOk() {
+	public void loadRequestsMissingDepartureTimeTestNotOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanIntersectionNotExistingTest.xml"), p);
-		});		
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsMissingDepartureTimeTest.xml"), p);
+		});
 	}
 	
 	@Test
-	public void loadPlanNegativeLengthTestNotOk() {
+	public void loadRequestsMissingPickupAddressTestNotOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanNegativeLengthTest.xml"), p);
-		});		
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsMissingPickupAddressTest.xml"), p);
+		});
 	}
 	
 	@Test
-	public void loadPlanMapTagMissingTestNotOk() {
+	public void loadRequestsMissingDeliveryAddressTestNotOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMapTagMissingTest.xml"), p);
-		});		
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsMissingDeliveryAddressTest.xml"), p);
+		});
 	}
 	
 	@Test
-	public void loadPlanMalformedFileTestNotOk() {
+	public void loadRequestsMissingDeliveryDurationTestNotOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanMalformedFileTest.xml"), p);
-		});		
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsMissingDeliveryDurationTest.xml"), p);
+		});
 	}
 	
 	@Test
-	public void loadPlanLengthNANTestNotOk() {
+	public void loadRequestsMissingPickupDurationTestNotOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
-			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLengthNANTest.xml"), p);
-		});		
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsMissingPickupDurationTest.xml"), p);
+		});
 	}
 	
+	@Test
+	public void loadRequestsMissingDepotTagTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsMissingDepotTagTest.xml"), p);
+		});
+	}
 	
+	@Test
+	public void loadRequestsIncorrectDepartureTimeTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsIncorrectDepartureTimeTest.xml"), p);
+		});
+	}
 	
+	@Test
+	public void loadRequestsPickupNotExistingTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsPickupNotExistingTest.xml"), p);
+		});
+	}
+	
+	@Test
+	public void loadRequestsDeliveryNotExistingTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsDeliveryNotExistingTest.xml"), p);
+		});
+	}
+	
+	@Test
+	public void loadRequestsDeliveryDurationNANTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsDeliveryDurationNANTest.xml"), p);
+		});
+	}
+	
+	@Test
+	public void loadRequestsNegativeDeliveryDurationTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsNegativeDeliveryDurationTest.xml"), p);
+		});
+	}
+	
+	@Test
+	public void loadRequestsPickupDurationNANTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsPickupDurationNANTest.xml"), p);
+		});
+	}
+	
+	@Test
+	public void loadRequestsNegativePickupDurationTestNotOk() {
+		Plan p = new Plan();
+		assertThrows(XMLParserException.class, () -> {
+			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadRequestGoodDataPlanTest.xml"), p);
+			XMLParser.loadRequests(new File("src/test/resources/XMLParserTest/loadRequestsNegativePickupDurationTest.xml"), p);
+		});
+	}
 	
 	
 }
