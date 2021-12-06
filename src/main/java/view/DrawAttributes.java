@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Static 
- * 
+ * Static
+ *
  * @author 4IF Group H4144
  * @version 1.0 22 Nov 2021
  */
@@ -19,7 +19,7 @@ public class DrawAttributes {
 	private static Color colorPath = new Color(255,0,255);
 	private static Color colorActive = new Color(0, 0, 255);
 	private static Color ColorPathActive = new Color(255, 102, 0);
-	
+
 
 
 	private static Stroke strokeLine = new BasicStroke(2f);
@@ -27,8 +27,8 @@ public class DrawAttributes {
 	private static Stroke strokePoint = new BasicStroke(1f);
 	private static Stroke strokeActive = new BasicStroke(5f);
 	private static int pointWidth = 15;
-	
-	
+
+
 
 
 	static {
@@ -40,10 +40,25 @@ public class DrawAttributes {
 		colorsRequest.add(Color.RED);
 		colorsRequest.add(Color.ORANGE);
 		colorsRequest.add(Color.PINK);
+		colorsRequest.add(Color.BLUE);
+		colorsRequest.add(new Color(153,0,0));  // Very dark red
+		colorsRequest.add(new Color(255,102,102)); // Very light RED
+		colorsRequest.add(new Color(51,204,255)); // very light blue
+		colorsRequest.add(new Color(0,0,153)); //very dark blue
+		colorsRequest.add(new Color(102,255,102)); // very light GREEN
+		colorsRequest.add(new Color(0,102,0)); //very dark GREEN
+		colorsRequest.add(new Color(255,255,204)); //very light yellow
+		colorsRequest.add(new Color(255,204,0)); // dark YELLOW
+		colorsRequest.add(new Color(255,153,0)); // light ORANGE
+		colorsRequest.add(new Color(255,204,51)); // gold
+		colorsRequest.add(new Color(153,102,0)); // light brown
+		colorsRequest.add(new Color(102,51,0)); // brown
+		colorsRequest.add(new Color(51,0,0)); // dark brown
+		colorsRequest.add(new Color(102,0,153)); // purple
 	}
-	
+
 	private DrawAttributes() {
-		
+
 	}
 
 	public static Color getColorRequest(int i) {
@@ -51,12 +66,12 @@ public class DrawAttributes {
 			return colorsRequest.get(i);
 		return Color.LIGHT_GRAY;
 	}
-	
-	
+
+
 	public static Color getColorDepot() {
 		return colorDepot;
 	}
-	
+
 	public static Color getColorLine() {
 		return colorLine;
 	}
@@ -80,7 +95,7 @@ public class DrawAttributes {
 	public static int getPointWidth() {
 		return pointWidth;
 	}
-	
+
 	public static Color getColorActive() {
 		return colorActive;
 	}
