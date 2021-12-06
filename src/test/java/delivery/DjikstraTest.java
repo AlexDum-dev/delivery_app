@@ -11,7 +11,7 @@ import java.util.*;
 import algorithm.*;
 import model.*;
 
-public class DijkstraTest {
+public class DjikstraTest {
 	
 	@Test 
 	  public void djikstraTestWrongCostOk() {

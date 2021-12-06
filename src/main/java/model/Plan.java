@@ -67,6 +67,10 @@ public class Plan extends Observable {
 		return nearest;
 	}
 	
+	/**
+	 * Delete the request associated to the id (either a pickup or a delivery)
+	 * @param idDeliveryOrPickup
+	 */
 	public void deleteRequestByCheckPoint(String idDeliveryOrPickup) {
 		for(Request r : this.requests) {
 			if(r.getPickup().getAddress().getId().equals(idDeliveryOrPickup) ||

@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.List;
-
 import algorithm.Dijkstra;
 import model.CheckPoint;
 import model.CheckPointType;
@@ -9,7 +8,13 @@ import model.Path;
 import model.Plan;
 import model.Request;
 import model.Tour;
-import view.Window;;
+import view.Window;
+
+/**
+ * Class to implement the add request command
+ * @author alex
+ *
+ */
 
 public class AddRequestCommand implements Command {
 	
@@ -51,7 +56,6 @@ public class AddRequestCommand implements Command {
 		plan.notifyObservers();
 		
 		Request req = plan.getRequests().get(plan.getRequests().size() - 1);
-		System.out.println("*****************[addRequest] id du pickup : "+req.getPickup().getAddress().getId()+" id du deliv: "+req.getDelivery().getAddress().getId());
 		tour.removeLastPath();
 		CheckPoint lastCheckPoint = tour.removeLastCheckPoint();
 		
@@ -62,7 +66,7 @@ public class AddRequestCommand implements Command {
 		
 		
 		Path pathFromLastPontToNewPickup = Dijkstra.createPath(plan.getIntersections(), predecesorLastIntersectionTour, lastCheckPoint.getAddress().getIndex() , req.getPickup().getAddress().getIndex());
-		Path pathFromPickupToDelivery = Dijkstra.createPath(plan.getIntersections(), predecesorPickupDeparture, req.getPickup().getAddress().getIndex(), req.getDelivery().getIndex());
+		Path pathFromPickupToDelivery = Dijkstra.createPath(plan.getIntersections(), predecesorPickupDeparture, req.getPickup().getAddress().getIndex(), req.getDelivery().getAddress().getIndex());
 		Path pathFromDeliveryToDepot = Dijkstra.createPath(plan.getIntersections(), predecesorDeliveryDeparture, req.getDelivery().getAddress().getIndex(), plan.getDepot().getAddress().getIndex());
 		//Create path between last Checkpoint of the last path and the pickup
 		//Create path between the pickup and the delivery
@@ -86,7 +90,6 @@ public class AddRequestCommand implements Command {
 		
 		int index = 0;
 		for(int i = 1; i < tour.getCheckPoint().size() ; i++) {
-			System.out.println("CheckPoint : "+tour.getCheckPoint().get(i).getAddress().getId());
 			if(tour.getCheckPoint().get(i).getAddress().getId().equals(this.idPickup)){
 				index = tour.getCheckPoint().get(i).getIndex();
 				tour.actualizeTour(tour.getCheckPoint().get(i).getIndex());
@@ -109,7 +112,7 @@ public class AddRequestCommand implements Command {
 				} else {
 					pathFromBeforeCheckPointtoNextCheckPoint = Dijkstra.createPath(plan.getIntersections(),predecesorCheckpoint,
 																tour.getCheckPoint().get(i).getAddress().getIndex(), 
-																tour.getCheckPoint().get(i+1).getIndex());
+																tour.getCheckPoint().get(i+1).getAddress().getIndex());
 				}
 				tour.getPath().remove(i);
 				tour.getPath().add(i, pathFromBeforeCheckPointtoNextCheckPoint);
