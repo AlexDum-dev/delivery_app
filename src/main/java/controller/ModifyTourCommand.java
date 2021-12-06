@@ -83,7 +83,6 @@ public class ModifyTourCommand implements Command {
 		
 		this.plan.notifyObservers();
 		this.tour.notifyObservers();
-		//TODO : do I have to update the index because i changed the list of path ?
 		
 	}
 

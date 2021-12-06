@@ -69,9 +69,7 @@ public class AddRequestCommandTest {
 		CheckPoint pickup = new CheckPoint(CheckPointType.PICKUP, i3,10);
 		CheckPoint delivery = new CheckPoint(CheckPointType.DELIVERY, i5,20);
 		
-		plan.addRequest(new Request(pickup, delivery));
-		
-		
+			
 		List<CheckPoint> listCheckPoint = new ArrayList<CheckPoint>();
 		listCheckPoint.add(depot);
 		listCheckPoint.add(pickup);
