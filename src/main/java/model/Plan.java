@@ -54,6 +54,19 @@ public class Plan extends Observable {
 		return inter;
 	}
 	
+	public Intersection getNearestIntersection(double lat, double lon) {
+		Intersection nearest = null;
+		double nearestRange = Double.MAX_VALUE;
+		for (Intersection i : intersections) {
+			double range = Math.pow(lat-i.getLatitude(), 2)+Math.pow(lon-i.getLongitude(), 2);
+			if(range<nearestRange){
+				nearestRange = range;
+				nearest = i;
+			}
+		}
+		return nearest;
+	}
+	
 	public void deleteRequestByCheckPoint(String idDeliveryOrPickup) {
 		for(Request r : this.requests) {
 			if(r.getPickup().getAddress().getId().equals(idDeliveryOrPickup) ||

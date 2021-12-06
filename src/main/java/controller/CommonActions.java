@@ -114,4 +114,35 @@ public class CommonActions {
 			w.getMapView().zoomOut();
 		}
 	}
+	
+	public static Integer inputNumber(Window w, String title, String msg) {
+		Integer number = null;
+		String numString = "0";
+		boolean enterOK = false;
+		
+		while (numString!=null && !enterOK) {
+			numString = (String) JOptionPane.showInputDialog(
+	                w.getFrame(),
+	                title,
+	                msg,
+	                JOptionPane.PLAIN_MESSAGE,
+	                null,
+	                null,
+	                numString);
+			
+			try {
+				number = Integer.parseInt(numString);
+				if (number>=0) {
+					enterOK = true;
+				} else {
+					number = null;
+					enterOK = false;
+				}
+			} catch(NumberFormatException e) {
+				number = null;
+				enterOK = false;
+			}
+		}
+		return number;
+	}
 }

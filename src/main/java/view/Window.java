@@ -29,10 +29,10 @@ public class Window {
 	private JButton btnLoadRequest = new JButton("Load Request");
 	private JButton btnComputeTour = new JButton("Compute Tour");
 	private JButton btnStopComputing = new JButton("Stop Computing");
-	private JButton btnAddRequestTest = new JButton("Add Request");
+	private JButton btnAddRequest = new JButton("Add Request");
 	private JLabel message1=new JLabel("Optimization in progress...");
 	private JLabel message2=new JLabel("Tour computed");
-	private JButton btnDeleteRequestTest = new JButton("Delete Request");
+	private JButton btnDeleteRequest = new JButton("Delete Request");
 	private CheckPoint pick;
 	private CheckPoint d;
 
@@ -60,7 +60,7 @@ public class Window {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		mapView = new MapView(p, t);
+		mapView = new MapView(p, t, c);
 		
 		mapView.setBounds(20,45,690,690);
 		frame.getContentPane().add(mapView);
@@ -116,15 +116,14 @@ public class Window {
 		frame.getContentPane().add(btnStopComputing);
 		
 		
-		btnAddRequestTest.setBounds(650, 12, 134, 27);
-		btnAddRequestTest.addActionListener(new ActionListener() {
+		btnAddRequest.setBounds(650, 12, 134, 27);
+		btnAddRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton");
-				//c.addRequest("55457297", "249081135", 10, 11);
-				mapView.stateOfAdd = "ReadyToAddPickUp";
+				c.addRequest();
 			}
 		});
-		frame.getContentPane().add(btnAddRequestTest);
+		frame.getContentPane().add(btnAddRequest);
 		
 		
 		message1.setBounds(746, 700, 300, 30);
@@ -135,14 +134,20 @@ public class Window {
 		message2.setBounds(746, 700, 300, 30);
 		frame.getContentPane().add(message2);
 		setMessageVisible(message2, false);
-		btnDeleteRequestTest.setBounds(850, 12, 134, 27);
-		btnDeleteRequestTest.addActionListener(new ActionListener() {
+		btnDeleteRequest.setBounds(850, 12, 134, 27);
+		btnDeleteRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton delete");
-				c.deleteRequest("26121686", "191134392");
+				int index = requestView.getTable().getSelectedRow();
+				System.out.println(index);
+				if (index>=0) {
+					Request r = p.getRequests().get(index);
+					c.deleteRequest(r.getPickup().getAddress().getId(),
+							r.getDelivery().getAddress().getId());
+				}
 			}
 		});
-		frame.getContentPane().add(btnDeleteRequestTest);
+		frame.getContentPane().add(btnDeleteRequest);
 		
 		
 				
@@ -182,7 +187,7 @@ public class Window {
 	}
 	
 	public void setAddRequestFalse() {
-		btnAddRequestTest.setEnabled(false);
+		btnAddRequest.setEnabled(false);
 	}
 	
 	public void setLoadMapButtonTrue() {
@@ -204,7 +209,7 @@ public class Window {
 	}
 	
 	public void setAddRequestTrue() {
-		btnAddRequestTest.setEnabled(true);
+		btnAddRequest.setEnabled(true);
 	}
 	
 	

@@ -1,18 +1,17 @@
 package view;
 
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
+import controller.Controller;
 import model.CheckPoint;
 import model.CheckPointType;
 import model.Intersection;
@@ -21,10 +20,6 @@ import model.Plan;
 import model.Request;
 import model.Segment;
 import model.Tour;
-
-import java.awt.event.MouseWheelEvent;
-import java.time.LocalTime;
-
 import observer.Observable;
 import observer.Observer;
 
@@ -45,11 +40,11 @@ public class MapView extends JPanel implements Observer{
 	double minLat ;
 	double maxLon ;
 	double minLon ;
-	String stateOfAdd;
-	CheckPoint addPickUp;
+	CheckPoint pickupToAdd = null;
+	
 	private List<Segment> courantListOfSegments;
 
-	public MapView(Plan plan, Tour tour) {
+	public MapView(Plan plan, Tour tour, Controller c) {
 		this.plan = plan;
 		this.tour = tour;
 		plan.addObserver(this);
@@ -59,7 +54,6 @@ public class MapView extends JPanel implements Observer{
 		this.maxLon = plan.getMaxLongitude();
 		this.minLon = plan.getMinLongitude();
 		this.zoomLevel = 0;
-		this.stateOfAdd = null;
 		this.addMouseWheelListener(e -> {
             //System.out.println("MouseWheelListenerDemo.mouseWheelMoved");
 
@@ -113,38 +107,11 @@ public class MapView extends JPanel implements Observer{
 	            }
 			@Override
 	          public void mouseClicked(MouseEvent e) { 
-				if(stateOfAdd != null) {
-					
-					int x = e.getX();
-					int y = e.getY();
-					double lat = getLatitudeFromY(y);
-					double lon = getLongitudeFromX(x);
-
-					System.out.println("x = "+x+"   y = "+y);   
-					System.out.println("lat = "+lat+"   lon = "+lon); 
-					
-					for ( Intersection inter : plan.getIntersections()) {
-						if( (Math.abs(lat-inter.getLatitude()) < 0.0001 ) && (  (Math.abs(lon-inter.getLongitude()) < 0.0001)) ){
-							if(stateOfAdd.equals("ReadyToAddPickUp")) {
-								System.out.println("The PickUp Point has been chosen");
-								addPickUp = new CheckPoint(CheckPointType.PICKUP,inter,null);
-								stateOfAdd = "ReadyToAddDelivery";
-							}
-							else if(stateOfAdd.equals("ReadyToAddDelivery")) {
-								System.out.println("The Delivery Point has been chosen");
-								CheckPoint delivery = new CheckPoint(CheckPointType.DELIVERY,inter,null);
-								stateOfAdd = null;
-								Request request = new Request (addPickUp,delivery);
-								plan.addRequest(request);
-								update(getGraphics());
-							}
-							
-						}
-					}
-					
-					//Intersection inter = new Intersection();
-				}
-				
+				int x = e.getX();
+				int y = e.getY();
+				double lat = getLatitudeFromY(y);
+				double lon = getLongitudeFromX(x);
+				c.clickOnMap(lat, lon);
 	            }
 
 			private boolean isBetween(int ax, int ay, int bx, int by, int cx, int cy,double epsilon) {
@@ -366,6 +333,12 @@ public class MapView extends JPanel implements Observer{
 			g.setColor(Color.BLACK);
 			drawPoint(g , maxLat, maxLon, depot, plan.getDepot().getType(),plan.getDepot().isActive());
 		}
+		
+		if (pickupToAdd!=null) {
+			Intersection pk = pickupToAdd.getAddress();
+			g.setColor(Color.WHITE);
+			drawPoint(g , maxLat, maxLon, pk, pickupToAdd.getType(),true);
+		}
 	}
 	
 	public void drawPoint(Graphics2D g, double maxLat, double maxLon, 
@@ -447,15 +420,17 @@ public class MapView extends JPanel implements Observer{
 		this.maxLon = plan.getMaxLongitude();
 		this.minLon = plan.getMinLongitude();
 	}
+	
 	@Override
 	public void update(Observable observed, Object arg) {
-		// TODO Auto-generated method stub
-		//System.out.println("MapView Update methode");
-		
 		repaint();
 	}
 
-
-
-
+	public CheckPoint getPickupToAdd() {
+		return pickupToAdd;
+	}
+	
+	public void setPickupToAdd(CheckPoint pickupToAdd) {
+		this.pickupToAdd = pickupToAdd;
+	}
 }
