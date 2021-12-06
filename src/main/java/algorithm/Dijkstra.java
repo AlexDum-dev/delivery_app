@@ -7,6 +7,7 @@ import java.util.List;
 import model.CheckPoint;
 import model.Intersection;
 import model.Path;
+import model.Plan;
 import model.Request;
 import model.Segment;
 
@@ -83,7 +84,6 @@ public class Dijkstra {
 		int currentIndex = DestinationIndex;
 		int NextIndex = currentIndex;
 		while(currentIndex != OriginIndex) {
-			// System.out.println("======== WHILE =========");
 			System.out.println("[createPath]"+currentIndex);
 			NextIndex = nodePredecesor.get(currentIndex);
 			Segment s = getSegmentFromList(adjacencyList,NextIndex,currentIndex);
@@ -92,7 +92,13 @@ public class Dijkstra {
 			currentIndex = NextIndex;
 		}
 		Collections.reverse(segments);
-		Path p = new Path(segments);
+		Path p;
+		if(segments.size() == 0) {
+			//case where we have two checkpoint on the same intersection
+			Segment s = new Segment(adjacencyList.get(OriginIndex), adjacencyList.get(DestinationIndex), 0.0, "same");
+			segments.add(s);
+		}
+		p = new Path(segments);
 		return p;
 	}
 
