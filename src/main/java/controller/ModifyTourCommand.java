@@ -43,7 +43,15 @@ public class ModifyTourCommand implements Command {
 		
 		//Delete the two path connected to the checkpoint that we want to modify
 		//Connect the two checkpoint that was connected to the checkpoint
-		Intersection intersectionBeforeCheckpoint = this.tour.getPath().get(indexCheckpoint - 1).getPath().get(0).getOrigin();
+		
+		Intersection intersectionBeforeCheckpoint ;
+		
+		if(this.indexCheckpoint == 0){ //case where it's the first pickup 
+			intersectionBeforeCheckpoint = this.plan.getDepot().getAddress();
+		} else {
+			intersectionBeforeCheckpoint = this.tour.getPath().get(indexCheckpoint - 1).getPath().get(0).getOrigin();
+		}
+		
 		Intersection intersectionNextCheckPoint = null;
 		if(this.indexCheckpoint+1 == this.tour.getPath().size()){ //case where it's the last checkpoint before pickup
 			intersectionNextCheckPoint = this.plan.getDepot().getAddress();
