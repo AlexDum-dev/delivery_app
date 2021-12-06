@@ -90,37 +90,7 @@ public class AddRequestCommand implements Command {
 	@Override
 	public void undoCommand() {
 		
-		int index = 0;
-		for(int i = 1; i < tour.getCheckPoint().size() ; i++) {
-			if(tour.getCheckPoint().get(i).getAddress().getId().equals(this.idPickup)){
-				index = tour.getCheckPoint().get(i).getIndex();
-				tour.actualizeTour(tour.getCheckPoint().get(i).getIndex());
-			}
-			
-		}
-		
-		plan.getRequests().remove(index); //delete the request in the plan
-		plan.actualizeRequestsIndex(); //actualize the index of the requests
-		
-		for(int i=0; i<tour.getPath().size();i++) {
-			if(tour.getPath().get(i).getLength() == -1 && tour.getPath().size()!=1) {
-				List<Integer> predecesorCheckpoint =  Dijkstra.dijkstra(plan.getIntersections(), 
-						tour.getCheckPoint().get(i).getAddress());
-				Path pathFromBeforeCheckPointtoNextCheckPoint = null;
-				if(i+1 == tour.getPath().size()) {
-					pathFromBeforeCheckPointtoNextCheckPoint = Dijkstra.createPath(plan.getIntersections(),predecesorCheckpoint, 
-																tour.getCheckPoint().get(i).getAddress().getIndex(), 
-																plan.getDepot().getAddress().getIndex());
-				} else {
-					pathFromBeforeCheckPointtoNextCheckPoint = Dijkstra.createPath(plan.getIntersections(),predecesorCheckpoint,
-																tour.getCheckPoint().get(i).getAddress().getIndex(), 
-																tour.getCheckPoint().get(i+1).getAddress().getIndex());
-				}
-				tour.getPath().remove(i);
-				tour.getPath().add(i, pathFromBeforeCheckPointtoNextCheckPoint);
-			}
-		}
-
+		DeleteRequestCommand deleteCommand = new DeleteRequestCommand(plan, tour, this.idPickup, this.idDelivery, this.window);
 		plan.notifyObservers();
 		tour.notifyObservers();
 		

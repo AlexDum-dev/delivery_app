@@ -42,6 +42,9 @@ public class Dijkstra {
 					Path path = createPath(adjacencyList,nodePredecesor,
 							checkpoint.getAddress().getIndex(),
 							checkpoint2.getAddress().getIndex());
+					if(path == null) {
+						return null;
+					}
 					pathsFromCheckPoint.add(path);
 				} else {
 					//null dans la diag
@@ -80,6 +83,10 @@ public class Dijkstra {
 	 * @return
 	 */
 	public static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
+		if(nodePredecesor.get(DestinationIndex) == null) { //case where we can't create the path (node not connected to the rest of the graph
+			return null;
+		}
+		
 		List<Segment> segments = new ArrayList<Segment>();
 		int currentIndex = DestinationIndex;
 		int NextIndex = currentIndex;
