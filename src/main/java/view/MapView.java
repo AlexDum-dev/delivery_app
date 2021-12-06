@@ -91,32 +91,72 @@ public class MapView extends JPanel implements Observer{
 		MouseAdapter mouseAdapter =new MouseAdapter() { 
 			@Override
 	          public void mouseMoved(MouseEvent e) { 
+				int pointWidth = DrawAttributes.getPointWidth();
 				int x = e.getX();
 				int y = e.getY();
+				System.out.println(" x :"+x+" y : "+y);
 				double lat = getLatitudeFromY(y);
 				double lon = getLongitudeFromX(x);
-
+				System.out.println("lat :"+lat+"lon : "+lon);
+				System.out.println("=================================================================");
+				Segment seg = null;
+				double min = Double.MAX_VALUE;
 				for (Intersection i : plan.getIntersections()) {
 					int x1 = weightLatitude(i.getLatitude(), maxLat, xScale); 
 					int y1 = weightLongitude(i.getLongitude(), maxLon, yScale);
+					int x11 = getWidth() - y1 - pointWidth / 2;
+					int y12 = x1 - pointWidth / 2;
 					for (Segment s : i.getSegments()) {
 						int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
 						int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
-						if (isBetween(x1,y1,x2,y2,x,y,0.1)) {
-							System.out.println(s.getName());
+						int x21 = getWidth() - y2 - pointWidth / 2;
+						int y22 = x2 - pointWidth / 2;
+						if ( isBetween(x11,y12,x21,y22,x,y,20) ) {
+							double newMin = calculeSegment(x11,y12,x21,y22,x,y);
+							if (newMin < min  ) {
+								min = newMin;
+								seg = s;
+							}
 						}
+						
 					}
 				}
+				if (min < 20 && seg != null ) {
+					System.out.println(seg.getName());
+				}
+				//update(getGraphics());
 				
 				
 				//System.out.println(x + "," + y);
-	            }
+	          }
+			private boolean isBetween(int ax, int ay, int bx, int by, int cx, int cy, int eps) {
+				// TODO Auto-generated method stub
+				double distanceAC = Math.sqrt( Math.pow(ax - cx, 2) + Math.pow(ay - cy, 2) );
+				double distanceBC = Math.sqrt( Math.pow(bx - cx, 2) + Math.pow(by - cy, 2) );
+				double distanceAB = Math.sqrt( Math.pow(bx - ax, 2) + Math.pow(by - ay, 2) );
+				//return true;
+				if ( Math.abs( distanceAB - distanceBC - distanceAC ) < eps) {
+					return true;
+				}
+				return false;
+			}
+			private double calculeSegment(int ax, int ay, int bx, int by, int cx, int cy) {
+				// TODO Auto-generated method stub
+				double m = 0;
+				if ((bx-ax) != 0) {
+					m = (by-ay)/(bx-ax);
+				}
+				
+				double b = ay - m*ax;
+				return Math.abs(cy - (m*cx +b));
+			}
 			@Override
 	          public void mouseClicked(MouseEvent e) { 
 				if(stateOfAdd != null) {
 					
 					int x = e.getX();
 					int y = e.getY();
+					
 					double lat = getLatitudeFromY(y);
 					double lon = getLongitudeFromX(x);
 
@@ -145,29 +185,9 @@ public class MapView extends JPanel implements Observer{
 					//Intersection inter = new Intersection();
 				}
 				
-	            }
+			}   
 
-			private boolean isBetween(int ax, int ay, int bx, int by, int cx, int cy,double epsilon) {
-				// TODO Auto-generated method stub
-				double crossproduct = (cy - ay) * (bx - ax) - (cx - ax) * (by - ay);
-
-					    // compare versus epsilon for floating point values, or != 0 if using integers
-					    if (Math.abs(crossproduct) > epsilon || Math.abs(crossproduct) == 0.0) {
-					        
-					      
-					        return false;
-					    }
-					    System.out.println(Math.abs(crossproduct));
-					    double dotproduct = (cx - ax) * (bx - ax) + (cy - ay)*(by - ay);
-					    if (dotproduct < 0)
-					        return false;
-
-					    double squaredlengthba = (bx - ax)*(bx - ax) + (by - ay)*(by - ay);
-					    if (dotproduct > squaredlengthba)
-					        return false;
-
-					    return true;
-			} 
+			
 	          };
 		this.addMouseListener(mouseAdapter); 
 		addMouseMotionListener(mouseAdapter);
@@ -220,6 +240,16 @@ public class MapView extends JPanel implements Observer{
 			for (Segment s : i.getSegments()) {
 				int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
 				int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
+//				if ( s.getName().equalsIgnoreCase("Rue du Docteur Vaillant")  ) {
+//					g.setColor(DrawAttributes.getColorPathActive());
+//				}else {
+//					g.setColor(Color.BLACK);
+//				}
+				if(s.isActive()) {
+					g.setColor(DrawAttributes.getColorPathActive());
+				}else {
+					g.setColor(Color.BLACK);
+				}
 				g.drawLine(getWidth() - y1,x1,getWidth() -  y2,x2);
 			}
 		}
@@ -419,6 +449,15 @@ public class MapView extends JPanel implements Observer{
 
 	public int weightLongitude(double coord, double max, double yScale) {
 		return (int) ((max - coord) * yScale + padding);
+	}
+
+	public Double weightLatitudeDouble(double coord, double max, double xScale) {
+		return ((max - coord) * xScale + padding);
+
+	}
+
+	public Double weightLongitudeDouble(double coord, double max, double yScale) {
+		return ((max - coord) * yScale + padding);
 	}
 
 	

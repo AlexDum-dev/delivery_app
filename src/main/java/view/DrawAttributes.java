@@ -26,7 +26,7 @@ public class DrawAttributes {
 	private static Stroke strokePath = new BasicStroke(5f);
 	private static Stroke strokePoint = new BasicStroke(1f);
 	private static Stroke strokeActive = new BasicStroke(5f);
-	private static int pointWidth = 15;
+	private static int pointWidth = 0;
 	
 	
 
