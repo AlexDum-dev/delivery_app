@@ -1,11 +1,15 @@
 package delivery;
 
 import static org.junit.Assert.*;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
-import algorithm.tsp.DeliveryGraph;
-import algorithm.tsp.TSP;
-import algorithm.tsp.TSP1;
+import algorithm.Dijkstra;
+import algorithm.DijkstraResult;
 import controller.AddRequestCommand;
 import model.CheckPoint;
 import model.CheckPointType;
@@ -17,18 +21,11 @@ import model.Segment;
 import model.Tour;
 import view.Window;
 
-import java.time.LocalTime;
-import java.util.*;
+public class DeleteRequestTest {
 
-public class AddRequestCommandTest {
-	
 	@Test
-	public void addRequestWithNoTour() {
+	public void deleteRequestTest() {
 		
-	}
-	
-	@Test
-	public void addRequestWithTour() {
 		Plan plan = new Plan();
 		Intersection i1 = new Intersection("1", 1.1, 1.2);
 		i1.setIndex(0);
@@ -80,9 +77,10 @@ public class AddRequestCommandTest {
 		Request r1 = new Request(pickup, delivery);		
 		plan.addRequest(r1);
 		
-		List<ArrayList<Path>> listPath = new ArrayList<ArrayList<Path>>();
+		
 		
 		Tour tour = new Tour();
+		
 		List<Segment> list = new ArrayList<Segment>();
 		list.add(si13);
 		Path pathI1toI3 = new Path(list);
@@ -101,24 +99,16 @@ public class AddRequestCommandTest {
 		tour.addPath(pathi3I5, pickup);
 		tour.addPath(pathI5toI1, delivery);
 		
-		AddRequestCommand addCommand = new AddRequestCommand(plan, tour,"2", "4", new Window());
+		AddRequestCommand addCommand = new AddRequestCommand(plan, tour,"3", "5", new Window());
 		
-		addCommand.doCommand();
 		
-		assert(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");
-		assert(tour.getPath().get(0).getDestination().getId() == "3");
 		
-		assert(tour.getPath().get(1).getPath().get(0).getOrigin().getId() == "3");
-		assert(tour.getPath().get(1).getDestination().getId() == "5");
-
-		assert(tour.getPath().get(2).getPath().get(0).getOrigin().getId() == "5");
-		assert(tour.getPath().get(2).getDestination().getId() == "2");
+		addCommand.undoCommand();
 		
-		assert(tour.getPath().get(3).getPath().get(0).getOrigin().getId() == "2");
-		assert(tour.getPath().get(3).getDestination().getId() == "4");
+		System.out.println(tour.getPath().get(0).getPath() == null);
 		
-		assert(tour.getPath().get(4).getPath().get(0).getOrigin().getId() == "4");
-		assert(tour.getPath().get(4).getDestination().getId() == "1");
+		assertTrue (tour.getPath().size()==1);
+		assertTrue (tour.getPath().get(0).getPath() == null);
 		
 		
 	}
