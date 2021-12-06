@@ -154,7 +154,7 @@ public class Window {
 		btnModifyTour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton modify");
-				c.modifyRequest(5, 3);
+				c.modifyRequest(2, 4);
 			}
 		});
 		frame.getContentPane().add(btnModifyTour);

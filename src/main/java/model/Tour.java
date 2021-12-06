@@ -60,8 +60,10 @@ public class Tour extends Observable {
 	public void removeConnectedPath(int indexCheckpoint) {
 		//remove index et index -1
 		this.path.remove(indexCheckpoint);
+		this.path.add(indexCheckpoint, new Path());
 		//this.path.add(indexCheckpoint, new Path());
-		//this.path.remove(indexCheckpoint - 1);
+		this.path.remove(indexCheckpoint - 1);
+		//this.path.add(indexCheckpoint - 1, new Path());
 		//this.path.add(indexCheckpoint-1, new Path());
 		/*
 		for(int i = 0;i<this.path.size();i++) {
@@ -169,5 +171,22 @@ public class Tour extends Observable {
 
 	public void setTime(LocalTime time) {
 		this.time = time;
+	}
+	
+	public Intersection getIntersectionCheckPointByIndex(int index) {
+		if(index == this.checkPoint.size()) {
+			return this.checkPoint.get(0).getAddress(); //return the depot
+		}
+		
+		return this.checkPoint.get(index).getAddress();
+	}
+	
+	public int getIndexInListCheckPoint(Intersection inter) {
+		for(int i = 0; i < this.checkPoint.size();i++) {
+			if(this.checkPoint.get(i).getAddress().equals(inter)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

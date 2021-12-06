@@ -3,6 +3,7 @@ package controller;
 import java.util.List;
 
 import algorithm.Dijkstra;
+import model.CheckPoint;
 import model.Intersection;
 import model.Path;
 import model.Plan;
@@ -31,65 +32,76 @@ public class ModifyTourCommand implements Command {
 		this.window = w;
 	}
 	
+	
 	@Override
 	public void doCommand() {
+
 		for(int i =  0; i < this.tour.getPath().size();i++) {
 			System.out.println(this.tour.getPath().get(i).getPath().get(0).getOrigin().getId());
 		}
+		//nonsense to put newIndexCheckPoint + 1 = indexCheckPoint
+		//Get all intersections we need : 
+		Intersection intersectionCheckPointMoved = this.tour.getIntersectionCheckPointByIndex(indexCheckpoint);
+		Intersection intersectionBeforeCheckPoint = this.tour.getIntersectionCheckPointByIndex(indexCheckpoint - 1);
+		Intersection intersectionAfterCheckPoint = this.tour.getIntersectionCheckPointByIndex(indexCheckpoint + 1);
 		
-		//get the checkpoint before the new place and after and delete the path between both
-		Intersection intersectionNewAfterCheckPoint = this.tour.getPath().get(newIndexCheckPoint).getPath().get(0).getOrigin();
-		Intersection intersectionNewBeforeCheckPoint = this.tour.getPath().get(newIndexCheckPoint - 1).getPath().get(0).getOrigin();
+		//Arrange the list of checkpoint : 
+		CheckPoint tmp = this.tour.getCheckPoint().get(indexCheckpoint);
+		this.tour.getCheckPoint().remove(indexCheckpoint);
+		this.tour.getCheckPoint().add(newIndexCheckPoint, tmp);
 		
-		//Delete the two path connected to the checkpoint that we want to modify
-		//Connect the two checkpoint that was connected to the checkpoint
+		Intersection newIntersectionBeforeCheckPoint = this.tour.getIntersectionCheckPointByIndex(newIndexCheckPoint-1);
+		Intersection newIntersectionAfterCheckPoint = this.tour.getIntersectionCheckPointByIndex(newIndexCheckPoint+1);
 		
-		Intersection intersectionBeforeCheckpoint ;
 		
-		if(this.indexCheckpoint == 0){ //case where it's the first pickup 
-			intersectionBeforeCheckpoint = this.plan.getDepot().getAddress();
-		} else {
-			intersectionBeforeCheckpoint = this.tour.getPath().get(indexCheckpoint - 1).getPath().get(0).getOrigin();
-		}
+		//Delete all path that going to be replaced : 
+		this.tour.removeConnectedPath(indexCheckpoint);
+		int decalage = 1;
+		int decalagePlacement = 0;
 		
-		Intersection intersectionNextCheckPoint = null;
-		if(this.indexCheckpoint+1 == this.tour.getPath().size()){ //case where it's the last checkpoint before pickup
-			intersectionNextCheckPoint = this.plan.getDepot().getAddress();
-		} else {
-			intersectionNextCheckPoint = this.tour.getPath().get(indexCheckpoint + 1).getPath().get(0).getOrigin();
-		}
-		Intersection intersectionCheckPointMoved = this.tour.getPath().get(indexCheckpoint).getPath().get(0).getOrigin();
+		//this.tour.removeConnectedPath(newIndexCheckPoint);
+		this.tour.getPath().remove(newIndexCheckPoint-decalage);
+		this.tour.getPath().add(newIndexCheckPoint-decalage, new Path());
+		this.tour.getPath().add(newIndexCheckPoint-decalage, new Path());
 		
-		tour.removeConnectedPath(this.indexCheckpoint); //remove path with the checkpoint moved as origin
 		
-		List<Integer> pedecesor =  Dijkstra.dijkstra(plan.getIntersections(),intersectionBeforeCheckpoint);
+		//Reput paths : 
+		
+		//Path between ancient before and ancient after : 
+		int index = tour.getIndexInListCheckPoint(intersectionBeforeCheckPoint);
+		List<Integer> pedecesor =  Dijkstra.dijkstra(plan.getIntersections(),intersectionBeforeCheckPoint);
 		
 		//Create path between the 
-		Path pathToReconnect = Dijkstra.createPath(plan.getIntersections(), pedecesor, intersectionBeforeCheckpoint.getIndex(),
-											intersectionNextCheckPoint.getIndex());
-		this.tour.getPath().set(indexCheckpoint-1, pathToReconnect);
-
+		Path pathToReconnect = Dijkstra.createPath(plan.getIntersections(), pedecesor, intersectionBeforeCheckPoint.getIndex(),
+				intersectionAfterCheckPoint.getIndex());
+		this.tour.getPath().set(index, pathToReconnect);
 		
+		//Path between the checkpoint and the new Before : 
+		int indexCheckPointMoved = tour.getIndexInListCheckPoint(intersectionCheckPointMoved);
 		
 		//Launch djikstra for the the checkpoint before
-		List<Integer> predecesorCheckPointMoved = Dijkstra.dijkstra(plan.getIntersections(), intersectionCheckPointMoved);
-		
+		List<Integer> predecesorCheckPointMoved = Dijkstra.dijkstra(plan.getIntersections(), 
+				intersectionCheckPointMoved);
 		//Constuct the path between the checkpoint we moved and the checkpoint after
-		Path pathCheckPointMovedToAfter = Dijkstra.createPath(plan.getIntersections(), predecesorCheckPointMoved, intersectionCheckPointMoved.getIndex(),
-											intersectionNewAfterCheckPoint.getIndex());
-		this.tour.getPath().set(newIndexCheckPoint-1, pathCheckPointMovedToAfter);
+		
+		Path pathCheckPointMovedToAfter = Dijkstra.createPath(plan.getIntersections(), 
+		predecesorCheckPointMoved, intersectionCheckPointMoved.getIndex(),
+				newIntersectionAfterCheckPoint.getIndex());
+				
+		this.tour.getPath().set(indexCheckPointMoved-decalagePlacement, pathCheckPointMovedToAfter);
+		
+		
+		//Path between the new before and the checkpoint : 
+		int indexNewBefore = tour.getIndexInListCheckPoint(newIntersectionBeforeCheckPoint);
 		
 		//launch djikstra between from the new before checkpoint : 
-		List<Integer> predecesorNewBeforeCheckPoint = Dijkstra.dijkstra(plan.getIntersections(),intersectionNewBeforeCheckPoint);
-		
+		List<Integer> predecesorNewBeforeCheckPoint = Dijkstra.dijkstra(plan.getIntersections(),newIntersectionBeforeCheckPoint);
+				
 		//construct the path between the new before checkpoint and the checkpoint we moved :
-		Path pathNewBeforeCheckPointToCheckPointMoved = Dijkstra.createPath(plan.getIntersections(), predecesorNewBeforeCheckPoint, intersectionNewBeforeCheckPoint.getIndex(),
-				intersectionCheckPointMoved.getIndex());
-		this.tour.getPath().add(newIndexCheckPoint-1, pathNewBeforeCheckPointToCheckPointMoved);
+		Path pathNewBeforeCheckPointToCheckPointMoved = Dijkstra.createPath(plan.getIntersections(), predecesorNewBeforeCheckPoint, newIntersectionBeforeCheckPoint.getIndex(),
+						intersectionCheckPointMoved.getIndex());
+		this.tour.getPath().set(indexNewBefore-decalagePlacement, pathNewBeforeCheckPointToCheckPointMoved);
 		
-		
-		//actualize time
-		this.tour.actualizeTime();
 		
 		this.plan.notifyObservers();
 		this.tour.notifyObservers();
