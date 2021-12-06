@@ -11,6 +11,7 @@ import org.junit.Test;
 import algorithm.Dijkstra;
 import algorithm.DijkstraResult;
 import controller.AddRequestCommand;
+import controller.DeleteRequestCommand;
 import model.CheckPoint;
 import model.CheckPointType;
 import model.Intersection;
@@ -98,11 +99,11 @@ public class DeleteRequestTest {
 		tour.addPath(pathi3I5, pickup);
 		tour.addPath(pathI5toI1, delivery);
 		
-		AddRequestCommand addCommand = new AddRequestCommand(plan, tour,"3", "5", new Window());
+		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,"3", "5", new Window());
 		
 		
 		
-		addCommand.undoCommand();
+		deleteRequestCommand.doCommand();
 		
 		
 		assertTrue (tour.getPath().size() == 1);
@@ -205,11 +206,11 @@ public class DeleteRequestTest {
 		tour.addPath(pathI2toI4, pickup2);
 		tour.addPath(pathI4toI1, delivery2);
 		
-		AddRequestCommand addCommand = new AddRequestCommand(plan, tour,"3", "5", new Window());
+		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,"3", "5", new Window());
 		
 		
 		
-		addCommand.undoCommand();
+		deleteRequestCommand.doCommand();
 		
 		
 		assertTrue(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");
