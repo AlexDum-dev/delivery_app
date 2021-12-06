@@ -21,7 +21,6 @@ public class DeliveryGraphTest {
 		Intersection i3 = new Intersection("55474978", 45.761276, 4.876554);
 		Intersection i4 = new Intersection("55475018", 45.75978, 4.875795);
 		Intersection i5 = new Intersection("26033277", 45.756165, 4.8574095);
-		Intersection i6 = new Intersection("975886496", 45.756874, 4.8574047);
 		
 		LocalTime time = LocalTime.of(16, 0, 0);		
 		

@@ -51,6 +51,10 @@ public class Window {
 		setAddRequestFalse();
 	}
 
+	public Window() {
+		super();
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -137,7 +141,7 @@ public class Window {
 		message2.setBounds(746, 700, 300, 30);
 		frame.getContentPane().add(message2);
 		setMessageVisible(message2, false);
-		btnDeleteRequest.setBounds(850, 12, 134, 27);
+		btnDeleteRequest.setBounds(808, 12, 134, 27);
 		btnDeleteRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Test appui bouton delete");
@@ -150,7 +154,9 @@ public class Window {
 				}
 			}
 		});
+		
 		frame.getContentPane().add(btnDeleteRequest);
+		setDeleteButton(false);
 		
 		btnModifyTour.setBounds(950, 12, 134, 27);
 		btnModifyTour.addActionListener(new ActionListener() {
@@ -159,6 +165,7 @@ public class Window {
 				c.modifyRequest(5, 3);
 			}
 		});
+		setModifyButton(false);
 		frame.getContentPane().add(btnModifyTour);
 				
 		frame.setVisible(true);
@@ -230,5 +237,12 @@ public class Window {
 
 	public MapView getMapView() {
 		return mapView;
+	}
+	public void setDeleteButton(boolean b) {
+		btnDeleteRequest.setEnabled(b);
+	}
+	
+	public void setModifyButton(boolean b) {
+		btnModifyTour.setEnabled(b);
 	}
 }

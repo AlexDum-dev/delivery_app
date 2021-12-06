@@ -50,6 +50,8 @@ public class CommonActions {
 			w.setAddRequestFalse();
 			w.setMessageVisible(w.getMessage1(), false);
 			w.setMessageVisible(w.getMessage2(), false);
+			w.setDeleteButton(false);
+			w.setModifyButton(false);
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -63,6 +65,8 @@ public class CommonActions {
 			w.setAddRequestFalse();
 			w.setMessageVisible(w.getMessage1(), false);
 			w.setMessageVisible(w.getMessage2(), false);
+			w.setDeleteButton(false);
+			w.setModifyButton(false);
 			plan.clearPlan();
 			tour.clearPath();
 			tour.notifyObservers();
@@ -93,6 +97,8 @@ public class CommonActions {
 			w.setAddRequestFalse();
 			w.setMessageVisible(w.getMessage1(), false);
 			w.setMessageVisible(w.getMessage2(), false);
+			w.setDeleteButton(false);
+			w.setModifyButton(false);
 			
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
@@ -106,6 +112,8 @@ public class CommonActions {
 			w.setAddRequestFalse();
 			w.setMessageVisible(w.getMessage1(), false);
 			w.setMessageVisible(w.getMessage2(), false);
+			w.setDeleteButton(false);
+			w.setModifyButton(false);
 			plan.clearRequests();
 			tour.clearPath();
 			tour.notifyObservers();

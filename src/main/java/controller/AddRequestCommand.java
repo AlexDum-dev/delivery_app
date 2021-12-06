@@ -83,6 +83,8 @@ public class AddRequestCommand implements Command {
 		tour.notifyObservers();
 		window.setMessageVisible(window.getMessage1(), false);
 		window.setMessageVisible(window.getMessage2(), false);
+		window.setDeleteButton(true);
+		window.setModifyButton(true);
 	}
 
 	@Override
@@ -101,7 +103,7 @@ public class AddRequestCommand implements Command {
 		plan.actualizeRequestsIndex(); //actualize the index of the requests
 		
 		for(int i=0; i<tour.getPath().size();i++) {
-			if(tour.getPath().get(i).getLength() == -1) {
+			if(tour.getPath().get(i).getLength() == -1 && tour.getPath().size()!=1) {
 				List<Integer> predecesorCheckpoint =  Dijkstra.dijkstra(plan.getIntersections(), 
 						tour.getCheckPoint().get(i).getAddress());
 				Path pathFromBeforeCheckPointtoNextCheckPoint = null;
