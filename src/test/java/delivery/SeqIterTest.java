@@ -11,17 +11,17 @@ import org.junit.Test;
 
 import algorithm.tsp.DeliveryGraph;
 import algorithm.tsp.MinFirstIter;
+import algorithm.tsp.SeqIter;
 import model.CheckPoint;
 import model.CheckPointType;
 import model.Intersection;
 import model.Path;
 import model.Segment;
 
-public class MinFirstIterTest {
+public class SeqIterTest {
 
 	@Test
 	public void successorsTest() {
-		
 		Intersection i1 = new Intersection("1", 1.1, 1.2);
 		i1.setIndex(0);
 		Intersection i2 = new Intersection("2", 2.1, 2.2);
@@ -130,17 +130,15 @@ public class MinFirstIterTest {
 		unvisited.add(1);
 		unvisited.add(2);
 		
-		MinFirstIter minFilterIter =new MinFirstIter(unvisited, currentVertex, g);
+		SeqIter seqFilterIter =new SeqIter(unvisited, currentVertex, g);
 		
-		assertTrue (minFilterIter.hasNext());
-		assertEquals ((int)minFilterIter.next() , 1 );
+		assertTrue (seqFilterIter.hasNext());
+		assertEquals ((int)seqFilterIter.next() , 2 );
 		
-		assertTrue (minFilterIter.hasNext());
-		assertEquals ((int)minFilterIter.next() , 2 );
+		assertTrue (seqFilterIter.hasNext());
+		assertEquals ((int)seqFilterIter.next() , 1 );
 		
-		assertTrue (!minFilterIter.hasNext());
-		
-		
+		assertTrue (!seqFilterIter.hasNext());
 	}
 
 }

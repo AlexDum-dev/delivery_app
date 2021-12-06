@@ -1,41 +1,51 @@
 package delivery;
 
 import static org.junit.Assert.*;
-
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 
 import algorithm.tsp.DeliveryGraph;
-import algorithm.tsp.MinFirstIter;
+import algorithm.tsp.TSP;
+import algorithm.tsp.TSP1;
+import controller.AddRequestCommand;
 import model.CheckPoint;
 import model.CheckPointType;
 import model.Intersection;
 import model.Path;
+import model.Plan;
+import model.Request;
 import model.Segment;
 
-public class MinFirstIterTest {
+import java.time.LocalTime;
+import java.util.*;
 
+public class AddRequestCommandTest {
+	
 	@Test
-	public void successorsTest() {
+	public void addRequestWithNoTour() {
 		
+	}
+	/*
+	@Test
+	public void addRequestWithTour() {
+		Plan plan = new Plan();
 		Intersection i1 = new Intersection("1", 1.1, 1.2);
 		i1.setIndex(0);
+		plan.addIntersection(i1);
 		Intersection i2 = new Intersection("2", 2.1, 2.2);
 		i2.setIndex(1);
+		plan.addIntersection(i2);
 		Segment si12 = new Segment(i1, i2, 10.0, "first");
 		i1.addSegment(si12);
 		
 		Intersection i3 = new Intersection("3", 2.1, 2.2);
 		i3.setIndex(2);
+		plan.addIntersection(i3);
 		Segment si13 = new Segment(i1, i3, 2.0, "first");
 		i1.addSegment(si13);
 		
 		Intersection i4 = new Intersection("4", 2.1, 2.2);
 		i4.setIndex(3);
+		plan.addIntersection(i4);
 		Segment si34 = new Segment(i3, i4, 2.0, "first");
 		i3.addSegment(si34);
 		
@@ -44,6 +54,7 @@ public class MinFirstIterTest {
 		
 		Intersection i5 = new Intersection("5", 2.1, 2.2);
 		i5.setIndex(4);
+		plan.addIntersection(i5);
 		Segment si45 = new Segment(i4, i5, 3.0, "first");
 		i4.addSegment(si45);
 		
@@ -55,6 +66,7 @@ public class MinFirstIterTest {
 		CheckPoint pickup = new CheckPoint(CheckPointType.PICKUP, i3,10);
 		CheckPoint delivery = new CheckPoint(CheckPointType.DELIVERY, i5,20);
 		
+		plan.addRequest(new Request(pickup, delivery));
 		
 		
 		List<CheckPoint> listCheckPoint = new ArrayList<CheckPoint>();
@@ -123,24 +135,12 @@ public class MinFirstIterTest {
 		listPath.add(paths2);
 		
 		DeliveryGraph g = new DeliveryGraph(listPath, listCheckPoint);
-		
-		int currentVertex = 0 ;
-		
-		Collection<Integer> unvisited = new ArrayList<Integer>(2);
-		unvisited.add(1);
-		unvisited.add(2);
-		
-		MinFirstIter minFilterIter =new MinFirstIter(unvisited, currentVertex, g);
-		
-		assertTrue (minFilterIter.hasNext());
-		assertEquals ((int)minFilterIter.next() , 1 );
-		
-		assertTrue (minFilterIter.hasNext());
-		assertEquals ((int)minFilterIter.next() , 2 );
-		
-		assertTrue (!minFilterIter.hasNext());
+		TSP tsp = new TSP1();
+		tsp.searchSolution(20000, g);
+		g.g
 		
 		
+		AddRequestCommand addCommand = new AddRequestCommand(plan, tsp.)
 	}
-
+*/
 }

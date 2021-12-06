@@ -18,6 +18,14 @@ import model.Segment;
  */
 public class Dijkstra {
 	
+	/**
+	 * Compute all the path from all checkpoints that are in requests (plus dépot)
+	 * 
+	 * @param adjacencyList
+	 * @param listRequest
+	 * @param depot
+	 * @return
+	 */
 	public static DijkstraResult computePaths(List<Intersection> adjacencyList, List<Request> listRequest,CheckPoint depot){
 		
 		List<CheckPoint> listCheckPoint = RequestToCheckPoint(listRequest,depot);
@@ -62,7 +70,14 @@ public class Dijkstra {
 		
 		return checkpoints;
 	}
-
+	/**
+	 * Create the path between two intersection using Dijkstra's algorithm results
+	 * @param adjacencyList
+	 * @param nodePredecesor
+	 * @param OriginIndex
+	 * @param DestinationIndex
+	 * @return
+	 */
 	public static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
 		List<Segment> segments = new ArrayList<Segment>();
 		int currentIndex = DestinationIndex;

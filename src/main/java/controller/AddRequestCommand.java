@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.List;
-
 import algorithm.Dijkstra;
 import model.CheckPoint;
 import model.CheckPointType;
@@ -9,7 +8,13 @@ import model.Path;
 import model.Plan;
 import model.Request;
 import model.Tour;
-import view.Window;;
+import view.Window;
+
+/**
+ * Class to implement the add request command
+ * @author alex
+ *
+ */
 
 public class AddRequestCommand implements Command {
 	

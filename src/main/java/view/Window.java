@@ -33,6 +33,7 @@ public class Window {
 	private JLabel message1=new JLabel("Optimization in progress...");
 	private JLabel message2=new JLabel("Tour computed");
 	private JButton btnDeleteRequestTest = new JButton("Delete Request");
+	private JButton btnModifyTour = new JButton("Modify");
 	private CheckPoint pick;
 	private CheckPoint d;
 
@@ -126,6 +127,8 @@ public class Window {
 		frame.getContentPane().add(btnAddRequestTest);
 		
 		
+		
+		
 		message1.setBounds(746, 700, 300, 30);
 		frame.getContentPane().add(message1);
 		setMessageVisible(message1, false);
@@ -144,7 +147,14 @@ public class Window {
 		frame.getContentPane().add(btnDeleteRequestTest);
 		setDeleteButton(false);
 		
-		
+		btnModifyTour.setBounds(950, 12, 134, 27);
+		btnModifyTour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test appui bouton modify");
+				c.modifyRequest(5, 3);
+			}
+		});
+		frame.getContentPane().add(btnModifyTour);
 				
 		frame.setVisible(true);
 	}
