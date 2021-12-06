@@ -44,12 +44,13 @@ public class CommonActions {
 			tour.clearPath();
 			tour.notifyObservers();
 			c.setCurrentState(MapLoaded.getInstance());
-			w.setLoadRequestButtonTrue();
+			w.setLoadRequestButtonEnabled(true);
 			w.getMapView().zoomOut();
-			w.setComputeTourButtonFalse();
-			w.setAddRequestFalse();
-			w.setMessageVisible(w.getMessage1(), false);
-			w.setMessageVisible(w.getMessage2(), false);
+			w.setComputeTourButtonEnabled(false);
+			w.setAddRequestEnabled(false);
+			w.setDeleteButtonEnabled(false);
+			w.setModifyButtonsEnabled(false);
+			w.getMessage().setText("Map loaded!");
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -58,11 +59,12 @@ public class CommonActions {
 					e.getMessage(), 
 					"Error loading XML map",
 				    JOptionPane.ERROR_MESSAGE);
-			w.setLoadRequestButtonFalse();
-			w.setComputeTourButtonFalse();
-			w.setAddRequestFalse();
-			w.setMessageVisible(w.getMessage1(), false);
-			w.setMessageVisible(w.getMessage2(), false);
+			w.setLoadRequestButtonEnabled(false);
+			w.setComputeTourButtonEnabled(false);
+			w.setAddRequestEnabled(false);
+			w.setDeleteButtonEnabled(false);
+			w.setModifyButtonsEnabled(false);
+			w.getMessage().setText("Please load a map.");
 			plan.clearPlan();
 			tour.clearPath();
 			tour.notifyObservers();
@@ -88,12 +90,12 @@ public class CommonActions {
 			tour.clearPath();
 			tour.notifyObservers();
 			c.setCurrentState(RequestsLoaded.getInstance());
-			w.setComputeTourButtonTrue();
+			w.setComputeTourButtonEnabled(true);
 			w.getMapView().zoomOut();
-			w.setAddRequestFalse();
-			w.setMessageVisible(w.getMessage1(), false);
-			w.setMessageVisible(w.getMessage2(), false);
-			
+			w.setAddRequestEnabled(false);
+			w.setDeleteButtonEnabled(false);
+			w.setModifyButtonsEnabled(false);
+			w.getMessage().setText("Requests loaded!");
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -102,10 +104,11 @@ public class CommonActions {
 					e.getMessage(), 
 					"Error loading XML requests",
 				    JOptionPane.ERROR_MESSAGE);
-			w.setComputeTourButtonFalse();
-			w.setAddRequestFalse();
-			w.setMessageVisible(w.getMessage1(), false);
-			w.setMessageVisible(w.getMessage2(), false);
+			w.setComputeTourButtonEnabled(false);
+			w.setAddRequestEnabled(false);
+			w.setDeleteButtonEnabled(false);
+			w.setModifyButtonsEnabled(false);
+			w.getMessage().setText("Please load the requests.");
 			plan.clearRequests();
 			tour.clearPath();
 			tour.notifyObservers();
@@ -113,5 +116,36 @@ public class CommonActions {
 			c.setCurrentState(MapLoaded.getInstance());
 			w.getMapView().zoomOut();
 		}
+	}
+	
+	public static Integer inputNumber(Window w, String title, String msg) {
+		Integer number = null;
+		String numString = "0";
+		boolean enterOK = false;
+		
+		while (numString!=null && !enterOK) {
+			numString = (String) JOptionPane.showInputDialog(
+	                w.getFrame(),
+	                title,
+	                msg,
+	                JOptionPane.PLAIN_MESSAGE,
+	                null,
+	                null,
+	                numString);
+			
+			try {
+				number = Integer.parseInt(numString);
+				if (number>=0) {
+					enterOK = true;
+				} else {
+					number = null;
+					enterOK = false;
+				}
+			} catch(NumberFormatException e) {
+				number = null;
+				enterOK = false;
+			}
+		}
+		return number;
 	}
 }

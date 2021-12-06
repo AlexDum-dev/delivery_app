@@ -7,6 +7,7 @@ import java.util.List;
 import model.CheckPoint;
 import model.Intersection;
 import model.Path;
+import model.Plan;
 import model.Request;
 import model.Segment;
 
@@ -18,6 +19,14 @@ import model.Segment;
  */
 public class Dijkstra {
 	
+	/**
+	 * Compute all the path from all checkpoints that are in requests (plus dépot)
+	 * 
+	 * @param adjacencyList
+	 * @param listRequest
+	 * @param depot
+	 * @return
+	 */
 	public static DijkstraResult computePaths(List<Intersection> adjacencyList, List<Request> listRequest,CheckPoint depot){
 		
 		List<CheckPoint> listCheckPoint = RequestToCheckPoint(listRequest,depot);
@@ -33,6 +42,9 @@ public class Dijkstra {
 					Path path = createPath(adjacencyList,nodePredecesor,
 							checkpoint.getAddress().getIndex(),
 							checkpoint2.getAddress().getIndex());
+					if(path == null) {
+						return null;
+					}
 					pathsFromCheckPoint.add(path);
 				} else {
 					//null dans la diag
@@ -62,43 +74,45 @@ public class Dijkstra {
 		
 		return checkpoints;
 	}
-
+	/**
+	 * Create the path between two intersection using Dijkstra's algorithm results
+	 * @param adjacencyList
+	 * @param nodePredecesor
+	 * @param OriginIndex
+	 * @param DestinationIndex
+	 * @return
+	 */
 	public static Path createPath(List<Intersection> adjacencyList,List<Integer> nodePredecesor, int OriginIndex, int DestinationIndex) {
-		// System.out.println("==================================  createPath ===========================================");
-		// System.out.println("=OriginIndex="+OriginIndex);
-		// System.out.println("=DestinationIndex="+DestinationIndex);
+		if(nodePredecesor.get(DestinationIndex) == null
+				&& OriginIndex!=DestinationIndex) { //case where we can't create the path (node not connected to the rest of the graph
+			return null;
+		}
+		
 		List<Segment> segments = new ArrayList<Segment>();
 		int currentIndex = DestinationIndex;
 		int NextIndex = currentIndex;
 		while(currentIndex != OriginIndex) {
-			// System.out.println("======== WHILE =========");
 			System.out.println("[createPath]"+currentIndex);
 			NextIndex = nodePredecesor.get(currentIndex);
-			Segment s = getSegmentFromList(adjacencyList,NextIndex,currentIndex);//we need to get the segment from the list of segments
-			// System.out.println("=currentIndex="+currentIndex);
-			// System.out.println("=NextIndex="+NextIndex);
-			// System.out.println("=getOrigin="+s.getOrigin().getIndex());
-			// System.out.println("=getDestination="+s.getDestination().getIndex());
-			
+			Segment s = getSegmentFromList(adjacencyList,NextIndex,currentIndex);
+
 			segments.add(s);
 			currentIndex = NextIndex;
 		}
-		//System.out.println("segments.size() = "+segments.size() );
-		for (Segment s : segments) {
-			// System.out.println(s.getOrigin().getIndex());
-			// System.out.println(s.getDestination().getIndex());
-		}
 		Collections.reverse(segments);
-		Path p = new Path(segments);
-		// System.out.println("==================================  FIN : createPath ===========================================");
+		Path p;
+		if(segments.size() == 0) {
+			//case where we have two checkpoint on the same intersection
+			Segment s = new Segment(adjacencyList.get(OriginIndex), adjacencyList.get(DestinationIndex), 0.0, "same");
+			segments.add(s);
+		}
+		p = new Path(segments);
 		return p;
 	}
 
 	private static Segment getSegmentFromList(List<Intersection> adjacencyList, int originIndex, int destinationIndex) {
 		List<Segment> listSegmentToNode = adjacencyList.get(originIndex).getSegments();
-		//System.out.println("[getSegmentFromList] size "+listSegmentToNode.size());
 		for(Segment s : listSegmentToNode) {
-			//System.out.println("[getSegmentFromList] "+s.getDestination().getIndex());
 			if(s.getDestination().getIndex() == destinationIndex) {
 				return s;
 			}
@@ -142,17 +156,13 @@ public class Dijkstra {
 		
 		while(existGreyNode(nodeColor)) {
 			int indexActualNode = minimalDistanceGreyNode(distance, nodeColor);
-			// System.out.println("Actual Node : "+indexActualNode);
 			List<Segment> listSegmentFromActualNode = adjacencyList.get(indexActualNode).getSegments();
 			for(Segment s : listSegmentFromActualNode) {
-				// System.out.println("Neighbor: "+s.getDestination().getIndex()+" color: "+nodeColor.get(s.getDestination().getIndex()));
 				if(nodeColor.get(s.getDestination().getIndex()) == Color.GREY || nodeColor.get(s.getDestination().getIndex()) == Color.WHITE) {
 					relacher(s, nodeColor, distance, nodePredecesor);
 					if(nodeColor.get(s.getDestination().getIndex()) == Color.WHITE) {
 						nodeColor.set(s.getDestination().getIndex(), Color.GREY);
 					}
-					//System.out.println("current node id: "+e.getOrigin().getId()+ " neighbor node: "+e.getDestination().getId());
-					//System.out.println("current node color: "+nodeColor.get(e.getOrigin().getId())+ " neighbor node: "+nodeColor.get(e.getDestination().getId()));
 				}
 			}
 			nodeColor.set(indexActualNode, Color.BLACK);

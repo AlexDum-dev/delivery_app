@@ -18,7 +18,7 @@ public class DrawAttributes {
 	private static Color colorLine = new Color(0,0,0);
 	private static Color colorPath = new Color(255,0,255);
 	private static Color colorActive = new Color(0, 0, 255);
-	private static Color ColorPathActive = new Color(255, 102, 0);
+	private static Color ColorPathActive = new Color(0, 255, 255);
 	
 
 
@@ -26,7 +26,7 @@ public class DrawAttributes {
 	private static Stroke strokePath = new BasicStroke(5f);
 	private static Stroke strokePoint = new BasicStroke(1f);
 	private static Stroke strokeActive = new BasicStroke(5f);
-	private static int pointWidth = 0;
+	private static int pointWidth = 15;
 	
 	
 

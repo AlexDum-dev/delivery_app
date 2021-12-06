@@ -2,6 +2,7 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalTime;
 import java.util.Set;
 import java.util.TreeSet;
@@ -284,7 +285,7 @@ public class XMLParser {
 			int s = Integer.parseInt(timestamp[2]);
 			LocalTime time = LocalTime.of(h, m, s);
 			p.setDepot(new CheckPoint(CheckPointType.DEPOT, inter, time));
-		} catch (NumberFormatException e) {
+		} catch (NumberFormatException | DateTimeException e) {
 			throw new XMLParserException("XML file not correctly formatted: "+
 					"Invalid Departure Time.");
 		}

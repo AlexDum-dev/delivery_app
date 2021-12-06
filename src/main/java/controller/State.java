@@ -18,10 +18,11 @@ public interface State {
 	default void loadRequest(Controller c, Plan p, Tour t, Component frame, Window w) {}
 	default void computeTour(Controller c, Plan p, Tour t, Window w) {}
 	default void stopTour(Controller c) {}
-	default void modifyRequest(Controller c) {}
+	default void clickOnMap(Controller c, ListOfCommands listOfCommands, 
+			Plan p, Tour t, double lat, double lon, Window window) {}
+	default void modifyRequest(ListOfCommands l, Plan plan, Tour tour, int indexCheckPoint, int newIndexCheckPoint, Window w) {}
 	default void deleteRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery, Window w) {}
 	default void undo(ListOfCommands l) {}
 	default void redo(ListOfCommands l) {}
-	default void addRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery,
-			int durationPickup, int durationDelivery, Window w) {}
+	default void addRequest(Controller c, Window w) {}
 }

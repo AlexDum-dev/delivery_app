@@ -32,10 +32,14 @@ public class Tour extends Observable {
 		//determine the path between the last checkpoint and the pickup and between the pickup and the delivery
 		//then between the delivery and the pickup
 		//erase the last path
-		
-		this.path.remove(this.path.size() - 1); //remove last path
+		if (this.path.size() > 0) {
+			this.path.remove(this.path.size() - 1); //remove last path
+		}		
 	}
-	
+	/**
+	 * Remove paths connected to checkpoint (at checkpointIndex) and replace by path which length is -1
+	 * @param checkPointIndex
+	 */
 	public void actualizeTour(int checkPointIndex) {
 		for(int i = 0; i<this.checkPoint.size(); i++) {
 			if(this.checkPoint.get(i).getIndex() == checkPointIndex) {
@@ -48,7 +52,38 @@ public class Tour extends Observable {
 		}
 		
 	}
+	/**
+	 * replace the path at index indexCheckPoint and at indexCheckPoint - 1
+	 * with default path which has a length = - 1
+	 * @param indexCheckpoint
+	 */
+	public void removeConnectedPath(int indexCheckpoint) {
+		//remove index et index -1
+		this.path.remove(indexCheckpoint);
+		//this.path.add(indexCheckpoint, new Path());
+		//this.path.remove(indexCheckpoint - 1);
+		//this.path.add(indexCheckpoint-1, new Path());
+		/*
+		for(int i = 0;i<this.path.size();i++) {
+			if(this.path.get(i).getPath().get(0).getOrigin().getAddress().equals(addressCheckpoint) ||
+					this.path.get(i).getDestination().getAddress().equals(addressCheckpoint)) {
+				this.path.remove(i);
+				this.path.add(i-1, new Path());
+			}
+		}
+		*/
+	}
 	
+	/**
+	 * Find each time of the tour after the tsp is computed
+	 * @param nbVertices
+	 * @param tsp
+	 * @param listPath
+	 * @param previous
+	 * @param check
+	 * @param tour
+	 * @return
+	 */
 	public LocalTime actualizeTime(int nbVertices, TSP tsp, List<? extends List<Path>> listPath, int previous,
 			List<CheckPoint> check, Tour tour) {
 		int current;
@@ -81,6 +116,9 @@ public class Tour extends Observable {
 		return t;
 	}
 	
+	/**
+	 * Actualize each time of the tour
+	 */
 	public void actualizeTime() {
 		
 		double mPerSec = 15000.0/3600.0;

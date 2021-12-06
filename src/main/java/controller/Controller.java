@@ -54,11 +54,14 @@ public class Controller {
 	public void stopTour() {
 		currentState.stopTour(this);
 	}
-	public void addRequest(String idPickup, String idDelivery, int durationPickup, int durationDelivery) {
-		currentState.addRequest(listOfCommands, plan, tour, idPickup, idDelivery, durationPickup, durationDelivery, window);
+	public void clickOnMap(double lat, double lon) {
+		currentState.clickOnMap(this, listOfCommands, plan, tour, lat, lon, window);
 	}
-	public void modifyRequest() {
-		currentState.modifyRequest(this);
+	public void addRequest() {
+		currentState.addRequest(this, window);
+	}
+	public void modifyRequest(int indexCheckPoint, int newIndexCheckPoint) {
+		currentState.modifyRequest(listOfCommands, plan, tour, indexCheckPoint, newIndexCheckPoint, window);
 	}
 	public void deleteRequest(String idPickup, String idDelivery) {
 		currentState.deleteRequest(listOfCommands, plan, tour, idPickup, idDelivery, window);

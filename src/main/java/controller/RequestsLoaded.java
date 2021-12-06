@@ -39,13 +39,14 @@ public class RequestsLoaded implements State {
 	
 	@Override
 	public void computeTour(Controller c, Plan plan, Tour tour, Window w) {
-		w.setLoadMapButtonFalse();
-		w.setLoadRequestButtonFalse();
-		w.setStopComputingButtonTrue();
-		w.setComputeTourButtonFalse();
-		w.setMessageVisible(w.getMessage1(), true);
-		w.setMessageVisible(w.getMessage2(), false);
+		w.setLoadMapButtonEnabled(false);
+		w.setLoadRequestButtonEnabled(false);
+		w.setStopComputingButtonEnabled(true);
+		w.setComputeTourButtonEnabled(false);
+		w.setDeleteButtonEnabled(false);
+		w.setModifyButtonsEnabled(false);
 		c.setCurrentState(TourComputing.getInstance());
+		w.getMessage().setText("Computing tour...");
 		ComputeTourThread thread = new ComputeTourThread(c, plan, tour, w);
 		c.setThread(thread);
 		thread.start();

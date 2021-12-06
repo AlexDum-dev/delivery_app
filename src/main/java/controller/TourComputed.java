@@ -38,13 +38,18 @@ public class TourComputed implements State {
 	}
 	
 	@Override
-	public void addRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery, int durationPickup,
-			int durationDelivery, Window w) {
-		l.add(new AddRequestCommand(tour, plan, idPickup, idDelivery, durationPickup, durationDelivery, w));
+	public void addRequest(Controller c, Window w) {
+		w.getMessage().setText("Please select a pickup location.");
+		c.setCurrentState(AddRequestPickup.getInstance());
 	}
 	
 	@Override
 	public void deleteRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery, Window w) {
 		l.add(new ReverseCommand(new AddRequestCommand(plan, tour, idPickup, idDelivery, w)));
+	}
+	
+	@Override
+	public void modifyRequest(ListOfCommands l, Plan plan, Tour tour, int indexCheckPoint, int newIndexCheckPoint, Window w) {
+		l.add(new ModifyTourCommand(tour, plan, indexCheckPoint, newIndexCheckPoint, w));
 	}
 }
