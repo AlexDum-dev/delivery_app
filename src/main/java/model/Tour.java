@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import algorithm.Dijkstra;
 import algorithm.tsp.TSP;
 import observer.Observable;
 
@@ -36,21 +37,60 @@ public class Tour extends Observable {
 			this.path.remove(this.path.size() - 1); //remove last path
 		}		
 	}
+	
 	/**
-	 * Remove paths connected to checkpoint (at checkpointIndex) and replace by path which length is -1
+	 * Remove paths connected to checkpoint (at checkpointIndex) and reconnect them
 	 * @param checkPointIndex
 	 */
-	public void actualizeTour(int checkPointIndex) {
-		for(int i = 0; i<this.checkPoint.size(); i++) {
-			if(this.checkPoint.get(i).getIndex() == checkPointIndex) {
-				this.checkPoint.remove(i);
-				this.path.remove(i-1);
-				this.path.remove(i-1);
-				this.path.add(i-1, new Path());
-				i--;
-			}
+	public void deleteCheckPoint(int i, List<Intersection> intersections) {
+		this.checkPoint.remove(i);
+		this.path.remove(i-1);
+		this.path.remove(i-1);
+
+		Path p = null;
+		List<Integer> predecesorCheckpoint = Dijkstra.dijkstra(intersections, 
+				this.checkPoint.get(i-1).getAddress());
+		if(i == checkPoint.size()) {
+			p = Dijkstra.createPath(intersections,predecesorCheckpoint, 
+					this.checkPoint.get(i-1).getAddress().getIndex(), 
+					this.checkPoint.get(0).getAddress().getIndex());
+		} else {
+			p = Dijkstra.createPath(intersections,predecesorCheckpoint,
+					this.checkPoint.get(i-1).getAddress().getIndex(), 
+					this.checkPoint.get(i).getAddress().getIndex());
 		}
-		
+		this.path.add(i-1, p);
+	}
+	
+	/**
+	 * Remove paths connected to checkpoint (at checkpointIndex) and reconnect them
+	 * @param checkPointIndex
+	 */
+	public void insertCheckPoint(int i, CheckPoint c, List<Intersection> intersections) {
+		this.checkPoint.add(i, c);
+		this.path.remove(i-1);
+
+		Path p1 = null;
+		Path p2 = null;
+		List<Integer> predCk1 = Dijkstra.dijkstra(intersections, 
+				this.checkPoint.get(i-1).getAddress());
+		List<Integer> predCk2 = Dijkstra.dijkstra(intersections, 
+				c.getAddress());
+
+		p1 = Dijkstra.createPath(intersections,predCk1,
+				this.checkPoint.get(i-1).getAddress().getIndex(), 
+				this.checkPoint.get(i).getAddress().getIndex());
+		if(i+1 == checkPoint.size()) {
+			p2 = Dijkstra.createPath(intersections,predCk2,
+					this.checkPoint.get(i).getAddress().getIndex(), 
+					this.checkPoint.get(0).getAddress().getIndex());
+		} else {
+			p2 = Dijkstra.createPath(intersections,predCk2,
+					this.checkPoint.get(i).getAddress().getIndex(), 
+					this.checkPoint.get(i+1).getAddress().getIndex());
+		}
+		this.path.add(i-1, p2);
+		this.path.add(i-1, p1);
 	}
 	/**
 	 * replace the path at index indexCheckPoint and at indexCheckPoint - 1

@@ -88,7 +88,7 @@ public class TourTest {
 		tour.addPath(pathI1toI3, delivery2);
 		tour.addPath(pathI1toI3, depot);
 		
-		tour.actualizeTour(1);
+		tour.deleteCheckPoint(1, new ArrayList<Intersection>());
 		
 		assertTrue(tour.getCheckPoint().get(0).getIndex()==0);
 		assertTrue(tour.getCheckPoint().get(1).getIndex()==2);

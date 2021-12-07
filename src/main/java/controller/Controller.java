@@ -64,7 +64,7 @@ public class Controller {
 		currentState.modifyRequest(listOfCommands, plan, tour, indexCheckPoint, newIndexCheckPoint, window);
 	}
 	public void deleteRequest(String idPickup, String idDelivery) {
-		currentState.deleteRequest(listOfCommands, plan, tour, idPickup, idDelivery, window);
+		currentState.deleteRequest(listOfCommands, plan, tour, idPickup, idDelivery);
 	}
 	public void undo() {
 		currentState.undo(this.listOfCommands);
