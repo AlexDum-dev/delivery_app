@@ -107,7 +107,7 @@ public class DeleteRequestTest {
 		
 		
 		assertTrue (tour.getPath().size() == 1);
-		assertTrue (tour.getPath().get(0).getPath() == null);
+		assertNull (tour.getPath().get(0).getPath());
 		
 		
 	}

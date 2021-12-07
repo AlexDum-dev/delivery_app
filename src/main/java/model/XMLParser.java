@@ -137,6 +137,9 @@ public class XMLParser {
 			double lat = 0;
 			try {
 				lat = Double.parseDouble(latNode.getNodeValue());
+				if (lat<-90.0 || lat>90.0) {
+					throw new NumberFormatException("Invalid format.");
+				}
 			} catch (NumberFormatException e) {
 				throw new XMLParserException("XML file not correctly formatted: "+
 						"Invalid Latitude.");
@@ -144,6 +147,9 @@ public class XMLParser {
 			double lon = 0;
 			try {
 				lon = Double.parseDouble(lonNode.getNodeValue());
+				if (lat<-180.0 || lat>180.0) {
+					throw new NumberFormatException("Invalid format.");
+				}
 			} catch (NumberFormatException e) {
 				throw new XMLParserException("XML file not correctly formatted: "+
 						"Invalid Longitude.");

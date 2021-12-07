@@ -33,7 +33,7 @@ public class CheckPoint {
 	}
 	
 	/**
-	 * Constructor for ther pickup and the delivery
+	 * Constructor for the pickup and the delivery
 	 * @param type
 	 * @param address
 	 * @param duration
@@ -83,19 +83,15 @@ public class CheckPoint {
 	}
 
 	public boolean equals(Object c) {
-		// If the object is compared with itself then return true 
         if (c == this) {
             return true;
         }
-        
         if (!(c instanceof CheckPoint)) {
             return false;
         }
          
         CheckPoint tmpCheckpoint = (CheckPoint) c;
         
-        System.out.println("[equals] tmp : "+tmpCheckpoint.getAddress().getIndex()+ " this :"+this.getAddress().getId());
-		
 		if (tmpCheckpoint.getType().equals(this.getType()) 
 				&& tmpCheckpoint.getAddress().equals(this.getAddress()) 
 				&& tmpCheckpoint.getDuration() == this.getDuration()
@@ -104,6 +100,4 @@ public class CheckPoint {
 		}
 		return false;
 	}
-	
-	
 }

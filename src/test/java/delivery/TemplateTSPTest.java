@@ -1,8 +1,7 @@
 package delivery;
 
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import org.junit.Test;
 
 import algorithm.tsp.DeliveryGraph;
 import algorithm.tsp.TSP;
-import algorithm.tsp.TSP1;
+import algorithm.tsp.TSP3;
 import model.CheckPoint;
 import model.CheckPointType;
 import model.Intersection;
@@ -126,7 +125,7 @@ public class TemplateTSPTest {
 		listPath.add(paths2);
 		
 		DeliveryGraph g = new DeliveryGraph(listPath, listCheckPoint);
-		TSP tsp = new TSP1();
+		TSP tsp = new TSP3();
 		tsp.searchSolution(20000, g);
 		
 		
