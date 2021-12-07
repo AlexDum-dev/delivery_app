@@ -147,7 +147,7 @@ public class XMLParser {
 			double lon = 0;
 			try {
 				lon = Double.parseDouble(lonNode.getNodeValue());
-				if (lat<-180.0 || lat>180.0) {
+				if (lon<-180.0 || lon>180.0) {
 					throw new NumberFormatException("Invalid format.");
 				}
 			} catch (NumberFormatException e) {

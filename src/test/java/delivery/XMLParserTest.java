@@ -182,7 +182,7 @@ public class XMLParserTest {
 	}
 	
 	@Test
-	public void loadPlanLongitudeOver90TestNotOk() {
+	public void loadPlanLongitudeOver180TestNotOk() {
 		Plan p = new Plan();
 		assertThrows(XMLParserException.class, () -> {
 			XMLParser.loadPlan(new File("src/test/resources/XMLParserTest/loadPlanLongitudeOver180Test.xml"), p);
