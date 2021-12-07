@@ -1,15 +1,19 @@
 package view;
 
 import java.awt.Color;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.Controller;
+import model.CheckPoint;
 import model.CheckPointType;
 import model.Intersection;
 import model.Path;
@@ -17,9 +21,6 @@ import model.Plan;
 import model.Request;
 import model.Segment;
 import model.Tour;
-
-import java.awt.event.MouseWheelEvent;
-
 import observer.Observable;
 import observer.Observer;
 
@@ -35,12 +36,16 @@ public class MapView extends JPanel implements Observer{
 	private int padding = 0;
 	double xScale;
 	double yScale;
+	int zoomLevel;
 	double maxLat ;
 	double minLat ;
 	double maxLon ;
 	double minLon ;
+	CheckPoint pickupToAdd = null;
+	
+	private List<Segment> courantListOfSegments;
 
-	public MapView(Plan plan, Tour tour) {
+	public MapView(Plan plan, Tour tour, Controller c, JLabel msg) {
 		this.plan = plan;
 		this.tour = tour;
 		plan.addObserver(this);
@@ -49,47 +54,143 @@ public class MapView extends JPanel implements Observer{
 		this.minLat = plan.getMinLatitude();
 		this.maxLon = plan.getMaxLongitude();
 		this.minLon = plan.getMinLongitude();
+		this.zoomLevel = 0;
 		this.addMouseWheelListener(e -> {
-            System.out.println("MouseWheelListenerDemo.mouseWheelMoved");
+            //System.out.println("MouseWheelListenerDemo.mouseWheelMoved");
 
             // If wheel rotation value is a negative it means rotate up, while
             // positive value means rotate down
 
             int x = e.getX();
 			int y = e.getY();
-			System.out.println(x + "," + y);
+			//System.out.println(x + "," + y);
 			
             if (e.getWheelRotation() < 0) {
-                System.out.println("Rotated Up... " + e.getWheelRotation());
-				zoomIn(x,y,90);
+            	if ( zoomLevel < 300) {
+            		zoomLevel += 10;
+                    //System.out.println("Rotated Up... " + e.getWheelRotation());
+    				zoomIn(x,y,90);
+            	}
             } else {
-                System.out.println("Rotated Down... " + e.getWheelRotation());
-				zoomIn(x,y,110);
+            	if(zoomLevel>= -30) {
+            		zoomLevel -= 10;
+                    //System.out.println("Rotated Down... " + e.getWheelRotation());
+    				zoomIn(x,y,110);
+            	}else {
+            		adjustZoom();
+            	}
             }
+            //System.out.println("zoomLevel :  " + zoomLevel);
         });
 
+		MouseAdapter mouseAdapter =new MouseAdapter() { 
+			@Override
+	          public void mouseMoved(MouseEvent e) { 
+				int pointWidth = DrawAttributes.getPointWidth();
+				int x = e.getX();
+				int y = e.getY();
+				System.out.println(" x :"+x+" y : "+y);
+				double lat = getLatitudeFromY(y);
+				double lon = getLongitudeFromX(x);
+				System.out.println("lat :"+lat+"lon : "+lon);
+				System.out.println("=================================================================");
+				Segment seg = null;
+				double min = Double.MAX_VALUE;
+				for (Intersection i : plan.getIntersections()) {
+					int x1 = weightLatitude(i.getLatitude(), maxLat, xScale); 
+					int y1 = weightLongitude(i.getLongitude(), maxLon, yScale);
+					int x11 = getWidth() - y1 - pointWidth / 2;
+					int y12 = x1 - pointWidth / 2;
+					for (Segment s : i.getSegments()) {
+						int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
+						int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
+						int x21 = getWidth() - y2 - pointWidth / 2;
+						int y22 = x2 - pointWidth / 2;
+						if ( isBetween(x11,y12,x21,y22,x,y,20) ) {
+							double newMin = calculeSegment(x11,y12,x21,y22,x,y);
+							if (newMin < min  ) {
+								min = newMin;
+								seg = s;
+							}
+						}
+						
+					}
+				}
+				if (min < 20 && seg != null ) {
+					msg.setText(seg.getName());
+				} else {
+					msg.setText("");
+				}
+	          }
+			private boolean isBetween(int ax, int ay, int bx, int by, int cx, int cy, int eps) {
+				// TODO Auto-generated method stub
+				double distanceAC = Math.sqrt( Math.pow(ax - cx, 2) + Math.pow(ay - cy, 2) );
+				double distanceBC = Math.sqrt( Math.pow(bx - cx, 2) + Math.pow(by - cy, 2) );
+				double distanceAB = Math.sqrt( Math.pow(bx - ax, 2) + Math.pow(by - ay, 2) );
+				//return true;
+				if ( Math.abs( distanceAB - distanceBC - distanceAC ) < eps) {
+					return true;
+				}
+				return false;
+			}
+			private double calculeSegment(int ax, int ay, int bx, int by, int cx, int cy) {
+				// TODO Auto-generated method stub
+				double m = 0;
+				if ((bx-ax) != 0) {
+					m = (by-ay)/(bx-ax);
+				}
+				
+				double b = ay - m*ax;
+				return Math.abs(cy - (m*cx +b));
+			}
+			@Override
+	          public void mouseClicked(MouseEvent e) { 
+				int x = e.getX();
+				int y = e.getY();
+				double lat = getLatitudeFromY(y);
+				double lon = getLongitudeFromX(x);
+				c.clickOnMap(lat, lon);
+	            }
+
+			
+	          };
+		this.addMouseListener(mouseAdapter); 
+		addMouseMotionListener(mouseAdapter);
 	}
 
 	
 
+	private void adjustZoom() {
+		// TODO Auto-generated method stub
+		this.maxLat = plan.getMaxLatitude();
+		this.minLat = plan.getMinLatitude();
+		this.maxLon = plan.getMaxLongitude();
+		this.minLon = plan.getMinLongitude();
+		this.zoomLevel = 0;
+		this.update(getGraphics());
+	}
+
+
+
 	@Override
 	protected void paintComponent(Graphics graph) {
 		super.paintComponent(graph);
+		courantListOfSegments = new ArrayList<Segment>();
 		Graphics2D g = (Graphics2D) graph;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		/*this.maxLat = plan.getMaxLatitude();
 		this.minLat = plan.getMinLatitude();
 		this.maxLon = plan.getMaxLongitude();
 		this.minLon = plan.getMinLongitude();*/
-		System.out.println("Constructor "+plan.getIntersections().size());
+		//System.out.println("Constructor "+plan.getIntersections().size());
 		xScale = (double) getWidth()  / (maxLat - minLat);
 		yScale = (double) getHeight() / (maxLon - minLon);
-		System.out.println("maxLat : "+maxLat);
-		System.out.println("minLat : "+minLat);
-		System.out.println("maxLon : "+maxLon);
-		System.out.println("minLon : "+minLon);
-		System.out.println("xScale : "+xScale);
-		System.out.println("yScale : "+yScale);
+//		System.out.println("maxLat : "+maxLat);
+//		System.out.println("minLat : "+minLat);
+//		System.out.println("maxLon : "+maxLon);
+//		System.out.println("minLon : "+minLon);
+//		System.out.println("xScale : "+xScale);
+//		System.out.println("yScale : "+yScale);
 
 		g.setColor(Color.WHITE);
 		//fill the rect
@@ -104,6 +205,16 @@ public class MapView extends JPanel implements Observer{
 			for (Segment s : i.getSegments()) {
 				int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
 				int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
+//				if ( s.getName().equalsIgnoreCase("Rue du Docteur Vaillant")  ) {
+//					g.setColor(DrawAttributes.getColorPathActive());
+//				}else {
+//					g.setColor(Color.BLACK);
+//				}
+				if(s.isActive()) {
+					g.setColor(DrawAttributes.getColorPathActive());
+				}else {
+					g.setColor(Color.BLACK);
+				}
 				g.drawLine(getWidth() - y1,x1,getWidth() -  y2,x2);
 			}
 		}
@@ -127,6 +238,14 @@ public class MapView extends JPanel implements Observer{
 	public double getLongitudeFromX(int x) {
 		return maxLon - (((double) getWidth()-x)/yScale);
 	}
+	
+	public int getYFromLatitude(int Latitude) {
+		return (int) (xScale*(maxLat - Latitude));
+	}
+	public int getXFromLongitude(double Longitude) {
+		return (int)(getWidth() - yScale*(maxLon - Longitude));
+	}
+	
 	
 	
 	public void zoomIn (int x , int y ,int p) {
@@ -224,12 +343,14 @@ public class MapView extends JPanel implements Observer{
 	
 	public void loadRequests(Graphics2D g, double maxLat, double maxLon) {
 		int i = 0;
-		
+		System.out.println("loadRequests");
 		for(Request r : plan.getRequests()) {
 			Intersection p = r.getPickup().getAddress();
 			Intersection d = r.getDelivery().getAddress();
+			System.out.println("pick");
 			g.setColor(DrawAttributes.getColorRequest(i));
 			drawPoint(g, maxLat, maxLon, p, r.getPickup().getType(),r.getPickup().isActive());
+			System.out.println("delive");
 			g.setColor(DrawAttributes.getColorRequest(i));
 			drawPoint(g, maxLat, maxLon, d, r.getDelivery().getType(),r.getDelivery().isActive());
 			++i;
@@ -239,6 +360,12 @@ public class MapView extends JPanel implements Observer{
 			Intersection depot = plan.getDepot().getAddress();
 			g.setColor(Color.BLACK);
 			drawPoint(g , maxLat, maxLon, depot, plan.getDepot().getType(),plan.getDepot().isActive());
+		}
+		
+		if (pickupToAdd!=null) {
+			Intersection pk = pickupToAdd.getAddress();
+			g.setColor(Color.WHITE);
+			drawPoint(g , maxLat, maxLon, pk, pickupToAdd.getType(),true);
 		}
 	}
 	
@@ -250,7 +377,7 @@ public class MapView extends JPanel implements Observer{
 		int x1 = getWidth() - y - pointWidth / 2;
 		int y1 = x - pointWidth / 2;
 		
-		System.out.println("x1 = "+x1+"\t y1 = "+y1);
+		//System.out.println("x1 = "+x1+"\t y1 = "+y1);
 		switch (checkPointType) {
 		case DEPOT:
 			g.fillRoundRect(x1, y1, pointWidth, pointWidth, 5, 5);
@@ -295,6 +422,15 @@ public class MapView extends JPanel implements Observer{
 		return (int) ((max - coord) * yScale + padding);
 	}
 
+	public Double weightLatitudeDouble(double coord, double max, double xScale) {
+		return ((max - coord) * xScale + padding);
+
+	}
+
+	public Double weightLongitudeDouble(double coord, double max, double yScale) {
+		return ((max - coord) * yScale + padding);
+	}
+
 	
 	public void drawRoute(Graphics2D g, double maxLat, double maxLon,Path path) {
 		if(path.isActive()) {
@@ -321,15 +457,17 @@ public class MapView extends JPanel implements Observer{
 		this.maxLon = plan.getMaxLongitude();
 		this.minLon = plan.getMinLongitude();
 	}
+	
 	@Override
 	public void update(Observable observed, Object arg) {
-		// TODO Auto-generated method stub
-		System.out.println("MapView Update methode");
-		
 		repaint();
 	}
 
-
-
-
+	public CheckPoint getPickupToAdd() {
+		return pickupToAdd;
+	}
+	
+	public void setPickupToAdd(CheckPoint pickupToAdd) {
+		this.pickupToAdd = pickupToAdd;
+	}
 }

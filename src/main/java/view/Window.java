@@ -2,21 +2,18 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicArrowButton;
 
 import controller.Controller;
-import model.CheckPoint;
-import model.CheckPointType;
-import model.Intersection;
 import model.Plan;
 import model.Request;
 import model.Tour;
-
-import javax.swing.*;
-
-import org.w3c.dom.events.MouseEvent;
-
-import java.awt.*;
 
 public class Window {
 
@@ -29,13 +26,12 @@ public class Window {
 	private JButton btnLoadRequest = new JButton("Load Request");
 	private JButton btnComputeTour = new JButton("Compute Tour");
 	private JButton btnStopComputing = new JButton("Stop Computing");
-	private JButton btnAddRequestTest = new JButton("Add Request");
-	private JLabel message1=new JLabel("Optimization in progress...");
-	private JLabel message2=new JLabel("Tour computed");
-	private JButton btnDeleteRequestTest = new JButton("Delete Request");
-	private JButton btnModifyTour = new JButton("Modify");
-	private CheckPoint pick;
-	private CheckPoint d;
+	private JButton btnAddRequest = new JButton("", new ImageIcon("plus.png"));
+	private JButton btnDeleteRequest = new JButton("", new ImageIcon("minus.png"));
+	private JButton btnModifyTourUp = new BasicArrowButton(BasicArrowButton.NORTH);
+	private JButton btnModifyTourDown = new BasicArrowButton(BasicArrowButton.SOUTH);
+	private JLabel message=new JLabel("Please load a map.");
+	private JLabel roadName=new JLabel("");
 
 
 
@@ -45,10 +41,10 @@ public class Window {
 	 */
 	public Window(Plan p, Tour t, Controller c) {
 		initialize(p, t, c);
-		setStopComputingButtonFalse();
-		setComputeTourButtonFalse();
-		setLoadRequestButtonFalse();
-		setAddRequestFalse();
+		setStopComputingButtonEnabled(false);
+		setComputeTourButtonEnabled(false);
+		setLoadRequestButtonEnabled(false);
+		setAddRequestEnabled(false);
 	}
 
 	public Window() {
@@ -64,8 +60,11 @@ public class Window {
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		roadName.setBounds(746, 700, 300, 30);
+		frame.getContentPane().add(roadName);
 		
-		mapView = new MapView(p, t);
+		mapView = new MapView(p, t, c, roadName);
 		
 		mapView.setBounds(20,45,690,690);
 		frame.getContentPane().add(mapView);
@@ -75,15 +74,62 @@ public class Window {
 		requestView = new RequestView(p);
 		requestView.setBounds(746, 49, 300, 200);
 		frame.getContentPane().add(requestView);
+
+		btnAddRequest.setBounds(1016, 249, 30, 30);
+		btnAddRequest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test press button add");
+				c.addRequest();
+			}
+		});
+		frame.getContentPane().add(btnAddRequest);
+		btnDeleteRequest.setBounds(976, 249, 30, 30);
+		btnDeleteRequest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Test press button delete");
+				int index = requestView.getTable().getSelectedRow();
+				System.out.println(index);
+				if (index>=0) {
+					Request r = p.getRequests().get(index);
+					c.deleteRequest(r.getPickup().getAddress().getId(),
+							r.getDelivery().getAddress().getId());
+				}
+			}
+		});
+		frame.getContentPane().add(btnDeleteRequest);
+		setDeleteButtonEnabled(false);
 		
 		mapInfoView = new MapInfoView(p);  
-		mapInfoView.setBounds(746,259,300,120);
+		mapInfoView.setBounds(746,289,300,90);
 		frame.getContentPane().add(mapInfoView);
 		
 		checkPointView = new CheckPointView(t);
-		checkPointView.setBounds(746, 389, 300, 300);
+		checkPointView.setBounds(746, 389, 300, 270);
 		frame.getContentPane().add(checkPointView);
-		
+
+		btnModifyTourUp.setBounds(1016, 659, 30, 30);
+		btnModifyTourUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Modify Up");
+				int index = checkPointView.getTable().getSelectedRow();
+				if (index>1 && index<t.getCheckPoint().size()) {
+					c.modifyRequest(index, index-1);
+				}
+			}
+		});
+		btnModifyTourDown.setBounds(976, 659, 30, 30);
+		btnModifyTourDown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Modify Down");
+				int index = checkPointView.getTable().getSelectedRow();
+				if (index>0 && index<t.getCheckPoint().size()-1) {
+					c.modifyRequest(index, index+1);
+				}
+			}
+		});
+		setModifyButtonsEnabled(false);
+		frame.getContentPane().add(btnModifyTourUp);
+		frame.getContentPane().add(btnModifyTourDown);
 		
 		btnLoadMap.setBounds(12, 12, 134, 27);
 		btnLoadMap.addActionListener(new ActionListener() {
@@ -120,44 +166,8 @@ public class Window {
 		});
 		frame.getContentPane().add(btnStopComputing);
 		
-		
-		btnAddRequestTest.setBounds(650, 12, 134, 27);
-		btnAddRequestTest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Test appui bouton");
-				c.addRequest("1679901326", "984186416", 10, 11);
-			}
-		});
-		frame.getContentPane().add(btnAddRequestTest);
-		
-		
-		
-		
-		message1.setBounds(746, 700, 300, 30);
-		frame.getContentPane().add(message1);
-		setMessageVisible(message1, false);
-		
-		
-		message2.setBounds(746, 700, 300, 30);
-		frame.getContentPane().add(message2);
-		setMessageVisible(message2, false);
-		btnDeleteRequestTest.setBounds(850, 12, 134, 27);
-		btnDeleteRequestTest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Test appui bouton delete");
-				c.deleteRequest("26121686", "191134392");
-			}
-		});
-		frame.getContentPane().add(btnDeleteRequestTest);
-		
-		btnModifyTour.setBounds(950, 12, 134, 27);
-		btnModifyTour.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Test appui bouton modify");
-				c.modifyRequest(2, 4);
-			}
-		});
-		frame.getContentPane().add(btnModifyTour);
+		message.setBounds(746, 15, 300, 30);
+		frame.getContentPane().add(message);
 				
 		frame.setVisible(true);
 	}
@@ -166,67 +176,43 @@ public class Window {
 		return frame;
 	}
 	
-	public JLabel getMessage1() {
-		return message1;
+	public JLabel getMessage() {
+		return message;
 	}
-	
-	public JLabel getMessage2() {
-		return message2;
+	public JLabel getRoadName() {
+		return roadName;
 	}
-	
-	public void setLoadMapButtonFalse() {
-		btnLoadMap.setEnabled(false);
-
-
-	}
-	
-	public void setLoadRequestButtonFalse() {
-		btnLoadRequest.setEnabled(false);
-		
-
-	}
-	public void setComputeTourButtonFalse() {
-		btnComputeTour.setEnabled(false);
-		
-
-	}
-	public void setStopComputingButtonFalse() {
-		btnStopComputing.setEnabled(false);
-	}
-	
-	public void setAddRequestFalse() {
-		btnAddRequestTest.setEnabled(false);
-	}
-	
-	public void setLoadMapButtonTrue() {
-		btnLoadMap.setEnabled(true);
-	}
-	
-	public void setLoadRequestButtonTrue() {
-		btnLoadRequest.setEnabled(true);
-		
-
-	}
-	public void setComputeTourButtonTrue() {
-		btnComputeTour.setEnabled(true);
-		
-
-	}
-	public void setStopComputingButtonTrue() {
-		btnStopComputing.setEnabled(true);
-	}
-	
-	public void setAddRequestTrue() {
-		btnAddRequestTest.setEnabled(true);
-	}
-	
-	
-	public void setMessageVisible(JLabel message, boolean visible) {
-		message.setVisible(visible);
-	}
-
 
 	public MapView getMapView() {
 		return mapView;
+	}
+	
+	public void setAddRequestEnabled(boolean b) {
+		btnAddRequest.setEnabled(b);
+	}
+	
+	public void setDeleteButtonEnabled(boolean b) {
+		btnDeleteRequest.setEnabled(b);
+	}
+	
+	public void setModifyButtonsEnabled(boolean b) {
+		btnModifyTourUp.setEnabled(b);
+		btnModifyTourDown.setEnabled(b);
+	}
+	
+	public void setLoadMapButtonEnabled(boolean b) {
+		btnLoadMap.setEnabled(b);
+	}
+	
+	public void setLoadRequestButtonEnabled(boolean b) {
+		btnLoadRequest.setEnabled(b);
+	}
+	
+	public void setComputeTourButtonEnabled(boolean b) {
+		btnComputeTour.setEnabled(b);
+	}
+	
+	public void setStopComputingButtonEnabled(boolean b) {
+		btnStopComputing.setEnabled(b);
 	}
 }

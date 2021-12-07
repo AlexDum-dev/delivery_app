@@ -52,6 +52,10 @@ public class CheckPointView extends JScrollPane implements Observer {
         }); 
 		
 	}
+	
+	public JTable getTable() {
+		return table;
+	}
 
 	private Object[][] displayCheckPoint() {
 		List<CheckPoint> checkPoints = tour.getCheckPoint();
@@ -113,6 +117,10 @@ public class CheckPointView extends JScrollPane implements Observer {
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
+			}
+			
+			public boolean isCellEditable(int r, int l) {
+				return false;
 			}
 		});
 		this.setViewportView(table);

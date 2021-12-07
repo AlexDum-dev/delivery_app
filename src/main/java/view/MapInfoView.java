@@ -43,15 +43,15 @@ public class MapInfoView extends JPanel implements Observer{
 		g2.setColor(Color.BLACK);
 		if (!plan.getRequests().isEmpty()) {
 
-			int ovalW = pointWidth*2;
-			int ovalH = pointWidth*2;
+			int ovalW = pointWidth;
+			int ovalH = pointWidth;
 			
 			int x = this.getWidth()/6 - ovalW / 2;
 			int y = this.getHeight()/4 - 4 - ovalH / 2;
-			g2.fillRoundRect(x,y, ovalW, ovalH, 15, 15);
+			g2.fillRoundRect(x,y, ovalW, ovalH, 10, 10);
 			
 			x = this.getWidth()/4;
-			y = this.getHeight()/4 - 4;
+			y = this.getHeight()/4 - 2;
 			g2.drawString("Depot", x, y);
 
 			x = this.getWidth()/6 - ovalW / 2;
@@ -59,7 +59,7 @@ public class MapInfoView extends JPanel implements Observer{
 			g2.fillRect(x,y, ovalW, ovalH);
 			
 			x = this.getWidth()/4;
-			y = this.getHeight()*2/4;
+			y = this.getHeight()*2/4 + 2;
 			g2.setColor(Color.BLACK);
 			g2.drawString("Pick Up", x, y);
 
@@ -68,7 +68,7 @@ public class MapInfoView extends JPanel implements Observer{
 			g2.fillOval(x,y, ovalW, ovalH);
 			
 			x = this.getWidth()/4;
-			y = this.getHeight()*3/4 + 4;
+			y = this.getHeight()*3/4 + 6;
 			g2.setColor(Color.BLACK);
 			g2.drawString("Delivery", x, y);
 		}

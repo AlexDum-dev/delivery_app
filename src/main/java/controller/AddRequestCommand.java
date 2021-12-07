@@ -81,8 +81,9 @@ public class AddRequestCommand implements Command {
 		tour.actualizeTime();
 		
 		tour.notifyObservers();
-		window.setMessageVisible(window.getMessage1(), false);
-		window.setMessageVisible(window.getMessage2(), false);
+		window.getMessage().setText("Request added!");
+		window.setDeleteButtonEnabled(true);
+		window.setModifyButtonsEnabled(true);
 	}
 
 	@Override

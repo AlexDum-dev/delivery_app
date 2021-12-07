@@ -24,8 +24,6 @@ public class RequestView extends JScrollPane implements Observer {
 	private static final long serialVersionUID = 1L;
 	private JTable table;
     private Plan plan;
-    private String lastSelected;
-    private java.awt.Color colorOfLastSelected;
 	
 	public RequestView(Plan plan) {
 		super();
@@ -51,7 +49,9 @@ public class RequestView extends JScrollPane implements Observer {
         }); 
 	}
 	
-	
+	public JTable getTable() {
+		return table;
+	}
 
 	private Object[][] displayRequest() {
 		List<Request> requests = plan.getRequests();
@@ -89,6 +89,10 @@ public class RequestView extends JScrollPane implements Observer {
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
+			}
+			
+			public boolean isCellEditable(int r, int l) {
+				return false;
 			}
 		});
 		this.setViewportView(table);

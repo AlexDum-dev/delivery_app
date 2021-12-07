@@ -2,6 +2,7 @@ package delivery;
 
 import static org.junit.Assert.*;
 
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,10 +13,11 @@ import org.junit.Test;
 import algorithm.tsp.DeliveryGraph;
 import algorithm.tsp.MinFirstIter;
 import model.CheckPoint;
-import model.CheckPointType;
 import model.Intersection;
-import model.Path;
+import model.CheckPointType;
+
 import model.Segment;
+import model.Path;
 
 public class MinFirstIterTest {
 

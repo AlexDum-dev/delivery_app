@@ -11,6 +11,7 @@ public class Segment {
 	private Intersection destination;
 	private double length;
 	private String name;
+	private boolean active;
 	
 	public Segment(Intersection origin, Intersection destination, 
 			double length, String name) {
@@ -38,6 +39,19 @@ public class Segment {
 		return name;
 	}
 	
+	
+	public boolean isActive() {
+		return active;
+	}
+
+
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+
+
 	public boolean equals(Object s) {
 		// If the object is compared with itself then return true 
         if (s == this) {
