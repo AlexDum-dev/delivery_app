@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<map>
+<intersection id="208769457" latitude="45.760174" longitude="4.877455"/>
+<intersection id="208769499" latitude="45.760597" longitude="4.87622"/>
+<intersection id="55474978" latitude="45.761276" longitude="4.876554"/>
+<intersection id="55475018" latitude="45.75978" longitude="4.875795"/>
+<intersection id="26033277" latitude="45.756165" longitude="4.8574095"/>
+<intersection id="975886496" latitude="45.756874" longitude="4.8574047"/>
+<segment destination="208769457" length="106.73056" name="Rue Frédéric Passy" origin="208769499"/>
+<segment destination="55474978" length="79.801414" name="Rue Édouard Aynard" origin="208769499"/>
+<segment destination="55475018" length="96.57731" origin="208769499"/>
+<segment destination="26033277" length="78.72686" name="Rue Danton" origin="975886496"/>
+</map>
