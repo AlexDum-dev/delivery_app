@@ -185,4 +185,29 @@ public class PlanTest {
 		assertTrue(plan.getRequests().get(0).getPickup().getAddress().getId() == "2" && plan.getRequests().get(0).getDelivery().getAddress().getId() == "4" &&  plan.getRequests().get(0).getIndex() == 0);
 	}
 	
+	@Test
+	public void getNearestIntersectionTestOk() throws ParserConfigurationException, IOException, SAXException, XMLParserException{
+		
+		Plan p = new Plan();
+		Intersection i1 = new Intersection("1", 0.1, 0.2);
+		p.addIntersection(i1);
+		Intersection i2 = new Intersection("2", -0.15, -0.2);
+		p.addIntersection(i2);
+		Intersection i3 = new Intersection("3", -0.1, 0.25);
+		p.addIntersection(i3);
+		Intersection i4 = new Intersection("4", 1.1, 1.2);
+		p.addIntersection(i4);
+		Intersection i5 = new Intersection("5", 1.1, 1.2);
+		p.addIntersection(i5);
+		Intersection i6 = new Intersection("6", 1.1, 1.2);
+		p.addIntersection(i6);
+		
+		Intersection result = p.getNearestIntersection(0, 0);
+		
+		assertTrue(result.getId().equals("1"));
+		
+		
+	}
+	
+	
 }
