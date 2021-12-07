@@ -105,46 +105,25 @@ public class ModifyTourTest {
 		tour.addPath(pathI2toI4, pickup2);
 		tour.addPath(pathI4toI1, delivery2);
 		
-		ModifyTourCommand modifyTourCommand = new ModifyTourCommand(tour, plan , 2 , 4 , new Window());
+		ModifyTourCommand modifyTourCommand = new ModifyTourCommand(tour, plan , 1 , 3 , new Window());
 		modifyTourCommand.doCommand();
 		
-//		assertTrue(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");
-//		assertTrue(tour.getPath().get(0).getDestination().getId() == "2");
-//		
-//		assertTrue(tour.getPath().get(1).getPath().get(0).getOrigin().getId() == "2");
-//		assertTrue(tour.getPath().get(1).getDestination().getId() == "4");
-//
-//		assertTrue(tour.getPath().get(2).getPath().get(0).getOrigin().getId() == "4");
-//		assertTrue(tour.getPath().get(2).getDestination().getId() == "3");
-//		
-//		assertTrue(tour.getPath().get(3).getPath().get(0).getOrigin().getId() == "3");
-//		assertTrue(tour.getPath().get(3).getDestination().getId() == "5");
-//		
-//		assertTrue(tour.getPath().get(4).getPath().get(0).getOrigin().getId() == "5");
-//		assertTrue(tour.getPath().get(4).getDestination().getId() == "1");
+		assertTrue(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");
+		assertTrue(tour.getPath().get(0).getDestination().getId() == "5");
 		
-		System.out.println(tour.getPath().get(0).getPath().get(0).getOrigin().getId());
-		System.out.println(tour.getPath().get(0).getDestination().getId());
+		assertTrue(tour.getPath().get(1).getPath().get(0).getOrigin().getId() == "5");
+		assertTrue(tour.getPath().get(1).getDestination().getId() == "2");
+
+		assertTrue(tour.getPath().get(2).getPath().get(0).getOrigin().getId() == "2");
+		assertTrue(tour.getPath().get(2).getDestination().getId() == "3");
 		
-		System.out.println();
+		assertTrue(tour.getPath().get(3).getPath().get(0).getOrigin().getId() == "3");
+		assertTrue(tour.getPath().get(3).getDestination().getId() == "4");
 		
-		System.out.println(tour.getPath().get(1).getPath().get(0).getOrigin().getId());
-		System.out.println(tour.getPath().get(1).getDestination().getId());
+		assertTrue(tour.getPath().get(4).getPath().get(0).getOrigin().getId() == "4");
+		assertTrue(tour.getPath().get(4).getDestination().getId() == "1");
 		
-		System.out.println();
 		
-		System.out.println(tour.getPath().get(2).getPath().get(0).getOrigin().getId());
-		System.out.println(tour.getPath().get(2).getDestination().getId());
-		
-		System.out.println();
-		
-		System.out.println(tour.getPath().get(3).getPath().get(0).getOrigin().getId());
-		System.out.println(tour.getPath().get(3).getDestination().getId());
-		
-		System.out.println();
-		
-		System.out.println(tour.getPath().get(4).getPath().get(0).getOrigin().getId());
-		System.out.println(tour.getPath().get(4).getDestination().getId());
 	}
 
 }
