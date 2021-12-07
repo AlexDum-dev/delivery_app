@@ -44,21 +44,31 @@ public class ComputeTourThread extends Thread implements Observer {
 		DijkstraResult result = Dijkstra.computePaths(plan.getIntersections(), 
 				plan.getRequests(), plan.getDepot());
 		
-		listPath = result.getPaths();
-		check = result.getCheckpoints();
-	
-		g = new DeliveryGraph(listPath, check);
-		tsp.addObserver(this);
-		tsp.searchSolution(20000, g);
-		controller.setCurrentState(TourComputed.getInstance());
-		window.setStopComputingButtonEnabled(false);
-		window.setLoadMapButtonEnabled(true);
-		window.setLoadRequestButtonEnabled(true);
-		window.setAddRequestEnabled(true);
-		window.setComputeTourButtonEnabled(false);
-		window.setDeleteButtonEnabled(true);
-		window.setModifyButtonsEnabled(true);
-		window.getMessage().setText("Tour computed!");
+		if (result==null) {
+			window.setStopComputingButtonEnabled(false);
+			window.setComputeTourButtonEnabled(false);
+			window.setLoadMapButtonEnabled(true);
+			window.setLoadRequestButtonEnabled(true);
+			window.getMessage().setText("Can't compute tour.");
+			controller.setCurrentState(RequestsLoaded.getInstance());
+		}
+		else {
+			listPath = result.getPaths();
+			check = result.getCheckpoints();
+		
+			g = new DeliveryGraph(listPath, check);
+			tsp.addObserver(this);
+			tsp.searchSolution(20000, g);
+			controller.setCurrentState(TourComputed.getInstance());
+			window.setStopComputingButtonEnabled(false);
+			window.setLoadMapButtonEnabled(true);
+			window.setLoadRequestButtonEnabled(true);
+			window.setAddRequestEnabled(true);
+			window.setComputeTourButtonEnabled(false);
+			window.setDeleteButtonEnabled(true);
+			window.setModifyButtonsEnabled(true);
+			window.getMessage().setText("Tour computed!");
+		}
 	}
 
 	@Override

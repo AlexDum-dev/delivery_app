@@ -50,6 +50,16 @@ public class TourComputed implements State {
 	
 	@Override
 	public void modifyRequest(ListOfCommands l, Plan plan, Tour tour, int indexCheckPoint, int newIndexCheckPoint, Window w) {
-		l.add(new ModifyTourCommand(tour, plan, indexCheckPoint, newIndexCheckPoint, w));
+		l.add(new ModifyTourCommand(tour, plan, indexCheckPoint, newIndexCheckPoint));
+	}
+	
+	@Override
+	public void undo(ListOfCommands l) {
+		l.undo();
+	}
+	
+	@Override
+	public void redo(ListOfCommands l) {
+		l.redo();
 	}
 }

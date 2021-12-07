@@ -90,6 +90,7 @@ public class AddRequestCommand implements Command {
 	public void undoCommand() {
 		
 		DeleteRequestCommand deleteCommand = new DeleteRequestCommand(plan, tour, this.idPickup, this.idDelivery, this.window);
+		deleteCommand.doCommand();
 		plan.notifyObservers();
 		tour.notifyObservers();
 		

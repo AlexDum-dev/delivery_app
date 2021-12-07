@@ -60,6 +60,8 @@ public class DeleteRequestCommand implements Command {
 			}
 		}
 
+		this.tour.actualizeTime();
+		
 		plan.notifyObservers();
 		tour.notifyObservers();
 
@@ -84,8 +86,9 @@ public class DeleteRequestCommand implements Command {
 		
 		AddRequestCommand addCommand = new AddRequestCommand(tour, plan, this.idPickup, this.idDelivery,
 										durationPickup, durationDelivery, this.window);
-		ModifyTourCommand modifyCommand = new ModifyTourCommand(tour, plan, tour.getPath().size()-1, this.indexRequest, window);
-
+		addCommand.doCommand();
+		ModifyTourCommand modifyCommand = new ModifyTourCommand(tour, plan, tour.getPath().size()-1, this.indexRequest);
+		modifyCommand.doCommand();
 	}
 
 }

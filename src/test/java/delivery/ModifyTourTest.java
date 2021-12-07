@@ -105,7 +105,7 @@ public class ModifyTourTest {
 		tour.addPath(pathI2toI4, pickup2);
 		tour.addPath(pathI4toI1, delivery2);
 		
-		ModifyTourCommand modifyTourCommand = new ModifyTourCommand(tour, plan , 1 , 3 , new Window());
+		ModifyTourCommand modifyTourCommand = new ModifyTourCommand(tour, plan , 1 , 3);
 		modifyTourCommand.doCommand();
 		
 		assertTrue(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");

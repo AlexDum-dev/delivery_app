@@ -26,6 +26,8 @@ public class Window {
 	private JButton btnLoadRequest = new JButton("Load Request");
 	private JButton btnComputeTour = new JButton("Compute Tour");
 	private JButton btnStopComputing = new JButton("Stop Computing");
+	private JButton btnUndo = new JButton("Undo");
+	private JButton btnRedo = new JButton("Redo");
 	private JButton btnAddRequest = new JButton("", new ImageIcon("plus.png"));
 	private JButton btnDeleteRequest = new JButton("", new ImageIcon("minus.png"));
 	private JButton btnModifyTourUp = new BasicArrowButton(BasicArrowButton.NORTH);
@@ -131,17 +133,16 @@ public class Window {
 		frame.getContentPane().add(btnModifyTourUp);
 		frame.getContentPane().add(btnModifyTourDown);
 		
-		btnLoadMap.setBounds(12, 12, 134, 27);
+		btnLoadMap.setBounds(12, 12, 100, 27);
 		btnLoadMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				c.loadMap();
 			}
 		});
-		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(btnLoadMap);
 		
 		
-		btnLoadRequest.setBounds(176, 12, 134, 27);
+		btnLoadRequest.setBounds(132, 12, 100, 27);
 		btnLoadRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				c.loadRequest();
@@ -149,7 +150,7 @@ public class Window {
 		});
 		frame.getContentPane().add(btnLoadRequest);
 		
-		btnComputeTour.setBounds(334, 12, 134, 27);
+		btnComputeTour.setBounds(252, 12, 100, 27);
 		btnComputeTour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				c.computeTour();
@@ -158,7 +159,7 @@ public class Window {
 		frame.getContentPane().add(btnComputeTour);
 
 		
-		btnStopComputing.setBounds(492, 12, 134, 27);
+		btnStopComputing.setBounds(372, 12, 100, 27);
 		btnStopComputing.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				c.stopTour();
@@ -166,9 +167,26 @@ public class Window {
 		});
 		frame.getContentPane().add(btnStopComputing);
 		
+		btnUndo.setBounds(492, 12, 100, 27);
+		btnUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				c.undo();
+			}
+		});
+		frame.getContentPane().add(btnUndo);
+
+		btnRedo.setBounds(612, 12, 100, 27);
+		btnRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				c.redo();
+			}
+		});
+		frame.getContentPane().add(btnRedo);
+		
 		message.setBounds(746, 15, 300, 30);
 		frame.getContentPane().add(message);
-				
+		
+		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 	}
 
