@@ -50,6 +50,7 @@ public class CommonActions {
 			w.setAddRequestEnabled(false);
 			w.setDeleteButtonEnabled(false);
 			w.setModifyButtonsEnabled(false);
+			w.setDoButtonsEnabled(false);
 			w.getMessage().setText("Map loaded!");
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
@@ -64,6 +65,7 @@ public class CommonActions {
 			w.setAddRequestEnabled(false);
 			w.setDeleteButtonEnabled(false);
 			w.setModifyButtonsEnabled(false);
+			w.setDoButtonsEnabled(false);
 			w.getMessage().setText("Please load a map.");
 			plan.clearPlan();
 			tour.clearPath();
@@ -95,6 +97,7 @@ public class CommonActions {
 			w.setAddRequestEnabled(false);
 			w.setDeleteButtonEnabled(false);
 			w.setModifyButtonsEnabled(false);
+			w.setDoButtonsEnabled(false);
 			w.getMessage().setText("Requests loaded!");
 		} catch (ExceptionXML e) {
 		} catch (Exception e) {
@@ -108,6 +111,7 @@ public class CommonActions {
 			w.setAddRequestEnabled(false);
 			w.setDeleteButtonEnabled(false);
 			w.setModifyButtonsEnabled(false);
+			w.setDoButtonsEnabled(false);
 			w.getMessage().setText("Please load the requests.");
 			plan.clearRequests();
 			tour.clearPath();

@@ -60,6 +60,7 @@ public class ComputeTourThread extends Thread implements Observer {
 			tsp.addObserver(this);
 			tsp.searchSolution(20000, g);
 			controller.setCurrentState(TourComputed.getInstance());
+			window.setDoButtonsEnabled(true);
 			window.setStopComputingButtonEnabled(false);
 			window.setLoadMapButtonEnabled(true);
 			window.setLoadRequestButtonEnabled(true);

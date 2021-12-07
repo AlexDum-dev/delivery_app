@@ -183,6 +183,8 @@ public class Window {
 		});
 		frame.getContentPane().add(btnRedo);
 		
+		setDoButtonsEnabled(false);
+		
 		message.setBounds(746, 15, 300, 30);
 		frame.getContentPane().add(message);
 		
@@ -232,5 +234,10 @@ public class Window {
 	
 	public void setStopComputingButtonEnabled(boolean b) {
 		btnStopComputing.setEnabled(b);
+	}
+
+	public void setDoButtonsEnabled(boolean b) {
+		btnUndo.setEnabled(b);
+		btnRedo.setEnabled(b);
 	}
 }
