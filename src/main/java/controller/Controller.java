@@ -49,7 +49,7 @@ public class Controller {
 		currentState.loadRequest(this, plan, tour, window.getFrame(), window);
 	}
 	public void computeTour() {
-		currentState.computeTour(this, plan, tour, window);
+		currentState.computeTour(this, plan, tour, window, listOfCommands);
 	}
 	public void stopTour() {
 		currentState.stopTour(this);
@@ -64,7 +64,7 @@ public class Controller {
 		currentState.modifyRequest(listOfCommands, plan, tour, indexCheckPoint, newIndexCheckPoint, window);
 	}
 	public void deleteRequest(String idPickup, String idDelivery) {
-		currentState.deleteRequest(listOfCommands, plan, tour, idPickup, idDelivery, window);
+		currentState.deleteRequest(listOfCommands, plan, tour, idPickup, idDelivery);
 	}
 	public void undo() {
 		currentState.undo(this.listOfCommands);

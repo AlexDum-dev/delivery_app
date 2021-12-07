@@ -99,7 +99,7 @@ public class DeleteRequestTest {
 		tour.addPath(pathi3I5, pickup);
 		tour.addPath(pathI5toI1, delivery);
 		
-		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,"3", "5", new Window());
+		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,"3", "5");
 		
 		
 		
@@ -204,21 +204,21 @@ public class DeleteRequestTest {
 		tour.addPath(pathI2toI4, pickup2);
 		tour.addPath(pathI4toI1, delivery2);
 		
-		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,"3", "5", new Window());
+		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,"3", "5");
 		
 		
 		
 		deleteRequestCommand.doCommand();
 		
 		
-		assertTrue(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");
-		assertTrue(tour.getPath().get(0).getDestination().getId() == "2");
+		assertEquals(tour.getPath().get(0).getPath().get(0).getOrigin().getId(), "1");
+		assertEquals(tour.getPath().get(0).getDestination().getId(), "2");
 		
-		assertTrue(tour.getPath().get(1).getPath().get(0).getOrigin().getId() == "2");
-		assertTrue(tour.getPath().get(1).getDestination().getId() == "4");
+		assertEquals(tour.getPath().get(1).getPath().get(0).getOrigin().getId(), "2");
+		assertEquals(tour.getPath().get(1).getDestination().getId(), "4");
 		
-		assertTrue(tour.getPath().get(2).getPath().get(0).getOrigin().getId() == "4");
-		assertTrue(tour.getPath().get(2).getDestination().getId() == "1");
+		assertEquals(tour.getPath().get(2).getPath().get(0).getOrigin().getId(), "4");
+		assertEquals(tour.getPath().get(2).getDestination().getId(), "1");
 		
 	}
 

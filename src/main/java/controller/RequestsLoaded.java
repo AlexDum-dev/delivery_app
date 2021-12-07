@@ -38,7 +38,8 @@ public class RequestsLoaded implements State {
 	}
 	
 	@Override
-	public void computeTour(Controller c, Plan plan, Tour tour, Window w) {
+	public void computeTour(Controller c, Plan plan, Tour tour, Window w, ListOfCommands l) {
+		l.reset();
 		w.setLoadMapButtonEnabled(false);
 		w.setLoadRequestButtonEnabled(false);
 		w.setStopComputingButtonEnabled(true);

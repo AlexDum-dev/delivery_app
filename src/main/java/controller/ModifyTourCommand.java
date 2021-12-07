@@ -22,17 +22,22 @@ public class ModifyTourCommand implements Command {
 	private int newIndexCheckPoint;
 	private Tour tour;
 	private Plan plan;
-	private Window window;
+	private ModifyTourCommand invertCommand;
 	
-	public ModifyTourCommand(Tour tour, Plan plan, int indexCheckPoint, int newIndexCheckPoint, Window w) {
+	
+	public ModifyTourCommand(Tour tour, Plan plan, int indexCheckPoint, int newIndexCheckPoint) {
+		this(tour, plan, indexCheckPoint, newIndexCheckPoint, true);
+	}
+	
+	private ModifyTourCommand(Tour tour, Plan plan, int indexCheckPoint, int newIndexCheckPoint, boolean invert) {
 		this.indexCheckpoint = indexCheckPoint;
 		this.newIndexCheckPoint = newIndexCheckPoint;
 		this.tour = tour;
 		this.plan = plan;
-		this.window = w;
+		if (invert) {
+			invertCommand = new ModifyTourCommand(tour, plan, newIndexCheckPoint, indexCheckPoint, false);
+		}
 	}
-	
-	
 	@Override
 	public void doCommand() {
 
@@ -102,8 +107,8 @@ public class ModifyTourCommand implements Command {
 						intersectionCheckPointMoved.getIndex());
 		this.tour.getPath().set(indexNewBefore-decalagePlacement, pathNewBeforeCheckPointToCheckPointMoved);
 		
+		this.tour.actualizeTime();
 		
-		this.plan.notifyObservers();
 		this.tour.notifyObservers();
 		
 	}
@@ -111,7 +116,8 @@ public class ModifyTourCommand implements Command {
 	@Override
 	public void undoCommand() {
 		// TODO Auto-generated method stub
-
+		invertCommand.doCommand();
+		this.tour.notifyObservers();
 	}
 
 }

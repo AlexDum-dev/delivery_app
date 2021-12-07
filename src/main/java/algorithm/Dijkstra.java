@@ -43,6 +43,7 @@ public class Dijkstra {
 							checkpoint.getAddress().getIndex(),
 							checkpoint2.getAddress().getIndex());
 					if(path == null) {
+						System.out.println("No path ("+checkpoint.getAddress().getId()+" "+checkpoint2.getAddress().getId()+")");
 						return null;
 					}
 					pathsFromCheckPoint.add(path);

@@ -76,7 +76,9 @@ public class AddRequestCommandTest {
 		List<ArrayList<Path>> listPath = new ArrayList<ArrayList<Path>>();
 		
 		Tour tour = new Tour();
-		tour.getCheckPoint().add(depot);
+		List<Segment> seg = new ArrayList<Segment>();
+		seg.add(new Segment(i1, i1, 0, ""));
+		tour.addPath(new Path(seg), depot);
 		List<Segment> list = new ArrayList<Segment>();
 		list.add(si13);
 		Path pathI1toI3 = new Path(list);
