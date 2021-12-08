@@ -40,12 +40,6 @@ public class Window {
 	private JLabel message;
 	private JLabel roadName;
 
-
-
-	/**
-	 * Create the application.
-	 * @param tour 
-	 */
 	public Window(Plan p, Tour t, Controller c) {
 		btnLoadMap = new JButton("Load Map");
 		btnLoadRequest = new JButton("Load Request");
