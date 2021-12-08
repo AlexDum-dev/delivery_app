@@ -14,36 +14,29 @@ import model.Tour;
 public class DeleteRequestCommand implements Command {
 	private Tour tour;
 	private Plan plan;
-	private String idPickup;
-	private String idDelivery;
 	private Request request;
 	private int pickup;
 	private int delivery;
 	
-	public DeleteRequestCommand(Plan plan, Tour tour, 
-			String idPickup, String idDelivery) {
+	public DeleteRequestCommand(Plan plan, Tour tour, Request r) {
 		this.tour = tour;
 		this.plan = plan;
-		this.idPickup = idPickup;
-		this.idDelivery = idDelivery;
+		this.request = r;
 	}
 
 	@Override
 	public void doCommand() {
-		int index = -1;
+		int index = request.getIndex();
 		int i = 0;
 		for(CheckPoint c : tour.getCheckPoints()) {
-			if(c.getAddress().getId().equals(this.idPickup)){
-				index = c.getIndex();
+			if(c.equals(request.getPickup())){
 				pickup = i;
 			}
-			if(c.getAddress().getId().equals(this.idDelivery)){
-				index = c.getIndex();
+			if(c.equals(request.getDelivery())){
 				delivery = i;
 			}
 			++i;
 		}
-		
 		if (index!=-1) {
 			if (pickup<delivery) {
 				tour.deleteCheckPoint(delivery, plan.getIntersections());
@@ -52,7 +45,6 @@ public class DeleteRequestCommand implements Command {
 				tour.deleteCheckPoint(pickup, plan.getIntersections());
 				tour.deleteCheckPoint(delivery, plan.getIntersections());
 			}
-			request = plan.getRequests().get(index); //get request in the plan
 			plan.getRequests().remove(index); //delete request in the plan
 			plan.actualizeRequestsIndex(); //actualize the index of requests
 			

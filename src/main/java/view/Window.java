@@ -118,8 +118,7 @@ public class Window {
 				int index = requestView.getTable().getSelectedRow();
 				if (index>=0) {
 					Request r = p.getRequests().get(index);
-					c.deleteRequest(r.getPickup().getAddress().getId(),
-							r.getDelivery().getAddress().getId());
+					c.deleteRequest(r);
 				}
 			}
 		});

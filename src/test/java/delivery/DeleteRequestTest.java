@@ -64,7 +64,9 @@ public class DeleteRequestTest {
 		CheckPoint pickup = new CheckPoint(CheckPointType.PICKUP, i3,10);
 		CheckPoint delivery = new CheckPoint(CheckPointType.DELIVERY, i5,20);
 		
-		plan.addRequest(new Request(pickup, delivery));
+		Request r = new Request(pickup, delivery);
+		
+		plan.addRequest(r);
 		
 		
 		List<CheckPoint> listCheckPoint = new ArrayList<CheckPoint>();
@@ -96,7 +98,7 @@ public class DeleteRequestTest {
 		tour.addPath(pathi3I5, pickup);
 		tour.addPath(pathI5toI1, delivery);
 		
-		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,"3", "5");
+		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,r);
 		
 		
 		
@@ -153,8 +155,8 @@ public class DeleteRequestTest {
 		CheckPoint pickup2 = new CheckPoint(CheckPointType.PICKUP, i2,10);
 		CheckPoint delivery2 = new CheckPoint(CheckPointType.DELIVERY, i4,20);
 		
-		
-		plan.addRequest(new Request(pickup1, delivery1));
+		Request r = new Request(pickup1, delivery1);
+		plan.addRequest(r);
 		plan.addRequest(new Request(pickup2, delivery2));
 
 		
@@ -201,7 +203,7 @@ public class DeleteRequestTest {
 		tour.addPath(pathI2toI4, pickup2);
 		tour.addPath(pathI4toI1, delivery2);
 		
-		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,"3", "5");
+		DeleteRequestCommand deleteRequestCommand = new DeleteRequestCommand(plan, tour,r);
 		
 		
 		

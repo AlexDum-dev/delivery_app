@@ -1,6 +1,7 @@
 package controller;
 
 import model.Plan;
+import model.Request;
 import model.Tour;
 import view.Window;
 
@@ -64,9 +65,9 @@ public class Controller {
 		currentState.modifyRequest(listOfCommands, plan, tour, 
 				indexCheckPoint, newIndexCheckPoint);
 	}
-	public void deleteRequest(String idPickup, String idDelivery) {
+	public void deleteRequest(Request request) {
 		currentState.deleteRequest(listOfCommands, plan, tour, 
-				idPickup, idDelivery);
+				request);
 	}
 	public void undo() {
 		currentState.undo(this.listOfCommands);

@@ -1,8 +1,7 @@
 package controller;
 
-import java.awt.Component;
-
 import model.Plan;
+import model.Request;
 import model.Tour;
 import view.Window;
 
@@ -23,7 +22,7 @@ public interface State {
 	default void modifyRequest(ListOfCommands l, Plan plan, Tour tour, 
 			int indexCheckPoint, int newIndexCheckPoint) {}
 	default void deleteRequest(ListOfCommands l, Plan plan, Tour tour, 
-			String idPickup, String idDelivery) {}
+			Request request) {}
 	default void undo(ListOfCommands l) {}
 	default void redo(ListOfCommands l) {}
 	default void addRequest(Controller c, Window w) {}

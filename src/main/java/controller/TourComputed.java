@@ -1,6 +1,7 @@
 package controller;
 
 import model.Plan;
+import model.Request;
 import model.Tour;
 import view.Window;
 
@@ -42,8 +43,8 @@ public class TourComputed implements State {
 	
 	@Override
 	public void deleteRequest(ListOfCommands l, Plan plan, Tour tour, 
-			String idPickup, String idDelivery) {
-		l.add(new DeleteRequestCommand(plan, tour, idPickup, idDelivery));
+			Request request) {
+		l.add(new DeleteRequestCommand(plan, tour, request));
 	}
 	
 	@Override
