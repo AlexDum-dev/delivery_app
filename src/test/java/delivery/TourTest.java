@@ -1,6 +1,6 @@
 package delivery;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -8,7 +8,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import model.*;
+import model.CheckPoint;
+import model.CheckPointType;
+import model.Intersection;
+import model.Path;
+import model.Segment;
+import model.Tour;
 
 public class TourTest {
 	
@@ -42,6 +47,12 @@ public class TourTest {
 		Segment si51 = new Segment(i5, i1, 5.0, "first");
 		i5.addSegment(si51);
 
+		List<Intersection> l = new ArrayList<Intersection>();
+		l.add(i1);
+		l.add(i2);
+		l.add(i3);
+		l.add(i4);
+		l.add(i5);
 		
 		CheckPoint depot = new CheckPoint(CheckPointType.DEPOT, i1, LocalTime.now());
 		CheckPoint pickup1 = new CheckPoint(CheckPointType.PICKUP, i3,10);
@@ -67,7 +78,7 @@ public class TourTest {
 		List<ArrayList<Path>> listPath = new ArrayList<ArrayList<Path>>();
 		
 		Tour tour = new Tour();
-		tour.getCheckPoint().add(depot);
+		tour.getCheckPoints().add(depot);
 		List<Segment> list = new ArrayList<Segment>();
 		list.add(si13);
 		Path pathI1toI3 = new Path(list);
@@ -88,11 +99,18 @@ public class TourTest {
 		tour.addPath(pathI1toI3, delivery2);
 		tour.addPath(pathI1toI3, depot);
 		
-		tour.deleteCheckPoint(1, new ArrayList<Intersection>());
+		tour.deleteCheckPoint(1, l);
 		
-		assertTrue(tour.getCheckPoint().get(0).getIndex()==0);
-		assertTrue(tour.getCheckPoint().get(1).getIndex()==2);
-		assertTrue(tour.getCheckPoint().get(2).getIndex()==2);
+		assertEquals(tour.getCheckPoints().get(0).getIndex(), 0);
+		assertEquals(tour.getCheckPoints().get(1).getIndex(), 1);
+		assertEquals(tour.getCheckPoints().get(2).getIndex(), 2);
+		assertEquals(tour.getCheckPoints().get(3).getIndex(), 2);
+		
+		tour.deleteCheckPoint(1, l);
+		
+		assertEquals(tour.getCheckPoints().get(0).getIndex(), 0);
+		assertEquals(tour.getCheckPoints().get(1).getIndex(), 2);
+		assertEquals(tour.getCheckPoints().get(2).getIndex(), 2);
 		
 		
 	}

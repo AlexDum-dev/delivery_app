@@ -15,7 +15,7 @@ public class Main {
 	public static void main(String[] args) {
 		Plan p = new Plan();
 		Tour t = new Tour();
-		
+
 		Controller c = new Controller(p, t);
 	}
 

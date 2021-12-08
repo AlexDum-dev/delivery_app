@@ -13,7 +13,6 @@ import observer.Observable;
  */
 public class Plan extends Observable {
 	private List<Intersection> intersections;
-	//Graph
 	private List<Request> requests;
 	private CheckPoint depot;
 	
@@ -32,11 +31,6 @@ public class Plan extends Observable {
 	public void clearRequests() {
 		requests.clear();
 		depot = null;
-	}
-	
-	public void addRequest(Request r) {
-		r.setIndex(requests.size());
-		requests.add(r);
 	}
 
 	public void addIntersection(Intersection i) {
@@ -66,18 +60,24 @@ public class Plan extends Observable {
 		}
 		return nearest;
 	}
-	
+
 	/**
-	 * Delete the request associated to the id (either a pickup or a delivery)
-	 * @param idDeliveryOrPickup
+	 * Adds a request to the list
+	 * @param r
 	 */
-	public void deleteRequestByCheckPoint(String idDeliveryOrPickup) {
-		for(Request r : this.requests) {
-			if(r.getPickup().getAddress().getId().equals(idDeliveryOrPickup) ||
-					r.getDelivery().getAddress().getId().equals(idDeliveryOrPickup)) {
-				this.requests.remove(r);
-			}
-				
+	public void addRequest(Request r) {
+		r.setIndex(requests.size());
+		requests.add(r);
+	}
+
+	/**
+	 * actualize the index of requests by assigning the index to the position
+	 * in the list
+	 */
+	public void actualizeRequestsIndex() {
+		for(int i = 0; i<this.requests.size();i++){
+			//set index actualizes the index for the two checkpoints as well
+			this.requests.get(i).setIndex(i); 
 		}
 	}
 	
@@ -131,15 +131,5 @@ public class Plan extends Observable {
 		}
 		
 		return min;
-	}
-	
-	/**
-	 * actualize the index of requests by assining the index to the position
-	 * in the list
-	 */
-	public void actualizeRequestsIndex() {
-		for(int i = 0; i<this.requests.size();i++){
-			this.requests.get(i).setIndex(i); //set index actualizes the index for the two checkpoints as well
-		}
 	}
 }

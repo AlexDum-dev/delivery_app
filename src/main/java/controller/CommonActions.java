@@ -1,19 +1,16 @@
 package controller;
 
 import java.awt.Component;
-import view.Window;
 import java.io.File;
-import java.util.List;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import algorithm.Dijkstra;
-import model.CheckPoint;
-import model.Path;
 import model.Plan;
-import model.Request;
 import model.Tour;
 import model.XMLParser;
+import model.XMLParserException;
+import view.Window;
 import xml.ExceptionXML;
 import xml.XMLfileOpener;
 
@@ -34,44 +31,33 @@ public class CommonActions {
 	 * @param c the controller
 	 * @param plan the plan in which to load the map
 	 * @param tour 
-	 * @param frame 
+	 * @param w the window 
 	 */
-	public static void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
-		System.out.println("Loading Map...");
+	public static void loadMap(Controller c, Plan plan, Tour tour, Window w) {
 		try {
 			File file = XMLfileOpener.getInstance().open();
-			XMLParser.loadPlan(file, plan);
-			tour.clearPath();
-			tour.notifyObservers();
-			c.setCurrentState(MapLoaded.getInstance());
-			w.setLoadRequestButtonEnabled(true);
-			w.getMapView().zoomOut();
-			w.setComputeTourButtonEnabled(false);
-			w.setAddRequestEnabled(false);
-			w.setDeleteButtonEnabled(false);
-			w.setModifyButtonsEnabled(false);
-			w.setDoButtonsEnabled(false);
-			w.getMessage().setText("Map loaded!");
-		} catch (ExceptionXML e) {
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(frame, 
-					e.getMessage(), 
-					"Error loading XML map",
-				    JOptionPane.ERROR_MESSAGE);
-			w.setLoadRequestButtonEnabled(false);
-			w.setComputeTourButtonEnabled(false);
-			w.setAddRequestEnabled(false);
-			w.setDeleteButtonEnabled(false);
-			w.setModifyButtonsEnabled(false);
-			w.setDoButtonsEnabled(false);
-			w.getMessage().setText("Please load a map.");
-			plan.clearPlan();
-			tour.clearPath();
-			tour.notifyObservers();
+			try {
+				XMLParser.loadPlan(file, plan);
+				w.clearButtons();
+				w.setLoadRequestButtonEnabled(true);
+				c.setCurrentState(MapLoaded.getInstance());
+				w.getMessage().setText("Map loaded!");
+			} catch (XMLParserException | IOException e) {
+				JOptionPane.showMessageDialog(w.getFrame(), 
+						e.getMessage(), 
+						"Error loading XML map",
+					    JOptionPane.ERROR_MESSAGE);
+				w.clearButtons();
+				plan.clearPlan();
+				w.getMessage().setText("Please load a map.");
+				c.setCurrentState(InitialState.getInstance());
+			}
+			w.setLoadMapButtonEnabled(true);
+			w.getMapView().adjustZoom();
 			plan.notifyObservers();
-			c.setCurrentState(InitialState.getInstance());
+			tour.clearPath();
+			tour.notifyObservers();
+		} catch (ExceptionXML e) {
 		}
 	}
 
@@ -81,45 +67,35 @@ public class CommonActions {
 	 * @param c the controller
 	 * @param plan the plan in which to load the requests
 	 * @param tour 
-	 * @param frame 
+	 * @param w the window 
 	 */
-	public static void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
-		System.out.println("Loading Requests...");
+	public static void loadRequest(Controller c, Plan plan, Tour tour, Window w) {
 		try {
 			File file = XMLfileOpener.getInstance().open();
-			XMLParser.loadRequests(file, plan);
+			try {
+				XMLParser.loadRequests(file, plan);
+				w.clearButtons();
+				w.setComputeTourButtonEnabled(true);
+				w.getMessage().setText("Requests loaded!");
+				c.setCurrentState(RequestsLoaded.getInstance());
+			} catch (XMLParserException | IOException e) {
+				JOptionPane.showMessageDialog(w.getFrame(), 
+						e.getMessage(), 
+						"Error loading XML requests",
+					    JOptionPane.ERROR_MESSAGE);
+				w.clearButtons();
+				plan.clearRequests();
+				w.getMessage().setText("Please load the requests.");
+				c.setCurrentState(MapLoaded.getInstance());
+			}
+			w.getMapView().adjustZoom();
 			plan.notifyObservers();
 			tour.clearPath();
 			tour.notifyObservers();
-			c.setCurrentState(RequestsLoaded.getInstance());
-			w.setComputeTourButtonEnabled(true);
-			w.getMapView().zoomOut();
-			w.setAddRequestEnabled(false);
-			w.setDeleteButtonEnabled(false);
-			w.setModifyButtonsEnabled(false);
-			w.setDoButtonsEnabled(false);
-			w.getMessage().setText("Requests loaded!");
+			w.setLoadMapButtonEnabled(true);
+			w.setLoadRequestButtonEnabled(true);
 		} catch (ExceptionXML e) {
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(frame, 
-					e.getMessage(), 
-					"Error loading XML requests",
-				    JOptionPane.ERROR_MESSAGE);
-			w.setComputeTourButtonEnabled(false);
-			w.setAddRequestEnabled(false);
-			w.setDeleteButtonEnabled(false);
-			w.setModifyButtonsEnabled(false);
-			w.setDoButtonsEnabled(false);
-			w.getMessage().setText("Please load the requests.");
-			plan.clearRequests();
-			tour.clearPath();
-			tour.notifyObservers();
-			plan.notifyObservers();
-			c.setCurrentState(MapLoaded.getInstance());
-			w.getMapView().zoomOut();
-		}
+		} 
 	}
 	
 	public static Integer inputNumber(Window w, String title, String msg) {

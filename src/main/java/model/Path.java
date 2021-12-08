@@ -25,8 +25,6 @@ public class Path {
 			len += s.getLength();
 		}
 		this.length = len;
-		//System.out.println("lastIndex = "+lastIndex);
-		//System.out.println("path.get(lastIndex) = "+path.get(0));
 		this.destination = path.get(path.size()-1).getDestination();
 		
 	}

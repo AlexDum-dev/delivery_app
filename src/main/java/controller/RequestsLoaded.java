@@ -1,7 +1,5 @@
 package controller;
 
-import java.awt.Component;
-
 import model.Plan;
 import model.Tour;
 import view.Window;
@@ -28,17 +26,18 @@ public class RequestsLoaded implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
-		CommonActions.loadMap(c, plan, tour, frame, w);
+	public void loadMap(Controller c, Plan plan, Tour tour, Window w) {
+		CommonActions.loadMap(c, plan, tour, w);
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
-		CommonActions.loadRequest(c, plan, tour, frame, w);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Window w) {
+		CommonActions.loadRequest(c, plan, tour, w);
 	}
 	
 	@Override
-	public void computeTour(Controller c, Plan plan, Tour tour, Window w, ListOfCommands l) {
+	public void computeTour(Controller c, Plan plan, Tour tour, Window w, 
+			ListOfCommands l) {
 		l.reset();
 		w.setLoadMapButtonEnabled(false);
 		w.setLoadRequestButtonEnabled(false);

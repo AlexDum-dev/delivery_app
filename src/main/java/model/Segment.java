@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Represents an intersection of the XML File
+ * Represents a segment from the XML File
  * 
  * @author 4IF Group H4144
  * @version 1.0 17 Nov 2021

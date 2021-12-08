@@ -40,11 +40,22 @@ public class Intersection {
 		return segments;
 	}
 
+	/**
+	 * Gets the road name of that intersection
+	 * currently returns the first non-empty name
+	 * of an adjacent segment
+	 * 
+	 * @return a name
+	 */
 	public String getAddress() {
-		if (segments.isEmpty()) {
-			return "";
+		String ret = "";
+		for (Segment s : segments){
+			if (!"".equals(s.getName())) {
+				ret = s.getName();
+				break;
+			}
 		}
-		return segments.get(0).getName();
+		return ret;
 	}
 	
 	public int getIndex() {

@@ -2,8 +2,8 @@ package controller;
 
 import java.util.List;
 
-import algorithm.Dijkstra;
-import algorithm.DijkstraResult;
+import algorithm.dijkstra.Dijkstra;
+import algorithm.dijkstra.DijkstraResult;
 import algorithm.tsp.DeliveryGraph;
 import algorithm.tsp.TSP3;
 import algorithm.tsp.TemplateTSP;
@@ -76,7 +76,7 @@ public class ComputeTourThread extends Thread implements Observer {
 	public void update(Observable observed, Object arg) {
 		tour.clearPath();
 		
-		tour.actualizeTime(g.getNbVertices(), tsp, listPath, tsp.getSolution(0), check, tour);
+		tour.feedTour(tsp, g.getNbVertices(), listPath, check);
 		
 		tour.notifyObservers();
 	}

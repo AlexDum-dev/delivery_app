@@ -1,10 +1,12 @@
 package view;
 
+import java.awt.Graphics;
 import java.time.LocalTime;
 import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -25,40 +27,52 @@ public class CheckPointView extends JScrollPane implements Observer {
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
-    private Tour tour;
-	
+	private Tour tour;
+
+	/**
+	 * Constructor for the checkpoint view
+	 * @param tour
+	 */
 	public CheckPointView(Tour tour) {
 		super();
 		this.tour = tour;
 		tour.addObserver(this);
 		table = new JTable();
+		/**
+		 * Listener to synchronize the mapView with the selection
+		 */
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {  
-			   
-            public void valueChanged(ListSelectionEvent e) {  
-            	int index = table.getSelectedRow();
-	        	for(int i = 0 ; i<tour.getCheckPoint().size() && i<tour.getPath().size() ; ++i) {
-	        		CheckPoint checkPoint = tour.getCheckPoint().get(i);
-	        		Path path = tour.getPath().get(i);
-	        		if ( index==i ) {
-	        			checkPoint.setActive(true);
-	        			path.setActive(true);
-	        		}else {
-	        			checkPoint.setActive(false);
-	        			path.setActive(false);
-	        		}
-	        	}
-	        	tour.notifyObservers("mapView");
-            }  
-        }); 
-		
+			public void valueChanged(ListSelectionEvent e) {  
+				int index = table.getSelectedRow();
+				for(int i = 0 ; i<tour.getCheckPoints().size() && i<tour.getPathList().size() ; ++i) {
+					CheckPoint checkPoint = tour.getCheckPoints().get(i);
+					Path path = tour.getPathList().get(i);
+					if ( index==i ) {
+						checkPoint.setActive(true);
+						path.setActive(true);
+					}else {
+						checkPoint.setActive(false);
+						path.setActive(false);
+					}
+				}
+				tour.notifyObservers("mapView");
+			}  
+		}); 
+
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		update(null, null);
 	}
-	
+
 	public JTable getTable() {
 		return table;
 	}
 
-	private Object[][] displayCheckPoint() {
-		List<CheckPoint> checkPoints = tour.getCheckPoint();
+	/**
+	 * Returns the data to fill this table
+	 * @return
+	 */
+	private Object[][] fillTable() {
+		List<CheckPoint> checkPoints = tour.getCheckPoints();
 		Object[][] tabRequest;
 		if (checkPoints.size()>1) {
 			tabRequest = new Object[checkPoints.size()+1][3];
@@ -102,28 +116,32 @@ public class CheckPointView extends JScrollPane implements Observer {
 	}
 
 	@Override
-	public void update(Observable observed, Object arg) {
+	synchronized protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+	}
+	
+	@Override
+	synchronized public void update(Observable observed, Object arg) {
 		if(arg == null || !arg.toString().equals("mapView")) {
-			System.out.println("CheckPointView Update methode");
-		table.setModel(new DefaultTableModel(
-				
-				displayCheckPoint(), 
-			new String[] {
-				"Address", "Arrival Time", "Departure Time"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			
-			public boolean isCellEditable(int r, int l) {
-				return false;
-			}
-		});
-		this.setViewportView(table);
+			table.setModel(new DefaultTableModel(
+
+					fillTable(), 
+					new String[] {
+							"Address", "Arrival Time", "Departure Time"
+					}
+					) {
+				Class[] columnTypes = new Class[] {
+						String.class, String.class, String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+
+				public boolean isCellEditable(int r, int l) {
+					return false;
+				}
+			});
+			this.setViewportView(table);
 		}
 	}
 }

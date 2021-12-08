@@ -1,17 +1,28 @@
 package delivery;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import model.*;
+import model.CheckPoint;
+import model.CheckPointType;
+import model.Intersection;
+import model.Plan;
+import model.Request;
+import model.Segment;
+import model.XMLParser;
+import model.XMLParserException;
 
 public class XMLParserTest {
 	
@@ -66,7 +77,6 @@ public class XMLParserTest {
 		for (Intersection i : intersections) {
 			if (!p.getIntersection(i.getId()).equals(i)) {
 				intersectionsCorrect=false;
-				System.out.println("Index = " + p.getIntersection(i.getId()).getIndex());
 			}	
 		}
 		

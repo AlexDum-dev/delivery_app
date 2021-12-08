@@ -1,6 +1,7 @@
 package delivery;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.List;
 import org.junit.Test;
 
 import algorithm.tsp.DeliveryGraph;
-import algorithm.tsp.MinFirstIter;
 import algorithm.tsp.SeqIter;
 import model.CheckPoint;
 import model.CheckPointType;

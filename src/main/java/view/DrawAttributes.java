@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Static
+ * Static class for drawing attributes
  *
  * @author 4IF Group H4144
  * @version 1.0 22 Nov 2021

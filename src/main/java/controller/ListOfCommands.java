@@ -2,29 +2,35 @@ package controller;
 
 import java.util.LinkedList;
 
+/**
+ * List of commands
+ * 
+ * @author Christine SOLNON (from PlaCo sources)
+ * @version 1.0
+ */
 public class ListOfCommands {
 	private LinkedList<Command> list;
 	private int currentIndex;
-	
+
 	public ListOfCommands(){
 		currentIndex = -1;
 		list = new LinkedList<Command>();
 	}
-	
+
 	/**
 	 * Add command c to this
 	 * @param c the command to add
 	 */
 	public void add(Command c){
-        int i = currentIndex+1;
-        while(i<list.size()){
-            list.remove(i);
-        }
-        currentIndex++;
-        list.add(currentIndex, c);
-        c.doCommand();
-    }
-	
+		int i = currentIndex+1;
+		while(i<list.size()){
+			list.remove(i);
+		}
+		currentIndex++;
+		list.add(currentIndex, c);
+		c.doCommand();
+	}
+
 	/**
 	 * Temporary remove the last added command (this command may be reinserted again with redo)
 	 */
@@ -35,7 +41,7 @@ public class ListOfCommands {
 			cde.undoCommand();
 		}
 	}
-	
+
 	/**
 	 * Permanently remove the last added command (this command cannot be reinserted again with redo)
 	 */
@@ -58,12 +64,12 @@ public class ListOfCommands {
 			cde.doCommand();
 		}
 	}
-	
+
 	/**
 	 * Permanently remove all commands from the list
 	 */
 	public void reset(){
-        currentIndex = -1;
-        list.clear();  
-    }
+		currentIndex = -1;
+		list.clear();  
+	}
 }

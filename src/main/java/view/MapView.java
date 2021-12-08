@@ -6,8 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,360 +22,241 @@ import model.Tour;
 import observer.Observable;
 import observer.Observer;
 
-
+/**
+ * Map View
+ * Displays the map of the city
+ * and the delivery tour
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 7 Dec 2021
+ */
 public class MapView extends JPanel implements Observer{
 
-
-
 	private static final long serialVersionUID = 1L;
-	private int labelPadding = 0;
 	private Tour tour;
 	private Plan plan;
-	private int padding = 0;
 	double xScale;
 	double yScale;
 	int zoomLevel;
-	double maxLat ;
-	double minLat ;
-	double maxLon ;
-	double minLon ;
+	double xMax;
+	double xMin;
+	double yMax;
+	double yMin;
 	CheckPoint pickupToAdd = null;
-	
-	private List<Segment> courantListOfSegments;
 
-	public MapView(Plan plan, Tour tour, Controller c, JLabel msg) {
+	/**
+	 * Constructor of the MapView
+	 * 
+	 * @param plan
+	 * @param tour
+	 * @param c
+	 * @param msgRoadName
+	 */
+	public MapView(Plan plan, Tour tour, Controller c, JLabel msgRoadName) {
 		this.plan = plan;
 		this.tour = tour;
 		plan.addObserver(this);
 		tour.addObserver(this);
-		this.maxLat = plan.getMaxLatitude();
-		this.minLat = plan.getMinLatitude();
-		this.maxLon = plan.getMaxLongitude();
-		this.minLon = plan.getMinLongitude();
+		this.xMax = 1;
+		this.xMin = 0;
+		this.yMax = 1;
+		this.yMin = 0;
 		this.zoomLevel = 0;
+		setMouseEvents(plan, c, msgRoadName);
+	}
+
+	/**
+	 * Set the mouse events for this map view
+	 * 
+	 * @param plan
+	 * @param c the controller
+	 * @param msgRoadName a label to display road names
+	 */
+	private void setMouseEvents(Plan plan, Controller c, JLabel msgRoadName) {
 		this.addMouseWheelListener(e -> {
-            //System.out.println("MouseWheelListenerDemo.mouseWheelMoved");
+			// If wheel rotation value is a negative it means rotate up, while
+			// positive value means rotate down
 
-            // If wheel rotation value is a negative it means rotate up, while
-            // positive value means rotate down
-
-            int x = e.getX();
+			int x = e.getX();
 			int y = e.getY();
-			//System.out.println(x + "," + y);
-			
-            if (e.getWheelRotation() < 0) {
-            	if ( zoomLevel < 300) {
-            		zoomLevel += 10;
-                    //System.out.println("Rotated Up... " + e.getWheelRotation());
-    				zoomIn(x,y,90);
-            	}
-            } else {
-            	if(zoomLevel>= -30) {
-            		zoomLevel -= 10;
-                    //System.out.println("Rotated Down... " + e.getWheelRotation());
-    				zoomIn(x,y,110);
-            	}else {
-            		adjustZoom();
-            	}
-            }
-            //System.out.println("zoomLevel :  " + zoomLevel);
-        });
 
-		MouseAdapter mouseAdapter =new MouseAdapter() { 
+			if (e.getWheelRotation() < 0) {
+				if ( zoomLevel < 300) {
+					zoomLevel += 10;
+					zoom(x,y,90);
+				}
+			} else {
+				if(zoomLevel>= -30) {
+					zoomLevel -= 10;
+					zoom(x,y,110);
+				}else {
+					adjustZoom();
+				}
+			}
+
+			repaint();
+		});
+
+		setMouseAdapter(plan, c, msgRoadName);
+	}
+
+	/**
+	 * Sets the mouse adapter component of this map view
+	 * 
+	 * @param plan
+	 * @param c the controller
+	 * @param msgRoadName a label to display road names
+	 */
+	private void setMouseAdapter(Plan plan, Controller c, JLabel msgRoadName) {
+		MouseAdapter mouseAdapter = new MouseAdapter() { 
 			@Override
-	          public void mouseMoved(MouseEvent e) { 
-				int pointWidth = DrawAttributes.getPointWidth();
+			public void mouseMoved(MouseEvent e) { 
 				int x = e.getX();
 				int y = e.getY();
-				System.out.println(" x :"+x+" y : "+y);
-				double lat = getLatitudeFromY(y);
-				double lon = getLongitudeFromX(x);
-				System.out.println("lat :"+lat+"lon : "+lon);
-				System.out.println("=================================================================");
 				Segment seg = null;
 				double min = Double.MAX_VALUE;
 				for (Intersection i : plan.getIntersections()) {
-					int x1 = weightLatitude(i.getLatitude(), maxLat, xScale); 
-					int y1 = weightLongitude(i.getLongitude(), maxLon, yScale);
-					int x11 = getWidth() - y1 - pointWidth / 2;
-					int y12 = x1 - pointWidth / 2;
+					int x1 = weightLongitude(i.getLongitude());
+					int y1 = getHeight() - weightLatitude(i.getLatitude()); 
 					for (Segment s : i.getSegments()) {
-						int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
-						int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
-						int x21 = getWidth() - y2 - pointWidth / 2;
-						int y22 = x2 - pointWidth / 2;
-						if ( isBetween(x11,y12,x21,y22,x,y,20) ) {
-							double newMin = calculeSegment(x11,y12,x21,y22,x,y);
+						int x2 = weightLongitude(s.getDestination().getLongitude());
+						int y2 = getHeight() - 
+								weightLatitude(s.getDestination().getLatitude()); 
+						if ( isBetween(x1,y1,x2,y2,x,y,20) ) {
+							double newMin = calculeSegment(x1,y1,x2,y2,x,y);
 							if (newMin < min  ) {
 								min = newMin;
 								seg = s;
 							}
 						}
-						
+
 					}
 				}
 				if (min < 20 && seg != null ) {
-					msg.setText(seg.getName());
+					msgRoadName.setText(seg.getName());
 				} else {
-					msg.setText("");
+					msgRoadName.setText("");
 				}
-	          }
-			private boolean isBetween(int ax, int ay, int bx, int by, int cx, int cy, int eps) {
-				// TODO Auto-generated method stub
-				double distanceAC = Math.sqrt( Math.pow(ax - cx, 2) + Math.pow(ay - cy, 2) );
-				double distanceBC = Math.sqrt( Math.pow(bx - cx, 2) + Math.pow(by - cy, 2) );
-				double distanceAB = Math.sqrt( Math.pow(bx - ax, 2) + Math.pow(by - ay, 2) );
-				//return true;
+			}
+			private boolean isBetween(int ax, int ay, int bx, int by, 
+					int cx, int cy, int eps) {
+				double distanceAC = Math.sqrt( Math.pow(ax - cx, 2) + 
+						Math.pow(ay - cy, 2) );
+				
+				double distanceBC = Math.sqrt( Math.pow(bx - cx, 2) + 
+						Math.pow(by - cy, 2) );
+				
+				double distanceAB = Math.sqrt( Math.pow(bx - ax, 2) + 
+						Math.pow(by - ay, 2) );
+				
 				if ( Math.abs( distanceAB - distanceBC - distanceAC ) < eps) {
 					return true;
 				}
 				return false;
 			}
-			private double calculeSegment(int ax, int ay, int bx, int by, int cx, int cy) {
-				// TODO Auto-generated method stub
+			private double calculeSegment(int ax, int ay, int bx, int by, 
+					int cx, int cy) {
 				double m = 0;
 				if ((bx-ax) != 0) {
 					m = (by-ay)/(bx-ax);
 				}
-				
+
 				double b = ay - m*ax;
 				return Math.abs(cy - (m*cx +b));
 			}
 			@Override
-	          public void mouseClicked(MouseEvent e) { 
+			public void mouseClicked(MouseEvent e) { 
 				int x = e.getX();
-				int y = e.getY();
-				double lat = getLatitudeFromY(y);
-				double lon = getLongitudeFromX(x);
+				int y = getHeight() - e.getY();
+				double lat = translateToLatitude(y/yScale+yMin);
+				double lon = translateToLongitude(x/xScale+xMin);
 				c.clickOnMap(lat, lon);
-	            }
+			}
 
-			
-	          };
+
+		};
 		this.addMouseListener(mouseAdapter); 
 		addMouseMotionListener(mouseAdapter);
 	}
 
-	
-
-	private void adjustZoom() {
-		// TODO Auto-generated method stub
-		this.maxLat = plan.getMaxLatitude();
-		this.minLat = plan.getMinLatitude();
-		this.maxLon = plan.getMaxLongitude();
-		this.minLon = plan.getMinLongitude();
-		this.zoomLevel = 0;
-		this.update(getGraphics());
-	}
-
-
-
 	@Override
 	protected void paintComponent(Graphics graph) {
 		super.paintComponent(graph);
-		courantListOfSegments = new ArrayList<Segment>();
 		Graphics2D g = (Graphics2D) graph;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		/*this.maxLat = plan.getMaxLatitude();
-		this.minLat = plan.getMinLatitude();
-		this.maxLon = plan.getMaxLongitude();
-		this.minLon = plan.getMinLongitude();*/
-		//System.out.println("Constructor "+plan.getIntersections().size());
-		xScale = (double) getWidth()  / (maxLat - minLat);
-		yScale = (double) getHeight() / (maxLon - minLon);
-//		System.out.println("maxLat : "+maxLat);
-//		System.out.println("minLat : "+minLat);
-//		System.out.println("maxLon : "+maxLon);
-//		System.out.println("minLon : "+minLon);
-//		System.out.println("xScale : "+xScale);
-//		System.out.println("yScale : "+yScale);
-
+		xScale = (double) getWidth()  / (xMax - xMin);
+		yScale = (double) getHeight() / (yMax - yMin);
 		g.setColor(Color.WHITE);
-		//fill the rect
-		g.fillRect(padding + labelPadding, padding, getWidth() - (2* padding) - 
-				labelPadding, getHeight() - 2 * padding - labelPadding);
-		
+
+		g.fillRect(0, 0, getWidth(), getHeight());
+
+		drawSegments(g);
+
+		for (Path path : tour.getPathList()) {
+			drawRoute ( g,  path);
+		}
+		for (Path path : tour.getPathList()) {
+			if(path.isActive()) {
+				drawRoute ( g,  path);
+			}
+		}
+		drawRequests(g);
+
+
+	}
+
+	private void drawSegments(Graphics2D g) {
 		g.setStroke(DrawAttributes.getStrokeLine());
 		g.setColor(DrawAttributes.getColorLine());
 		for (Intersection i : plan.getIntersections()) {
-			int x1 = weightLatitude(i.getLatitude(), maxLat, xScale); 
-			int y1 = weightLongitude(i.getLongitude(), maxLon, yScale);
+			int x1 = weightLongitude(i.getLongitude());
+			int y1 = weightLatitude(i.getLatitude());
 			for (Segment s : i.getSegments()) {
-				int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
-				int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
-//				if ( s.getName().equalsIgnoreCase("Rue du Docteur Vaillant")  ) {
-//					g.setColor(DrawAttributes.getColorPathActive());
-//				}else {
-//					g.setColor(Color.BLACK);
-//				}
+				int x2 = weightLongitude(s.getDestination().getLongitude());
+				int y2 = weightLatitude(s.getDestination().getLatitude()); 
 				if(s.isActive()) {
 					g.setColor(DrawAttributes.getColorPathActive());
 				}else {
 					g.setColor(Color.BLACK);
 				}
-				g.drawLine(getWidth() - y1,x1,getWidth() -  y2,x2);
+				g.drawLine(x1, getHeight()-y1, x2, getHeight()-y2);
 			}
 		}
-		
-		for (Path path : tour.getPath()) {
-			drawRoute ( g,  maxLat,  maxLon, path);
-		}
-		for (Path path : tour.getPath()) {
-			if(path.isActive()) {
-				drawRoute ( g,  maxLat,  maxLon, path);
-			}
-		}
-		loadRequests(g, maxLat, maxLon);
-		
-		
 	}
 
-	public double getLatitudeFromY(int y) {
-		return maxLat - (y/xScale);
-	}
-	public double getLongitudeFromX(int x) {
-		return maxLon - (((double) getWidth()-x)/yScale);
-	}
-	
-	public int getYFromLatitude(int Latitude) {
-		return (int) (xScale*(maxLat - Latitude));
-	}
-	public int getXFromLongitude(double Longitude) {
-		return (int)(getWidth() - yScale*(maxLon - Longitude));
-	}
-	
-	
-	
-	public void zoomIn (int x , int y ,int p) {
-//		//zoom = 172;
-//		int zoom = (int)(getHeight() * p /100);
-//		System.out.println("Zoom = "+ zoom);
-//		int x1 = x-zoom/2;
-////		if(x1<0) x1 =0;
-////		if (x1>getWidth()) {x1=getWidth();}
-//		
-//		int x2 = x+zoom/2;
-////		if (x2>getWidth()) {x2=getWidth();}
-////		if(x2<0) {x2 = 0;}
-//		
-//		int y1 = y-zoom/2;
-////		if(y1<0) y1 = 0;
-////		if (y1>getHeight()) {y1=getHeight();}
-//		
-//		int y2 = y+zoom/2;
-////		if (y2<0) y2=0;
-////		if (y2>getHeight()) {y2=getHeight();}
-//		
-//		this.setMaxLat(maxLat - (y1/(xScale)));//y1
-//		this.setMaxLon(maxLon - (((double) getWidth()-x2)/(yScale))); // la premiere valeur X1
-//		this.setMinLat( maxLat - (y2/xScale));
-//		this.setMinLon( maxLon - ((double) getWidth()-x1)/yScale); // la premiere valeur X1
-		
-		double centLat = (minLat+maxLat)/2;
-		double centLon = (minLon+maxLon)/2;
-		double lenLat = (maxLat-minLat)*p/100.0;
-		double lenLon = (maxLon-minLon)*p/100.0;
-		double pointLat = getLatitudeFromY(y);
-		double pointLon = getLongitudeFromX(x);
-		
-		centLat += (pointLat-centLat)*(1-p/100.0);
-		centLon += (pointLon-centLon)*(1-p/100.0);
-		
-		minLat = centLat-lenLat/2;
-		maxLat = centLat+lenLat/2;
-		minLon = centLon-lenLon/2;
-		maxLon = centLon+lenLon/2;
-		
-		this.update(plan, null);
-	}
-	
-	
-	public double getMaxLat() {
-		return maxLat;
-	}
-
-
-
-	public void setMaxLat(double maxLat) {
-		this.maxLat = maxLat;
-	}
-
-
-
-	public double getMinLat() {
-		return minLat;
-	}
-
-
-
-	public void setMinLat(double minLat) {
-		this.minLat = minLat;
-	}
-
-
-
-	public double getMaxLon() {
-		return maxLon;
-	}
-
-
-
-	public void setMaxLon(double maxLon) {
-		this.maxLon = maxLon;
-	}
-
-
-
-	public double getMinLon() {
-		return minLon;
-	}
-
-
-
-	public void setMinLon(double minLon) {
-		this.minLon = minLon;
-	}
-
-
-	
-	
-	public void loadRequests(Graphics2D g, double maxLat, double maxLon) {
+	private void drawRequests(Graphics2D g) {
 		int i = 0;
-		System.out.println("loadRequests");
 		for(Request r : plan.getRequests()) {
 			Intersection p = r.getPickup().getAddress();
 			Intersection d = r.getDelivery().getAddress();
-			System.out.println("pick");
 			g.setColor(DrawAttributes.getColorRequest(i));
-			drawPoint(g, maxLat, maxLon, p, r.getPickup().getType(),r.getPickup().isActive());
-			System.out.println("delive");
+			drawPoint(g, p, r.getPickup().getType(), r.getPickup().isActive());
 			g.setColor(DrawAttributes.getColorRequest(i));
-			drawPoint(g, maxLat, maxLon, d, r.getDelivery().getType(),r.getDelivery().isActive());
+			drawPoint(g, d, r.getDelivery().getType(), r.getDelivery().isActive());
 			++i;
 		}
-		
+
 		if (plan.getDepot()!=null) {
 			Intersection depot = plan.getDepot().getAddress();
 			g.setColor(Color.BLACK);
-			drawPoint(g , maxLat, maxLon, depot, plan.getDepot().getType(),plan.getDepot().isActive());
+			drawPoint(g , depot, plan.getDepot().getType(), plan.getDepot().isActive());
 		}
-		
+
 		if (pickupToAdd!=null) {
 			Intersection pk = pickupToAdd.getAddress();
 			g.setColor(Color.WHITE);
-			drawPoint(g , maxLat, maxLon, pk, pickupToAdd.getType(),true);
+			drawPoint(g , pk, pickupToAdd.getType(), true);
 		}
 	}
-	
-	public void drawPoint(Graphics2D g, double maxLat, double maxLon, 
-			Intersection point, CheckPointType checkPointType , boolean active) {
+
+	public void drawPoint(Graphics2D g, Intersection point, 
+			CheckPointType checkPointType, boolean active) {
 		int pointWidth = DrawAttributes.getPointWidth();
-		int x = weightLatitude(point.getLatitude(), maxLat, xScale); 
-		int y = weightLongitude(point.getLongitude(), maxLon, yScale);
-		int x1 = getWidth() - y - pointWidth / 2;
-		int y1 = x - pointWidth / 2;
-		
-		//System.out.println("x1 = "+x1+"\t y1 = "+y1);
+		int x = weightLongitude(point.getLongitude());
+		int y = weightLatitude(point.getLatitude()); 
+		int x1 = x - pointWidth / 2;
+		int y1 = getHeight() - y - pointWidth / 2;
+
 		switch (checkPointType) {
 		case DEPOT:
 			g.fillRoundRect(x1, y1, pointWidth, pointWidth, 5, 5);
@@ -393,14 +272,13 @@ public class MapView extends JPanel implements Observer{
 			g.fillOval(x1, y1, pointWidth, pointWidth);
 			setColor(g,active);
 			g.drawOval(x1, y1, pointWidth, pointWidth);
-			
+
 			break;
 		}
-		
+
 	}
-	
+
 	private void setColor(Graphics2D g, boolean active) {
-		// TODO Auto-generated method stub
 		if(active) {
 			g.setStroke(DrawAttributes.getStrokeActive());
 			g.setColor(DrawAttributes.getColorActive());
@@ -408,31 +286,10 @@ public class MapView extends JPanel implements Observer{
 			g.setStroke(DrawAttributes.getStrokePoint());
 			g.setColor(Color.BLACK);
 		}
-		
-	}
-
-
-
-	public int weightLatitude(double coord, double max, double xScale) {
-		return (int) ((max - coord) * xScale + padding);
 
 	}
 
-	public int weightLongitude(double coord, double max, double yScale) {
-		return (int) ((max - coord) * yScale + padding);
-	}
-
-	public Double weightLatitudeDouble(double coord, double max, double xScale) {
-		return ((max - coord) * xScale + padding);
-
-	}
-
-	public Double weightLongitudeDouble(double coord, double max, double yScale) {
-		return ((max - coord) * yScale + padding);
-	}
-
-	
-	public void drawRoute(Graphics2D g, double maxLat, double maxLon,Path path) {
+	public void drawRoute(Graphics2D g, Path path) {
 		if(path.isActive()) {
 			g.setColor(DrawAttributes.getColorPathActive());
 		}else {
@@ -440,24 +297,84 @@ public class MapView extends JPanel implements Observer{
 		}
 		g.setStroke(DrawAttributes.getStrokePath());
 		for (Segment s : path.getPath()) {
-			int x1 = weightLatitude(s.getOrigin().getLatitude(), maxLat, xScale); 
-			int y1 = weightLongitude(s.getOrigin().getLongitude(), maxLon, yScale);
-			int x2 = weightLatitude(s.getDestination().getLatitude(), maxLat, xScale); 
-			int y2 = weightLongitude(s.getDestination().getLongitude(), maxLon, yScale);
-			g.drawLine(getWidth() - y1,x1,getWidth() -  y2,x2);
+			int x1 = weightLongitude(s.getOrigin().getLongitude());
+			int y1 = weightLatitude(s.getOrigin().getLatitude()); 
+			int x2 = weightLongitude(s.getDestination().getLongitude());
+			int y2 = weightLatitude(s.getDestination().getLatitude()); 
+			g.drawLine(x1,getHeight() - y1,x2,getHeight() - y2);
 		}
-			
+
 	}
 	
+	public double translateToCoordsX(double lon) {
+		return Math.toRadians(lon);
 
-
-	public void zoomOut() {
-		this.maxLat = plan.getMaxLatitude();
-		this.minLat = plan.getMinLatitude();
-		this.maxLon = plan.getMaxLongitude();
-		this.minLon = plan.getMinLongitude();
 	}
-	
+	public double translateToCoordsY(double lat) {
+		return 5.0/4 * Math.log(Math.tan(Math.PI/4+2*Math.toRadians(lat)/5));
+	}
+
+	public double translateToLongitude(double x) {
+		return Math.toDegrees(x);
+	}
+	public double translateToLatitude(double d) {
+		return Math.toDegrees(5.0/4 * Math.atan(Math.sinh(4*d/5.0)));
+	}
+
+	public int weightLatitude(double lat) {
+		return (int) ((translateToCoordsY(lat) - yMin) * yScale);
+
+	}
+
+	public int weightLongitude(double lon) {
+		return (int) ((translateToCoordsX(lon) - xMin) * xScale);
+	}
+
+	/**
+	 * Adjusts the zoom so it fits the whole map.
+	 */
+	public void adjustZoom() {
+		this.xMax = translateToCoordsX(plan.getMaxLongitude());
+		this.xMin = translateToCoordsX(plan.getMinLongitude());
+		this.yMax = translateToCoordsY(plan.getMaxLatitude());
+		this.yMin = translateToCoordsY(plan.getMinLatitude());
+
+		if (xMax-xMin>yMax-yMin) {
+			double centLon = (yMax+yMin)/2;
+			double widthLon = (xMax-xMin);
+			this.yMin = centLon - widthLon / 2;
+			this.yMax = centLon + widthLon / 2;
+		} else {
+			double centLat = (xMax+xMin)/2;
+			double widthLat = (yMax-yMin);
+			this.xMin = centLat - widthLat / 2;
+			this.xMax = centLat + widthLat / 2;
+		}
+		this.zoomLevel = 0;
+	}
+
+	/**
+	 * Zooms in the map view
+	 * 
+	 * @param x coordinate from which to zoom
+	 * @param y coordinate from which to zoom
+	 * @param p zoom percentage
+	 */
+	public void zoom(int x , int y ,int p) {
+		double centX = (xMin+xMax)/2;
+		double centY = (yMin+yMax)/2;
+		double lenX = (xMax-xMin)*p/100.0;
+		double lenY = (yMax-yMin)*p/100.0;
+
+		centX += ((x/xScale+xMin)-centX)*(1-p/100.0);
+		centY -= ((y/yScale+yMin)-centY)*(1-p/100.0);
+
+		xMin = centX-lenX/2;
+		xMax = centX+lenX/2;
+		yMin = centY-lenY/2;
+		yMax = centY+lenY/2;
+	}
+
 	@Override
 	public void update(Observable observed, Object arg) {
 		repaint();
@@ -466,7 +383,7 @@ public class MapView extends JPanel implements Observer{
 	public CheckPoint getPickupToAdd() {
 		return pickupToAdd;
 	}
-	
+
 	public void setPickupToAdd(CheckPoint pickupToAdd) {
 		this.pickupToAdd = pickupToAdd;
 	}

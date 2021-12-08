@@ -15,13 +15,14 @@ public class DeliveryGraph implements Graph {
 	int nbVertices;
 	List<? extends List<Path>> paths;
 	List<CheckPoint> checkPoints;
-	
+
 	/**
 	 * Create a graph using 
 	 * 
 	 * @param paths
 	 */
-	public DeliveryGraph(List<? extends List<Path>> paths, List<CheckPoint> checkPoints){
+	public DeliveryGraph(List<? extends List<Path>> paths, 
+			List<CheckPoint> checkPoints){
 		this.nbVertices = checkPoints.size();
 		this.paths = paths;
 		this.checkPoints = checkPoints;

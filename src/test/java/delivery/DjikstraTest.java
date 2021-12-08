@@ -1,15 +1,22 @@
 package delivery;
 
-import static org.junit.Assert.*;
-import java.util.List;
-import java.util.ArrayList;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import algorithm.*;
-import model.*;
+import org.junit.Test;
+
+import algorithm.dijkstra.Dijkstra;
+import algorithm.dijkstra.DijkstraResult;
+import model.CheckPoint;
+import model.CheckPointType;
+import model.Intersection;
+import model.Path;
+import model.Request;
+import model.Segment;
 
 public class DjikstraTest {
 	  

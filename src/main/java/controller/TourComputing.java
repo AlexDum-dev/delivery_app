@@ -8,18 +8,18 @@ package controller;
  */
 public class TourComputing implements State {
 	private static TourComputing instance = null;
-	
+
 	private TourComputing() {
-		
+
 	}
-	
+
 	protected static TourComputing getInstance() {
 		if (instance==null) {
 			instance = new TourComputing();
 		}
 		return instance;
 	}
-	
+
 	@Override
 	public void stopTour(Controller c) {
 		c.getThread().getTsp().setStop(true);

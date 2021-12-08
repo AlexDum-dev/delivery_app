@@ -1,17 +1,25 @@
 package delivery;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import model.*;
+import model.CheckPoint;
+import model.CheckPointType;
+import model.Intersection;
+import model.Plan;
+import model.Request;
+import model.Segment;
+import model.XMLParser;
+import model.XMLParserException;
 
 public class PlanTest {
 	
@@ -113,14 +121,6 @@ public class PlanTest {
 		
 		plan.addRequest(new Request(pickup1, delivery1));
 		plan.addRequest(new Request(pickup2, delivery2));
-		
-		
-		plan.deleteRequestByCheckPoint("3");
-		
-		assertTrue (plan.getRequests().size()==1);
-		assertTrue(plan.getRequests().get(0).getPickup().getAddress().getId()== "2");
-		assertTrue(plan.getRequests().get(0).getDelivery().getAddress().getId()== "4");
-		
 	}
 	
 	@Test
@@ -175,14 +175,6 @@ public class PlanTest {
 		
 		assertTrue(plan.getRequests().get(0).getPickup().getAddress().getId() == "3" && plan.getRequests().get(0).getDelivery().getAddress().getId() == "5" &&  plan.getRequests().get(0).getIndex() == 0);
 		assertTrue(plan.getRequests().get(1).getPickup().getAddress().getId() == "2" && plan.getRequests().get(1).getDelivery().getAddress().getId() == "4" &&  plan.getRequests().get(1).getIndex() == 1);
-		
-		plan.deleteRequestByCheckPoint("3");
-		
-		assertTrue(plan.getRequests().get(0).getPickup().getAddress().getId() == "2" && plan.getRequests().get(0).getDelivery().getAddress().getId() == "4" &&  plan.getRequests().get(0).getIndex() == 1);
-		
-		plan.actualizeRequestsIndex();
-		
-		assertTrue(plan.getRequests().get(0).getPickup().getAddress().getId() == "2" && plan.getRequests().get(0).getDelivery().getAddress().getId() == "4" &&  plan.getRequests().get(0).getIndex() == 0);
 	}
 	
 	@Test

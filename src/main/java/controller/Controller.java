@@ -1,7 +1,6 @@
 package controller;
 
 import model.Plan;
-import model.Request;
 import model.Tour;
 import view.Window;
 
@@ -42,11 +41,11 @@ public class Controller {
 	}
 	
 	public void loadMap() {
-		currentState.loadMap(this, plan, tour, window.getFrame(), window);
+		currentState.loadMap(this, plan, tour, window);
 	}
 	
 	public void loadRequest() {
-		currentState.loadRequest(this, plan, tour, window.getFrame(), window);
+		currentState.loadRequest(this, plan, tour, window);
 	}
 	public void computeTour() {
 		currentState.computeTour(this, plan, tour, window, listOfCommands);
@@ -55,16 +54,19 @@ public class Controller {
 		currentState.stopTour(this);
 	}
 	public void clickOnMap(double lat, double lon) {
-		currentState.clickOnMap(this, listOfCommands, plan, tour, lat, lon, window);
+		currentState.clickOnMap(this, listOfCommands, plan, tour, lat, lon, 
+				window);
 	}
 	public void addRequest() {
 		currentState.addRequest(this, window);
 	}
 	public void modifyRequest(int indexCheckPoint, int newIndexCheckPoint) {
-		currentState.modifyRequest(listOfCommands, plan, tour, indexCheckPoint, newIndexCheckPoint, window);
+		currentState.modifyRequest(listOfCommands, plan, tour, 
+				indexCheckPoint, newIndexCheckPoint);
 	}
 	public void deleteRequest(String idPickup, String idDelivery) {
-		currentState.deleteRequest(listOfCommands, plan, tour, idPickup, idDelivery);
+		currentState.deleteRequest(listOfCommands, plan, tour, 
+				idPickup, idDelivery);
 	}
 	public void undo() {
 		currentState.undo(this.listOfCommands);

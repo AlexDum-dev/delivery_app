@@ -25,7 +25,8 @@ public class MinFirstIter implements Iterator<Integer> {
 	 * @param currentVertex
 	 * @param g
 	 */
-	public MinFirstIter(Collection<Integer> unvisited, int currentVertex, Graph g){
+	public MinFirstIter(Collection<Integer> unvisited, int currentVertex, 
+			Graph g){
 		candidates = new ArrayList<Integer>();
 		for (Integer s : unvisited){
 			if (g.isArc(currentVertex, s)) {
@@ -38,7 +39,8 @@ public class MinFirstIter implements Iterator<Integer> {
 
 			@Override
 			public int compare(Integer o1, Integer o2) {
-				double x = g.getCost(currentVertex, o1)-g.getCost(currentVertex, o2);
+				double x = g.getCost(currentVertex, o1)
+						- g.getCost(currentVertex, o2);
 				if (x<0) {
 					return -1;
 				} else if (x>0) {
@@ -46,11 +48,11 @@ public class MinFirstIter implements Iterator<Integer> {
 				}
 				return 0;
 			}
-			
+
 		});
 		this.nbCandidates = 0; 
 	}
-	
+
 	@Override
 	public boolean hasNext() {
 		return nbCandidates < candidates.size();

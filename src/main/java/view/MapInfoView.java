@@ -11,6 +11,13 @@ import model.Plan;
 import observer.Observable;
 import observer.Observer;
 
+/**
+ * Map Info View
+ * Displays the legend of the map
+ * 
+ * @author 4IF Group H4144
+ * @version 1.0 7 Dec 2021
+ */
 public class MapInfoView extends JPanel implements Observer{
 	
 	private static final long serialVersionUID = 1L;
@@ -22,20 +29,12 @@ public class MapInfoView extends JPanel implements Observer{
 		this.plan = plan;
 		plan.addObserver(this);
 	}
-	public void colorBackground (Color color) {
-		Graphics g = this.getGraphics();
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(color);
-		//fill the rect
-		g2.fillRect(padding + labelPadding, padding, getWidth() - (2* padding) - 
-				labelPadding, getHeight() - 2 * padding - labelPadding);
-	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(new java.awt.Color(200, 200, 200));
 		g2.fillRect(padding + labelPadding, padding, getWidth() - (2* padding) - 
 				labelPadding, getHeight() - 2 * padding - labelPadding);

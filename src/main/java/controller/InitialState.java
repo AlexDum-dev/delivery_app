@@ -1,13 +1,11 @@
 package controller;
 
-import java.awt.Component;
-
 import model.Plan;
 import model.Tour;
 import view.Window;
 
 /**
- * Controller class
+ * Initial state of the application
  * 
  * @author 4IF Group H4144
  * @version 1.0 22 Nov 2021
@@ -27,7 +25,7 @@ public class InitialState implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
-		CommonActions.loadMap(c, plan, tour, frame, w);
+	public void loadMap(Controller c, Plan plan, Tour tour, Window w) {
+		CommonActions.loadMap(c, plan, tour, w);
 	}
 }

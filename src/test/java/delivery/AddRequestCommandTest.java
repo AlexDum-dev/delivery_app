@@ -1,11 +1,13 @@
 package delivery;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
-import algorithm.tsp.DeliveryGraph;
-import algorithm.tsp.TSP;
-import algorithm.tsp.TSP1;
 import controller.AddRequestCommand;
 import model.CheckPoint;
 import model.CheckPointType;
@@ -15,10 +17,6 @@ import model.Plan;
 import model.Request;
 import model.Segment;
 import model.Tour;
-import view.Window;
-
-import java.time.LocalTime;
-import java.util.*;
 
 public class AddRequestCommandTest {
 	
@@ -93,18 +91,18 @@ public class AddRequestCommandTest {
 		list51.add(si51);
 		Path pathI5toI1 = new Path(list51);
 		
-		AddRequestCommand addCommand = new AddRequestCommand(plan, tour,"2", "4", new Window());
+		AddRequestCommand addCommand = new AddRequestCommand(tour, plan,"2", "4", 0, 0);
 		
 		addCommand.doCommand();
 		
-		assert(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");
-		assert(tour.getPath().get(0).getDestination().getId() == "2");
+		assertEquals(tour.getPathList().get(0).getPath().get(0).getOrigin().getId(), "1");
+		assertEquals(tour.getPathList().get(0).getDestination().getId(), "2");
 		
-		assert(tour.getPath().get(1).getPath().get(0).getOrigin().getId() == "2");
-		assert(tour.getPath().get(1).getDestination().getId() == "4");
+		assertEquals(tour.getPathList().get(1).getPath().get(0).getOrigin().getId(), "2");
+		assertEquals(tour.getPathList().get(1).getDestination().getId(), "4");
 		
-		assert(tour.getPath().get(2).getPath().get(0).getOrigin().getId() == "4");
-		assert(tour.getPath().get(2).getDestination().getId() == "1");
+		assertEquals(tour.getPathList().get(2).getPath().get(0).getOrigin().getId(), "4");
+		assertEquals(tour.getPathList().get(2).getDestination().getId(), "1");
 		
 	}
 	
@@ -180,26 +178,35 @@ public class AddRequestCommandTest {
 		tour.addPath(pathi3I5, pickup);
 		tour.addPath(pathI5toI1, delivery);
 		
-		AddRequestCommand addCommand = new AddRequestCommand(plan, tour,"2", "4", new Window());
+		AddRequestCommand addCommand = new AddRequestCommand(tour, plan,"2", "4", 0, 0);
 		
 		addCommand.doCommand();
 		
-		assert(tour.getPath().get(0).getPath().get(0).getOrigin().getId() == "1");
-		assert(tour.getPath().get(0).getDestination().getId() == "3");
+		assertEquals(tour.getPathList().get(0).getPath().get(0).getOrigin().getId(), "1");
+		assertEquals(tour.getPathList().get(0).getDestination().getId(), "3");
 		
-		assert(tour.getPath().get(1).getPath().get(0).getOrigin().getId() == "3");
-		assert(tour.getPath().get(1).getDestination().getId() == "5");
+		assertEquals(tour.getPathList().get(1).getPath().get(0).getOrigin().getId(), "3");
+		assertEquals(tour.getPathList().get(1).getDestination().getId(), "5");
 
-		assert(tour.getPath().get(2).getPath().get(0).getOrigin().getId() == "5");
-		assert(tour.getPath().get(2).getDestination().getId() == "2");
+		assertEquals(tour.getPathList().get(2).getPath().get(0).getOrigin().getId(), "5");
+		assertEquals(tour.getPathList().get(2).getDestination().getId(), "2");
 		
-		assert(tour.getPath().get(3).getPath().get(0).getOrigin().getId() == "2");
-		assert(tour.getPath().get(3).getDestination().getId() == "4");
+		assertEquals(tour.getPathList().get(3).getPath().get(0).getOrigin().getId(), "2");
+		assertEquals(tour.getPathList().get(3).getDestination().getId(), "4");
 		
-		assert(tour.getPath().get(4).getPath().get(0).getOrigin().getId() == "4");
-		assert(tour.getPath().get(4).getDestination().getId() == "1");
+		assertEquals(tour.getPathList().get(4).getPath().get(0).getOrigin().getId(), "4");
+		assertEquals(tour.getPathList().get(4).getDestination().getId(), "1");
 		
+		addCommand.undoCommand();
 		
+		assertEquals(tour.getPathList().get(0).getPath().get(0).getOrigin().getId(), "1");
+		assertEquals(tour.getPathList().get(0).getDestination().getId(), "3");
+		
+		assertEquals(tour.getPathList().get(1).getPath().get(0).getOrigin().getId(), "3");
+		assertEquals(tour.getPathList().get(1).getDestination().getId(), "5");
+
+		assertEquals(tour.getPathList().get(2).getPath().get(0).getOrigin().getId(), "5");
+		assertEquals(tour.getPathList().get(2).getDestination().getId(), "1");
 	}
 
 }

@@ -1,9 +1,6 @@
 package controller;
 
-import java.awt.Component;
-
 import model.Plan;
-import model.Request;
 import model.Tour;
 import view.Window;
 
@@ -28,13 +25,13 @@ public class TourComputed implements State {
 	}
 
 	@Override
-	public void loadMap(Controller c, Plan plan, Tour tour, Component frame, Window w) {
-		CommonActions.loadMap(c, plan, tour, frame, w);
+	public void loadMap(Controller c, Plan plan, Tour tour, Window w) {
+		CommonActions.loadMap(c, plan, tour, w);
 	}
 	
 	@Override
-	public void loadRequest(Controller c, Plan plan, Tour tour, Component frame, Window w) {
-		CommonActions.loadRequest(c, plan, tour, frame, w);
+	public void loadRequest(Controller c, Plan plan, Tour tour, Window w) {
+		CommonActions.loadRequest(c, plan, tour, w);
 	}
 	
 	@Override
@@ -44,13 +41,15 @@ public class TourComputed implements State {
 	}
 	
 	@Override
-	public void deleteRequest(ListOfCommands l, Plan plan, Tour tour, String idPickup, String idDelivery) {
+	public void deleteRequest(ListOfCommands l, Plan plan, Tour tour, 
+			String idPickup, String idDelivery) {
 		l.add(new DeleteRequestCommand(plan, tour, idPickup, idDelivery));
 	}
 	
 	@Override
-	public void modifyRequest(ListOfCommands l, Plan plan, Tour tour, int indexCheckPoint, int newIndexCheckPoint, Window w) {
-		l.add(new ModifyTourCommand(tour, plan, indexCheckPoint, newIndexCheckPoint));
+	public void modifyRequest(ListOfCommands l, Plan plan, Tour tour, 
+			int oldCheckPoint, int newCheckPoint) {
+		l.add(new ModifyTourCommand(tour, plan, oldCheckPoint, newCheckPoint));
 	}
 	
 	@Override

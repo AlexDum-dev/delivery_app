@@ -31,7 +31,7 @@ public class SeqIter implements Iterator<Integer> {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean hasNext() {
 		return nbCandidates > 0;
